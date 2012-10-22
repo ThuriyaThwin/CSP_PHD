@@ -1,0 +1,38 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.symbols}
+\usetikzlibrary{shadows}
+\usetikzlibrary{arrows}
+
+\pagestyle{empty}
+
+\input{libbnl}
+
+\begin{document}
+
+\def\xshift{6}
+\def\yshift{7}
+
+\begin{tikzpicture}
+\bnstyle
+
+\subnet{(0,0)}{
+   \draw [dep, ->] (x3) to (x5); 
+   \draw [dep, ->, bend left=45,thick] (x4) to (x5); }
+
+\subnet{(\xshift,0)}{
+   \draw [dep, ->] (x3) to (x5);
+   \draw [dep, ->, bend right=45,draw=red,thick] (x5) to (x4); }
+
+\subnet{(0,\yshift)}{
+   \draw [dep, ->, bend right=45] (x2) to (x5); 
+   \draw [dep, ->, bend left=45,thick] (x4) to (x5); }
+
+\subnet{(\xshift,\yshift)}{
+   \draw [dep, ->, bend right=45] (x2) to (x5);
+   \draw [dep, ->, bend right=45,draw=red,thick] (x5) to (x4); }
+
+\end{tikzpicture}
+\end{document}

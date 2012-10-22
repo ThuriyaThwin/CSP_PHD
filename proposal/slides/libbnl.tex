@@ -1,0 +1,22 @@
+\newcommand{\bnstyle}[0]{
+  \tikzstyle{var}=[circle,draw] 
+  \tikzstyle{dep}=[draw,thick,bend angle=45] }
+
+\newcommand{\nodes}[0]{
+  \node [var] (x1) {$x_1$};
+  \node [var] (x3) [below=of x1] {$x_3$};
+  \node [var] (x2) [left=of x3] {$x_2$};
+  \node [var] (x4) [right=of x3] {$x_4$};
+  \node [var] (x5) [below=of x3] {$x_5$}; }
+
+\newcommand{\somearcs}[0]{
+  \draw [dep, ->, bend right]  (x1) to (x2);
+  \draw [dep, ->]                (x1) to (x3);
+  \draw [dep, ->, bend left] (x1) to (x4); }
+
+\newcommand{\subnet}[2]{
+  \begin{scope}[shift={#1}]
+  \nodes
+  \somearcs
+  #2
+  \end{scope} }

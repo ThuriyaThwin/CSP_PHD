@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: proposal.aux
+The style file: alpha.bst
+Database file #1: refs.bib
+Warning--empty institution in Chickering.learningbayesian
+Warning--empty journal in Domshlak.combine
+Warning--empty booktitle in Friedman.sparsecandidate
+Warning--empty institution in Knuth.backtrack
+You've used 44 entries,
+            2543 wiz_defined-function locations,
+            864 strings with 12543 characters,
+and the built_in function-call counts, 20720 in all, are:
+= -- 2125
+> -- 909
+< -- 37
++ -- 312
+- -- 307
+* -- 1353
+:= -- 3185
+add.period$ -- 146
+call.type$ -- 44
+change.case$ -- 277
+chr.to.int$ -- 43
+cite$ -- 48
+duplicate$ -- 925
+empty$ -- 1568
+format.name$ -- 357
+if$ -- 4485
+int.to.chr$ -- 2
+int.to.str$ -- 0
+missing$ -- 46
+newline$ -- 226
+num.names$ -- 134
+pop$ -- 324
+preamble$ -- 1
+purify$ -- 326
+quote$ -- 0
+skip$ -- 816
+stack$ -- 0
+substring$ -- 1218
+swap$ -- 284
+text.length$ -- 37
+text.prefix$ -- 9
+top$ -- 0
+type$ -- 328
+warning$ -- 4
+while$ -- 204
+width$ -- 50
+write$ -- 590
+(There were 4 warnings)

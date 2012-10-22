@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.symbols}
+\usetikzlibrary{shadows}
+\usetikzlibrary{arrows}
+
+\pagestyle{empty}
+
+\input{libnqueens}
+
+\begin{document}
+
+\begin{tikzpicture}
+\node [text width=6.0cm] at (1.0, 6.5) {
+\begin{itemize}
+\item A - complete state transition.
+\item B - partial state transition.
+\end{itemize}};
+\begin{scope}[scale=0.05]
+% complete state 
+\position {(0,0)} {0/1,1/3,2/5,3/7,4/2,5/0,6/4,7/6} {}
+\position {(94,0)} {0/1,1/3,2/5,3/7,4/2,5/0,6/6,7/4} {}
+\draw[->,very thick] (82,40)-- node [midway,above] {A} (92,40);
+% partial state
+\position {(94,94)} {0/1,1/3,2/5,3/7,4/2,5/0} {}
+\queens {(94,94)} {6/4,7/6} {draw=black!30!green}
+\queens {(94,94)} {6/6,7/4} {draw=black!30!blue}
+\draw[->,very thick] (134,92) -- node[midway,right] {B} (134,82);
+\end{scope}
+\end{tikzpicture}
+\end{document}
+

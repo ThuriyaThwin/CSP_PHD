@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.symbols}
+\usetikzlibrary{shadows}
+\usetikzlibrary{arrows}
+
+\pagestyle{empty}
+
+\input{libbnl}
+
+\begin{document}
+
+\def\shift{5}
+
+\begin{tikzpicture}
+\bnstyle
+
+\subnet{(0,0)}{
+   \draw [dep, ->] (x3) to (x5); 
+   \draw [dep, ->,bend left=45] (x4) to (x5); }
+
+\subnet{(\shift,0)}{
+   \draw [dep, ->] (x3) to (x5); 
+   \draw [dep, ->,bend right=45] (x5) to (x4); }
+
+\subnet{(2*\shift,0)}{
+   \draw [dep, ->] (x5) to (x3);
+   \draw [dep, ->,bend right=45] (x5) to (x4); }
+
+\subnet{(0,\shift)}{
+   \draw [dep, ->,bend right=45] (x2) to (x5); 
+   \draw [dep, ->,bend left=45] (x4) to (x5); }
+
+\subnet{(\shift,\shift)}{
+   \draw [dep, ->,bend right=45] (x2) to (x5); 
+   \draw [dep, ->,bend right=45] (x5) to (x4); }
+
+\subnet{(2*\shift,\shift)}{
+   \draw [dep, ->,bend left=45] (x5) to (x2);
+   \draw [dep, ->,bend right=45] (x5) to (x4); }
+
+\subnet{(0,2*\shift)}{
+   \draw [dep, ->] (x3) to (x5); 
+   \draw [dep, ->,bend right=45] (x2) to (x5); 
+   \draw [dep, ->,bend left=45] (x4) to (x5); }
+
+\subnet{(\shift,2*\shift)}{
+   \draw [dep, ->] (x3) to (x5); 
+   \draw [dep, ->,bend right=45] (x2) to (x5); 
+   \draw [dep, ->,bend right=45] (x5) to (x4); }
+
+\subnet{(2*\shift,2*\shift)}{
+   \draw [dep, ->] (x5) to (x3); 
+   \draw [dep, ->,bend left=45] (x5) to (x2);
+   \draw [dep, ->,bend right=45] (x5) to (x4); }
+\end{tikzpicture}
+\end{document}

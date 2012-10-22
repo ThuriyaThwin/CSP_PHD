@@ -1,0 +1,87 @@
+The proposed research comprises two major directions:
+\begin {enumerate}
+\item Rational computation of value of information (Chapter~\ref{ch:raticomp}).
+\item Case studies of application of rational metareasoning to
+  selection and application of heuristic computations (Chapter~\ref{ch:applications}).
+\end {enumerate}
+
+The first direction considers cases in which estimating the value
+of information of a computational action is expensive, as well as
+cases of too many computational actions, such that although
+estimating the value of information of a single action is cheap,
+estimating the value of information of all actions at each step of the
+algorithm is expensive. Some results of research of the case when
+computational actions can be performed in any order
+(Section~\ref{sec:raticomp-persistent-actions}) were published
+\cite{Tolpin.raticomp}, but additional work is required both in
+the theoretical analysis and in the empirical evaluation. Further
+research of rational recomputation of value of information should
+result in:
+\begin{itemize}
+\item Thorough theoretical analysis of the proposed algorithm for
+rational computation of the value of information of ``persistent
+actions'' (Section~\ref{sec:raticomp-persistent-actions}).
+\item A version of the algorithm which re-uses VOI computations
+across state transitions.
+\item Theoretical and empirical analysis of the probabilistic model of
+uncertainty about the value of information of computational actions.
+\item An algorithm or algorithms for the case of very large or infinite
+sets of simultanenously considered computational actions
+(Section~\ref{sec:raticomp-infinite-spaces}).
+\end{itemize}
+
+The second direction considers several search problems and aims at
+improving some well-known algorithms for solving the problems
+using the rational metareasoning approach. Initial results in this
+direction confirm importance of the rational metareasoning approach to
+problem-solving search in applications.
+ \begin{itemize}
+\item Research results were published for parameter tuning with
+inexact measurements in application to SVM parameter optimization and
+metrology equipment setup \cite{TolpinShimony.blinkered}. The rational
+algorithm for parameter tuning was further extended to incorporate
+rational computation of value of information, and a comparative case
+study of the basic and the extended algorithm was provided in
+\cite{Tolpin.raticomp}.
+\item A rational metareasoning model for the solution-counting
+heuristic in constraint satisfaction was formulated, and initial
+theoretical analysis and empirical evaluation of the model were
+performed. Work is underway on preparing the results for publication.
+\end{itemize}
+Further work on applications of rational metareasoning to search
+problems is planned as follows:
+\begin{description}
+\item[Parameter tuning (Section~\ref{sec:app-apt}):] algorithms for
+  parameter optimization in large and high-dimensional search spaces
+  should be designed. The algorithms for large spaces
+  would rely on results of the research proposed in
+  Section~\ref{sec:raticomp-infinite-spaces}.
+\item[Counting based heuristics for constraint satisfaction problems
+  (Section~\ref{sec:app-csp}):] the described metareasoning model
+  (Section~\ref{sec:app-csp-rational}) should be theoretically analyzed
+  and empirically evaluated, and feasible solution counting algorithms
+  should be compared. Selection of heuristics depending on the
+  likelihood of problem consistency should be explored.
+\item[Remote sensing in the canadian traveller problem
+  (Section~\ref{sec:app-ctp}):] CTP-SF should be formally
+  stated as a selection problem. Theoretical performance bounds
+  for a solution of the problem, or some partial cases of the problem, should be
+  obtained. The solution should be empirically evaluated. An heuristic
+  for the general problem of CTP with remote sensing should be designed
+  based on the solution for CTP-SF.
+\item[Learning Bayesian networks from large databases
+  (Section~\ref{sec:app-bnlearn}):] Rational metareasoning algorithm for
+  score-based BN structure learning algorithms should be designed. A model for
+  the utility of such heuristics should be proposed, an a rational
+  structure-learning algorithm should be evaluated and compared with
+  known algorithms.
+\end{description}
+
+As a whole, the ongoing research should advance the use of rational
+metareasoning in problem-solving search algorithms. Applications of
+rational metareasoning in the case studies should serve as examples
+and help researchers employ the methodology in solutions for other
+problems. Advances in rational computation of VOI should increase
+performance and applicability of existing and new search algorithms
+and alleviate dependence of algorithm performance on manual
+fine-tuning.

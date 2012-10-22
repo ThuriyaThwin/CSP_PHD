@@ -1,0 +1,204 @@
+An appropriate domain heuristic qualitatively improves performance of
+search algorithms, allowing to easily solve problems which were
+considered hard \cite{Allen.selheur}. However, heuristics are
+inherently simplifications, and no heuristic is infallible even within
+a single problem class. When {\em heuristic portfolios} are available,
+some heuristics can be identified to work better than others on
+certain problem instances, and applied accordingly
+\cite{Allen.selheur}; heuristics can also be combined
+\cite{Domshlak.combine}. For certain problem instances, uninformed
+search may actually be the best option \cite{Kask.solcount}.
+
+Second-level heuristics are used to select, combine, or apply
+heuristics \cite{Allen.selheur}\cite{Bulitko.dynamiccontrol}; however,
+these meta-heuristics are also domain-specific, and thus are difficult
+to generalize. Rational metareasoning offers a systematic approach for
+selection and application of heuristic computations in informed search. The
+techniques developed according to the approach are often applicable to
+many different problem domains and algorithm families.
+
+When considering rational metareasoning in the context of a search
+algorithm, state transitions correspond to base level actions, and
+heuristic computations used to select among state transitions
+correspond to computational actions. Selection of a base-level action
+according to the rational metareasoning approach
+(Section~\ref{sec:ratimeta}) is presented in
+Algorithm~\ref{alg:ramesrch-selecting-baselevel-action}.
+\begin{algorithm}
+  \caption{Selecting base-level action}
+  \label{alg:ramesrch-selecting-baselevel-action}
+  \begin{algorithmic}[1]
+    \LOOP                                    \label{alg:ramesrch-sba-compute-voi-begin}
+      \FORALL {computational actions $S_i$}
+        \STATE Compute $VOI(S_i)$            \label{alg:ramesrch-sba-compute-voi}
+      \ENDFOR
+      \STATE $i_{\max} \leftarrow \arg \max\limits_i VOI(S_i)$
+      \IF {$VOI\left(S_{i_{\max}}\right)>0$}
+         \STATE Perform $S_i$                \label{alg:ramesrch-sba-perform-s}
+      \ELSE
+         \STATE {\bf break}
+      \ENDIF
+    \ENDLOOP                                 \label{alg:ramesrch-sba-compute-voi-end}
+    \FORALL {base-level actions $A_j$}
+       \STATE Compute $U(A_j)$
+    \ENDFOR
+    \STATE $j_{max} \leftarrow \arg \max \limits_j U(A_j)$
+    \STATE Select $A_{j_{max}}$              \label{alg:ramesrch-sba-select-a}
+  \end{algorithmic}
+\end{algorithm}
+In the algorithm, the VOI of all computational actions available in
+the current state is repeatedly computed
+(lines~\ref{alg:ramesrch-sba-compute-voi-begin}--\ref{alg:ramesrch-sba-compute-voi-end}),
+and if the maximum VOI is positive, a computational action
+$S_{i_{max}}$ with the maximum VOI is performed
+(line~\ref{alg:ramesrch-sba-perform-s}). Otherwise, a base-level
+action with the maximum utility is selected
+(line~\ref{alg:ramesrch-sba-select-a}).
+
+\section{Search Algorithms
+  with a Metareasoning Layer}
+
+The metareasoning layer of an informed search algorithm decides
+\begin{itemize}
+\item whether to apply an heuristic computation or commit to an action;
+\item which of the heuristics or what combination thereof to use;
+\item if the heuristic computation is parametrized, what parameter values
+  result in the best performance.
+\end{itemize}
+The metareasoning layer estimates the value of information and the
+cost of heuristic computations, and makes decisions according to
+the principles of metareasoning (Section~\ref{sec:ratimeta}). This
+way, the layer of domain-specific heuristics is placed between the
+domain-independent layers of the search algorithm and the
+metareasoning.
+
+In real-time or online {\bf best-first search} an important parameter
+is the lookup horizon. Both the intrinsic value of information and the
+computation cost usually grow with the lookup horizon, and there is
+often a non-trivial optimal value maximizing the net value of
+information. Another important parameter is the subset of nodes to
+expand and the order of expansion. The computations are node
+expansions with application of heuristic estimates to the leaves; the
+base-level actions are state transitions.
+
+In {\bf backtracking search} for constraint satisfaction problems
+the base-level actions are variable assignments, and the computations are
+heuristics.  There are many different heuristics \cite{Tsang.csp}:
+\begin{itemize}
+\item for variable ordering (most constrained variable, minimal width,
+  minimal bandwidth, maximum cardinality etc.);
+\item for value ordering (minimum conflicts, least impact etc.);
+\item for constraint propagation (forward checking, lookahead, maintaining arc
+  consistency etc.).
+\end{itemize}
+Some of the heuristics can be quite expensive, and should be used only
+if the anticipated benefit is greater than the computation
+cost. In addition, new heuristics can be invented based on the
+principles of metareasoning (Section~\ref{sec:app-csp}).
+
+{\bf Local search} is itself an heuristic. The local search heuristic
+suggests that the agent should search for an improvement of the
+evaluation function in the proximity of the best state found so far;
+when no improvement can be achieved, the agent should turn to
+unexplored parts of the search space. The metareasoning approach
+offers a generalization of the heuristic based on the value of
+information of evaluating a state: the next state to evaluate is the
+state with the greatest expected influence on the final choice, given
+the current beliefs. The state can be either close to explored
+states with high values, or in an unexplored region with high
+uncertainty about values (exploration). According to this view, there
+is a single base level action---the final choice, and the computational
+action is evaluation of a state.
+
+Still, in many cases it is not clear what reasoning model of a search
+algorithm suits the metareasoning approach the best. Classification
+and analysis of search algorithms along the lines of the metareasoning
+approach would advance both theoretical research and applications of
+problem-solving search.
+
+\section{Assigning Utility and Computation Cost}
+
+According to the rational metareasoning approach, the agent must be
+able to estimate utilities of base-level actions and costs of
+computational actions
+(Section~\ref{sec:ratimeta-benefit-timecost}). In some cases, the
+estimates are obvious, in others, the task of finding appropriate
+estimates is complicated.
+
+For estimating {\bf utility}, the simplest case is solving an
+optimization problem using a complete-state algorithm. The utility of
+the only base-level action---the selection of an element from the
+set---is the value of the evaluation function on the selected
+element. If a complete-state algorithm is used for solving a
+satisfaction problem, e.g. the {\em min-conflicts} algorithm
+\cite{Russell.aima}, then the evaluation function that estimates
+`closeness' of the state to a consistent state serves as the utility
+function.
+
+In partial-state algorithms, such as best-first or backtracking
+search, both the solution quality and the pending base-level and
+computational actions contribute to the utility of a base-level
+action. Solution quality can often be assumed independent of the
+search cost. Under this assumption, the utility of an action is the solution quality
+less the amortized cost of the search:
+\begin{equation}
+\label{eq:ramesrch-optimization-utility}
+U_{action}=Q_{solution}-\alpha C_{search}
+\end{equation} where $\alpha$ is the amortization factor signifying the
+importance of obtaining a solution fast: if the solution is used only
+once, such as in the case of an online path search, $\alpha=1$; for
+reusable solutions, $\alpha$ goes down. In satisfaction problems, when
+any solution of the problem has the same quality, $Q_{solution}$
+can be omitted from (\ref{eq:ramesrch-optimization-utility}), along
+with the amortization factor $\alpha$, and the action utility is
+simply the search cost taken with the negative sign:
+\begin{equation}
+\label{eq:ramesrch-satisfaction-utility} U_{action}=-C_{search}
+\end{equation} $C_{search}$ is composed of the cost of both
+computational and base-level actions. In some algorithms, such as
+backtracking search, the total search effort can be estimated
+\cite{Knuth.backtrack}\cite{Refalo.impact}; in others, such as
+best-first search, the cost of pending computations is ignored, and
+the estimated cost of base-level actions only is used
+\cite{Russell.right}.
+
+The {\bf cost} of a computational action can be estimated directly in
+some cases \cite{Russell.right}; in other cases, the cost is learned
+during the same or earlier invocations of the search algorithm, and
+can depend on the size of the problem instance. In some algorithms
+(see Section~\ref{sec:app-csp} for an example), just the ratio between
+costs of the base-level actions and the computational actions, and not
+their absolute values, determines the algorithm behavior.
+
+\section{Representing and Revising Beliefs}
+
+Value of information of a computational action depends on the belief
+distribution of outcomes of the action
+(Section~\ref{sec:ratimeta-voi}).  Often, the belief distribution is
+represented as an error distribution around the true value of the
+quantity to compute (e.g. the path length in best-first search, the
+value of a state in local search); of course, the true value itself is
+also unknown.  The error distribution can be chosen heuristically,
+learned from earlier invocations of the algorithm on other problem
+instances from the same domain, or gradually refined during the search
+using Bayesian inference, starting with a prior belief.
+
+There are thus, in the general case, several simultaneous processes of
+Bayesian inference during the search:
+\begin{itemize}
+\item beliefs about quantities computed by the computational actions
+are updated based on outcomes of the actions;
+\item beliefs about other quantities dependent on the computed
+quantities are revised according to the dependencies;
+\item beliefs about error distributions of  outcomes of computational
+actions are revised.
+\end{itemize}
+Proper handling of base-level and meta-level beliefs in search
+algorithms is crucial for algorithm performance and allows to replace
+the guessing and {\it ad hoc} heuristics with uniform techniques
+applicable to a wide range of
+problems. Chapter~\ref{ch:raticomp} presents a
+problem of maintaining beliefs about error distributions of
+computational actions and discusses solution approaches and initial
+results.
+

@@ -1,0 +1,127 @@
+While ideally programs, or agents, should {\em act rationally}
+\cite{Russell.aima}, absolute rationality is not feasible. The
+computational power of the agent approaching the problem must be taken
+into account. Rational metareasoning \cite{Russell.right} is an
+approach to building {\em bounded optimal} agents, agents which find a
+solution that is optimal given its computational resources
+\cite{Horvitz.reasoningabout}. The approach describes a method of
+choosing {\em meta-level actions} and is based on notions of {\em
+value of information} and {\em time cost}.
+
+\subsection{Meta-level Actions}
+
+The agent performs a sequence of base-level actions drawn from a known
+set $\{A_i\}$. Before committing to each action, the agent
+deliberates, and the deliberation can be represented as a sequence of
+meta-level actions from a set $\{S_j\}$. At any given time there is a
+base-level action, $A_\alpha$, that appears best to the agent. The
+goal of subsequent meta-level actions is to refine the choice of
+$A_\alpha$ before performing the base-level action.
+
+The agent selects $\alpha$ by numericaly estimating the {\em
+  utilities} of action outcomes; according to decision theory, an
+optimal action $A_\alpha$ is one which maximizes the agent's expected
+utility:
+\begin{eqnarray}
+\label{eq:bg-limited-eu}
+\IE[U(A_i)]&=&\sum_k P(W_k) U(A_i,W_k)\\
+\alpha&=&\arg \max_i \IE[U(A_i)]
+\end{eqnarray}
+where $\{W_k\}$ is the set of possible world states, and $P(W_k)$ is
+the belief probability that the world is currently in state $W_k$.
+
+\subsection{Value of Information}
+\label{sec:ratimeta-voi}
+
+A meta-level action affects the choice of the base-level action
+$A_\alpha$ by changing the belief distribution over the world
+states. The {\em value} of a meta-level action is measured by the
+resulting increase in the utility of $A_\alpha$. Since neither the
+outcomes of meta-level actions nor the true utility of $A_\alpha$ are
+known in advance, a meta-level action is selected according to its
+expected influence on the expected utility of $A_\alpha$.
+
+$S_j$ affects the internal state of the agent and the effect of
+a possible further meta-level action sequence $\mathbf{T}$. Thus, the expected utility of
+$S_j$ is:
+\begin{equation}
+\label{eq:bg-limited-su}
+\IE[U(S_j)]=\sum_{\mathbf{T}}P(\mathbf{T})\IE[U(A_{\alpha}^\mathbf{T},S_j\cdot\mathbf{T})]
+\end{equation}
+where $S_j\cdot\mathbf{T}$ denotes the meta-level action $S_j$
+followed by possible further meta-level action sequence $\mathbf{T}$.
+The {\em value of information} of a meta-level action $S_j$ is
+the expected difference between the expected utility of $S_j$ and the
+expected utility of the current $A_\alpha$.
+\begin{equation}
+\label{eq:bg-limited-nv}
+V(S_j)=\IE(\IE(U(S_j))-\IE(U(A_\alpha)))
+\end{equation}
+
+While a perfectly rational agent would always choose the most valuable
+computation sequence, an agent with only limited rationality makes
+decisions based on an approximation of the utility.
+
+\subsection{Benefit and Time Cost}
+\label{sec:ratimeta-benefit-timecost}
+
+The general dependence on the overall state complicates the analysis. Under
+certain assumptions, it is possible to capture the dependence of utility on time in a
+separate notion of {\em time cost} $C$. Then, the utility of an action $A_i$ taken
+ after a meta-level action $S_j$ is the utility of $A_i$ taken now less the
+cost of time for performing $S_j$:
+
+\begin{equation}
+\label{eq:bg-limited-iu}
+U(A_i, S_j) = U(A_i) - C(A_i, S_j)
+\end{equation}
+
+It is customary to call the current utility of a future base-level
+action its {\em intrinsic utility}. The separation into intrinsic
+utility and time cost allows to estimate the utility of a base-level
+action in a time-independent manner, and then refine the net utility
+estimate according to the time pressure represented by $C$.
+
+In many cases, the time cost of an internal action is independent of
+the subsequently taken base-level action. When $C$ depends only on
+$S_j$, (\ref{eq:bg-limited-nv}) can be rewritten with the cost and the
+intrinsic value of information of a computation as separate terms.
+
+\begin{eqnarray}
+\label{eq:bg-limited-v=bc}
+V(S_j)&=&\IE\left(\IE(U(A_\alpha^j, S_J))-\IE(U(A_\alpha))\right)\nonumber\\
+     &=&\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)-C(S_j)\\
+     &=& \Lambda(S_j)-C(S_j)
+\end{eqnarray}
+where
+\begin{equation}
+\label{eq:bg-limited-benefit}
+\Lambda(S_j)=\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)
+\end{equation}
+denotes the intrinsic value of information, that is, the expected
+difference between the intrinsic expected utilities of the new
+and the old selected base-level action, computed after the meta-level
+action was taken.
+
+For any particular outcome of the meta-level action, one of the
+following cases takes place:
+
+\begin{enumerate}
+\item the selected base-level action $A_\alpha$ stays the same;
+  consequently, $\IE(U(A_\alpha^j))-\IE(U(A_\alpha))$ is zero;
+\item a different base-level action $A_\alpha^j$ is selected, with
+  {\bf higher} expected utility than the expected utility of
+  $A_\alpha$ before the meta-level action was taken;
+\item a different $A_\alpha^j$ is selected, and its expected
+  utility is {\bf the same} as or {\bf lower} than the expected
+  utility of $A_\alpha$ before the meta-level action was taken.
+\end{enumerate}
+
+In the last two cases, the difference is positive---although the
+expected utility of the final choice can decrease, the latter
+choice appears to be better than the earlier one due
+to the updated knowledge about all actions. Thus, while the
+net value of information can be either positive or negative depending on
+the cost of the action, the intrinsic value of information is always
+non-negative.
+

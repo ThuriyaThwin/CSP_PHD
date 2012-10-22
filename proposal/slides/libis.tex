@@ -1,0 +1,27 @@
+\newcommand{\isstyle}[0]{
+  \tikzstyle{item}=[circle,draw,thick] 
+  \tikzstyle{unreachable item}=[item,draw=gray,dashed,fill=gray!20!white]
+  \tikzstyle{util}=[draw=red!60!black,very thick] }
+
+
+\newcommand{\loci}[0]{
+  \node [item,fill=green!40!white] (s3) {$s_3$};
+  \node [item] (s4) [right=of s3] {$s_4$};
+  \node [unreachable item] (s5) [right=of s4] {$s_5$};
+  \node [item] (s2) [left=of s3] {$s_2$};
+  \node [unreachable item]
+    (s1) [left=of s2] {$s_1$};
+  \draw (s1) to (s2) to (s3) to (s4) to (s5); }
+
+\newcommand{\utils}[0]{
+	\foreach \s in {s1, s2, s3, s4, s5}
+	  \draw [util, gray!50!white] (\s) -- +(0,4);
+	\foreach \s/\u in {s1/3.5, s2/1, s3/1.5, s4/2.5, s5/2}
+	  \draw [util] (\s) -- +(0,\u); }
+
+\newcommand{\cost}[0]{
+	\draw [loosely dashed] (s1) ++(-0.5, 4) -- +(10, 0) node [sloped, very near end,above] {\it utility bound};
+	\draw [dashed] (s1) ++(-0.25,5) .. controls +(+2.75,-5) and +(-2.75,-5) .. +(7.5,0) node [sloped, very near end, above] {\it cost}; }
+
+
+

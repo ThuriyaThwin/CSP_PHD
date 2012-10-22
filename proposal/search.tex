@@ -1,0 +1,331 @@
+{\em Problem-solving search} is characterized by a single agent acting
+in a neutral environment\cite{Russell.aima}. The ultimate goal of the
+agent is to select a single member from a given set of feasible
+solutions. The value of an {\em evaluation function}, possibly
+randomized, can be efficiently computed for any member; however,
+evaluating all of the members is infeasible because the set is too
+large, often exponential in the size of the problem instance, or
+even infinite.
+
+The two common selection criteria are 
+\begin{description}
+  \item[Satisfaction:] the evaluation function represents a {\em goal
+    test} determining whether the member satisfies constraints imposed
+    by the problem definition. The agent may choose any member
+    satisfying the constraints.
+
+  \item[Optimization:] the evaluation function is an {\em utility} function
+    returning a numeric value, and the agent must choose a member that
+    maximizes the utility.
+\end{description}
+
+One strives to design an agent that arrives at the final choice in as
+little time as possible, or at least within reasonable time bounds.
+If an agent that solves any instance of the problem efficiently cannot
+be designed, for example, because no polynomial-time algorithm is
+known, the agent that is the fastest one in expectation for a certain
+instance distribution is preferred.  An optimizing agent may
+approximate the solution by selecting a member which is `good enough'
+while not necessarily the best one, achieving a compromise between the
+running time and the solution quality.
+
+\subsection{Problem Examples}
+
+\begin{description}
+\item[Sliding tile puzzle:] an $N\times N$ board with $N^2-1$
+  sequentially numbered tiles is given. A tile adjacent to the blank
+  space can slide into the space. The goal is to arrange the tiles in
+  the ascending order in as few moves as
+  possible \cite{Russell.aima}. This can be either an optimization
+  problem, in which the shortest route from the initial state to the
+  goal state must be found, or a satisfaction problem, in which either
+  any route from the initial state to the goal state must be found, or a
+  proof that no such route exists must be provided.
+
+\item[N-queens puzzle:] $N$ chess queens must be placed
+  on an $N\times N$ chessboard such that none of them is able to
+  capture any other using the standard chess queen's
+  moves \cite{Russell.aima}. The queens must be placed in such a way
+  that no two queens attack each other. Thus, a solution requires that
+  no two queens share the same row, column, or diagonal. N-queens
+  puzzle is a satisfaction problem, any placement of queens satisfying
+  the goal test is a valid solution.
+
+\item[Traveling salesman problem:] given a set of cities, and known
+ distances between each pair of cities, a tour that visits each city
+ exactly once and that minimizes the total distance traveled must be
+ found \cite{Russell.aima}. This is an optimization problem: a member
+ of the set of all permutations of the cities with the shortest sum of
+ distances between the consequent cities must be chosen.
+
+\item[Multi-armed bandit] is the problem for a gambler
+ to decide which arms of a K-slot machine to pull to maximize his
+ total reward in a series of trials of a given
+ length \cite{Vermorel.bandits}. When pulled, each lever provides a
+ reward drawn from a distribution associated to that specific
+ lever. Initially, the gambler has no knowledge about the levers, but
+ through repeated trials, can focus on the most rewarding levers. This
+ is an optimization problem with trade-off between {\em exploration}
+ and {\em exploitation}: the gambler both attempts to pull the most
+ rewarding lever so far and tries different levers to discover a
+ better lever.
+\end{description}
+
+\subsection{Search Algorithms}
+
+Search problems are often solved by enumerating members of the set of
+feasible solutions until a member satisfying the goal test (for
+satisfaction problems), or maximizing the evaluation function (for
+optimization problems) is found. The two common enumeration strategies
+are {\em complete-state} and {\em partial-state} traversal. A search
+algorithm passes between states by performing {\em search actions}
+starting from some {\em initial state}. The algorithm stops when a
+state satisfying the goal test is reached.
+
+Commonly, in the complete-state strategy a state is a complete
+feasible solution, and in the partial-state strategy a state is a
+partially built solution, when some of the structure of the final
+solution is left undefined. A slightly different view of the same
+classification is provided here to facilitate the discussion in the
+context of rational metareasoning.
+
+\begin{description}
+\item[In the complete-state strategy,] a state corresponds to a single
+  member of the set of feasible solutions: a  placement
+  of all N queens in the N-queens puzzle or a permutation of cities in the
+  traveling salesman problem. State transitions are usually based on
+  the structure of the set members: in the N-queens puzzle, states
+  that differ from the current state in the position of a single queen can
+  be viewed as neighbors of the state. The initial state can be
+  chosen arbitrarily.
+
+\item[In the partial-state strategy,] a state corresponds to a subset
+  of the set of feasible solutions, and the initial state is the
+ complete set. The search proceeds by considering states-subsets of
+  the current state until a state consisting of a single element
+  satisfying the goal test is found. The strategy is called
+  `partial-state' because each state is based on partial structure of
+  the solution shared by all members of the subset corresponding to
+  the set. For example, a state in a partial-state strategy for the
+  traveling salesman problem can be the set of all permutations in
+  which two particular cities are visited one immediately after the
+  other.
+\end{description}
+
+Problem-independent, {\it uninformed} search algorithms, such as
+breadth-first search, iterative deepening search, and others, can be
+applied to any search problem without modifications. Unfortunately,
+these algorithms are incredibly inefficient in most cases: a
+complete-state algorithm may have to evaluate all of the set members;
+in a partial-state algorithm the number of possible states can be
+larger than exponential in the problem size. 
+
+Problem-specific knowledge can help find solutions more
+efficiently. {\em Heuristics} are used to encode the knowledge and to
+direct the search in such a way that the number of explored states is
+significantly decreased. The increase in performance depends on the
+quality of the heuristic. Good heuristics can sometimes be constructed
+by relaxing the problem definition, by precomputing solution costs for
+subproblems, or by learning from experience with the problem class.
+
+The exact role of heuristics in a search algorithm varies for
+different algorithm families, of which best-first search, backtracking
+search, local search are most widely known and used. Besides, online
+search algorithms, in which computation and action are interleaved,
+are important for exploration problems and dynamic environments.
+
+The following description of informed search algorithms is of
+necessity very skimpy, and does not and cannot cover all of the
+state-of-the art algorithms. Only some widely adopted schemes
+referenced in the research proposal are briefly described.
+                             
+\subsubsection{Best-First Search}
+
+Best-first search (Algorithm \ref{alg:bg-best-first-search}) is used to
+solve route-finding or touring problems, in which a shortest path
+between the initial and the goal state must be found. The sliding tile
+puzzle and the traveling salesman problem are examples of such
+problems.
+
+Best-first search repeatedly expands the best node in the fringe,
+according to a given evaluation function, and adds the node's children
+to the fringe (line~\ref{alg:bg-best-first-search-add-to-fringe}). The
+algorithm terminates when either the goal is reached
+(line~\ref{alg:bg-best-first-search-goal-reached}) or the fringe becomes
+empty (line~\ref{alg:bg-best-first-search-fringe-empty}). To avoid
+loops, visited nodes are kept in memory (line~\ref{alg:bg-best-first-search-remember-visited}).
+
+\begin{algorithm}
+\caption{Best-First Search}
+\label{alg:bg-best-first-search}
+\begin{algorithmic}[1]
+\STATE $ClosedNodes \leftarrow \emptyset$
+\STATE $Fringe \leftarrow \{InitialState\}$
+\LOOP
+  \IF {$Empty(Fringe)$}  \label{alg:bg-best-first-search-fringe-empty}
+    \RETURN {\bf failure}
+  \ENDIF
+  \STATE $node \leftarrow RemoveBestNode(Fringe)$
+  \IF {$GoalTest(node)$}  \label{alg:bg-best-first-search-goal-reached}
+    \RETURN $node$
+  \ENDIF
+  \IF {$node \notin ClosedNodes$}
+    \STATE $ClosedNodes \leftarrow ClosedNodes \cup \{node\}$ \label{alg:bg-best-first-search-remember-visited}
+    \STATE $Fringe \leftarrow Fringe \cup \{Expand(node) \}$ \label{alg:bg-best-first-search-add-to-fringe}
+  \ENDIF
+\ENDLOOP
+\end{algorithmic}
+\end{algorithm}
+
+The most widely used version of best-first search is
+A*~search. A* evaluates nodes by combining $g(n)$, the cost to
+reach the node, and $h(n)$, the estimated cost to get from the node to the
+goal:
+\begin{equation}
+\label{eq:a-star-heuristic}
+f(n)=g(n)+h(n)
+\end{equation}
+Thus, $f(n)$ is the estimated cost of the cheapest solution through
+node $n$.
+
+Provided that $h(n)$ is {\em admissible} and {\em consistent}, A*
+is optimal; even more, A* is {\em optimally efficient}: no
+other optimal algorithm is guaranteed to expand fewer nodes than A*
+\cite{Russell.aima}. Variations of A* with lower space requirements
+were developed. However, many search problems are NP-hard, which
+means that finding an optimal solution may take exponential time;
+approximating algorithms must be used to find a solution in polynomial
+time.
+
+RTA* (Real-Time A*) \cite{Korf.rta} is an approximating version of A*
+with limited lookup horizon. RTA* explores the search graph upto a
+given depth, and then moves to a node with the lowest estimated
+distance to the goal, updating $g(n)$ for all nodes to the distances
+from the current node. RTA* is not optimal unless the goal is within
+the lookup horizon, but the solution quality increases with  the
+lookup depth. RTA* is complete in a space with positive edge hosts and
+finite heuristic values, in which the goal is reachable from any state.
+Variants of RTA* have been developed \cite{Russell.right},
+\cite{Bulitko.dynamiccontrol}  with improved control over the
+compromise between the computation time and the solution quality.
+
+\subsubsection{Backtracking Search}
+\label{sec:bg-backtracking-search}
+
+Backtracking search is used to solve {\em constraint satisfaction
+problems}. A constraint satisfaction problem (CSP) is defined by a set
+of variables, $X_1$, $X_2$, ..., $X_n$, and a set of constraints,
+$C_1$, $C_2$, ..., $C_n$. Each variable $X_i$ has a non-empty domain
+$D_i$ of possible values. Each constraint $C_i$ involves some subset
+of the variables and specifies the allowable combinations of values
+for that subset. A state of the problem is defined by an assignment of
+values to some or all of the variables; and an assignment that does
+not violate any constraints is called a consistent assignment. The eight
+queens puzzle can be formulated as a constraint satisfaction problem
+and solved using backtracking search.
+
+Backtracking search is a depth-first search algorithm that chooses
+values for one variable at a time and backtracks when a variable has
+no legal values left to assign. A version of backtracking search is
+presented in Algorithm~\ref{alg:bg-backtracking-search}.
+\begin{algorithm}
+\caption{Backtracking Search}
+\label{alg:bg-backtracking-search}
+\begin{algorithmic}[1]
+\vspace{0.5em}
+\RETURN $Backtracking(\{\}, csp)$
+\vspace{1em}
+\item[${\bf Backtracking}(assignment, csp):$]
+\IF {$Complete(assignment)$}
+   \RETURN $assignment$
+\ENDIF
+\STATE {$var \leftarrow SelectUnassignedVariable(assignment, csp)$} \label{alg:bg-backtracking-search-var-ordering}
+\FORALL {$value$ {\bf in} $OrderValues(var, assignment, csp)$} \label{alg:bg-background-search-value-ordering}
+  \STATE $assignment' \leftarrow assignment \cup \{var=value\}$
+  \STATE $csp' \leftarrow PropagateConstraints(csp, var=value)$ \label{alg:bg-background-search-constraint-propagation}
+  \IF {$Backtracking(assignment', csp') \ne {\bf failure}$} \label{alg:bg-backtracking-search-recurse}
+     \RETURN $assignment'$ \label{alg:bg-backtracking-search-success}
+  \ENDIF
+\ENDFOR
+\RETURN {\bf failure} \label{alg:bg-backtracking-search-failure}
+\end{algorithmic}
+\end{algorithm}
+The algorithm calls function {\em Backtracking(assignment, csp)}
+recursively, (line~\ref{alg:bg-backtracking-search-recurse})
+trying values consistent with previous assignments
+(line~\ref{alg:bg-background-search-value-ordering})
+for each variable
+(line~\ref{alg:bg-backtracking-search-var-ordering})
+until either a solution is found
+(line~\ref{alg:bg-backtracking-search-success}) or all combinations
+are exhausted (line~\ref{alg:bg-backtracking-search-failure}). With
+each new assignment, the problem is updated according to constraints
+imposed by the assignment in order to prune the search space (line~\ref{alg:bg-background-search-constraint-propagation}).
+
+The algorithm performance depends heavily on the efficiency of
+variable-ordering and value-ordering heuristics ({\em
+  SelectUnassignedVariable} in
+line~\ref{alg:bg-backtracking-search-var-ordering}
+and {\em  OrderValues} in
+line~\ref{alg:bg-background-search-value-ordering}), as well on the
+amount of pruning due to the propagation of constraints
+({\em PropagateConstraints} in line~\ref{alg:bg-background-search-constraint-propagation}). Some
+variants of the backtracking search also involve {\em intelligent
+  backtracking}, when additional values for recently assigned
+variables are not considered after a failure if it can be proved
+that that they would not fix the inconsistency.
+
+
+\subsubsection{Local Search}
+
+Local search is a family of complete-state algorithms, as opposite to
+best-first search and backtracking search. The search operates using a
+single {\em current state} and recursively explores neighbor states
+until a maximum of the evaluation function is found. Local search can
+be used to solve both satisfaction and optimization problems. To solve
+satisfaction problems, a heuristic function estimating proximity of a
+state to the goal is used instead of the evaluation function. The
+eight queens puzzle and the multi-armed bandit are examples of
+problems that can be solved using local search.
+
+The simplest variant of local search, {\em hill-climbing}
+\cite{Russell.aima}, moves only to higher-valued neighbors of the
+current state and is prone to getting stuck on local maxima. Therefore,
+variants that can escape a local maximum and eventually find a global
+maximum if enough time is given have been developed, such as {\em
+stochastic hill-climbing}, {\em random-restart hill climbing}, {\em
+simulated annealing} \cite{Russell.aima}, and {\em genetic algorithms}
+\cite{Eiben.evolcomp}. These variants heuristically alternate between
+searching for a local maximum and exploring different areas of the
+search space.
+
+\subsubsection{Online Search}
+
+When the search space is dynamic or only partially known, an agent
+that builds a complete solution before committing to an action is
+often infeasible, because a contingency plan becomes prohibitively
+large. Consequently, online search algorithms come into use. In an
+online search algorithm, the agent interleaves computation and action,
+accounting for action outcomes in further computations.
+
+Online versions of best-first search explore the search space up to
+a limited horizon, use the current state of the search to choose an
+action, perform the action, and continue the search from the new
+state. Real-time A* is formulated as an offline search algorithm,
+but can be used unchanged by online search agents.
+
+The simplest form of local search, hill climbing, can also be
+viewed as an online search algorithm. Other variants of local search
+involve `jumps' in the search space which are free offline but come at
+a cost online. Consequently, random restarts or simulated annealing
+are impractical, and a {\em random walk} is used instead to escape
+local maxima. A random walk simply selects at random one of available
+actions, giving preference to actions that have not yet been tried.
+
+Learning plays an important role in online search. The agent can keep
+information about visited states and outcomes of the performed
+actions, and use the gained experience to compute heuristics. An
+example of learning in online search is the LRTA* algorithm
+\cite{Korf.rta}, an extension of RTA*. LRTA* continuously
+updates cost estimates of visited states and used the current cost
+estimates to choose the ``apparently best'' move.

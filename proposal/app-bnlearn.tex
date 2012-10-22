@@ -1,0 +1,87 @@
+Bayesian network is a formalism for describing causal dependencies
+between variables \cite{Pearl.PRIS}. Bayesian networks are widely used
+for encoding domain knowledge, both provided by experts and learned
+from data.  Bayesian networks facilitate combining expert and learned
+knowledge complementing each other.
+
+\subsection{Motivation for learning Bayesian network structure}
+
+A Bayesian network is a pair $B=(G, \Theta)$ where $G=(V,E)$ is a directed
+graph and $\Theta$ are are numerical vertix labels
+\cite{Heckerman.tutorial}. Vertices of the graph $V$ correspond to variables,
+the edges $E$ denote causal relations between the variables, and the labels
+quantify the relations. Bayesian networks are used for {\it
+inference}: given a {\it prior belief} and an {\it evidence} for a
+Bayesian network, the posterior distribution of variable values can be
+computed.
+
+In some cases, the initial structure of a Bayesian network can be
+provided by an expert, in other cases the structure is unknown and
+has to be discovered. In either case, training data can be used
+to learn or improve the Bayesian network, both the structure and the
+parameters. However, learning Bayesian networks is NP-hard 
+\cite{Chickering.learningbayesian}, therefore heuristic-based
+approximate algorithms are used \cite{Heckerman.tutorial}.
+
+\subsection{Approaches to Bayesian network learning}
+
+Two widely adopted approaches to learning Bayesian networks are {\it
+  score-based} and {\it constraint-based}. In the score-based
+approach, a score is assigned to each Bayesian network and reflects
+how well the network describes the data set. Then, a network with
+the highest score is selected from a candidate set. In the
+constraint-based approach, conditional independence tests are
+performed on variables, and a network satisfying the discovered
+conditional independence properties is built. 
+
+Algorithms adhering to the score-based approach are based on 
+such heuristic search techniques as greedy hill-climbing or
+simulated annealing \cite{Heckerman.tutorial}. Constraint-based
+algorithms use heuristics to discover conditional independence
+relations between variables, and then infer the graph structure; since
+an exponential number of tests is required to discover the relations,
+domain knowledge and heuristics are used to performs tests selectively
+and build an approximate solution.
+
+When the data set used to learn the structure is large, even
+polynomially bounded approximate algorithms require enormous time. One
+approach for learning Bayesian network structure from large data sets
+is the ``Sparse candidate algorithm'' which selectively uses
+conditional independence tests to direct score-based
+search \cite{Friedman.sparsecandidate}. The Bayesian network can itself
+be large and consist of hunderds of thousands of nodes. Such network
+has to be learned from a large sparse data set; and Goldenberg and Moore
+\cite{Goldenberg.sparsedata} describe a score-based algorithm which uses
+``Frequent Sets''---sets of attributes which occur frequently in the
+sparse data---as the heuristic. Other authors also use various
+heuristics to deal with vast amounts of data and long computation
+times (\cite{Zhou.clustering}, \cite{Boyen.hidden}).
+
+\subsection{Proposed research}
+\label{sec:app-bnlearn-research}
+
+The time to compute heuristics can be significant. Selective
+application of heuristics justified by the anticipated benefit should
+improve the running times and make the algorithms applicable to large
+problem instances. In particular, the mentioned score-based approach
+can be cast as a complete-state search problem in a large search
+space. To improve the performance of score-based learning,
+a rational metareasoning algorithm should be used to search for
+the Bayesian network structure. An appropriate dependency model for
+candidate networks must be chosen, and a proper estimate for the
+utility of structure scoring must be invented for such algoirthm. 
+
+Computing the score of a candidate is expensive for large data sets. A
+rational metareasoning algorithm should be used for approximate score
+evaluation. This is especially relevant if a structure currently under
+consideration can be quickly ruled out as a candidate based on a rough
+score estimation, compared to another structure already scored by the
+algorithm.  The approximate scoring algorithm would select for
+computing the score a subset of the data set with the highest value of
+information estimate. Both online and offline subset selection
+algorithms \cite{Guestrin.graphical} should be considered.
+
+Since the search spaces of structure candidates and of data instances
+are large, the algorithms would also use the research results for
+large search spaces (Section~\ref{sec:raticomp-infinite-spaces}).
+

@@ -1,0 +1,61 @@
+In the {\em Canadian Traveler Problem} (CTP) \cite{Barnoy.ctp} a
+traveling agent is given an undirected connected weighted graph
+$G=(V,E)$ as input together with its initial source vertex ($s \in
+V$), and a target vertex ($t \in V$).  The input graph $G$ may undergo
+changes, that are not known to the agent, {\em before} the agent
+begins to act, but remains fixed subsequently.  In particular, some of
+the edges in $E$ may become {\em blocked} and thus untraversable. Each
+edge $e$ in $G$ has a weight, or cost, $w(e)$, and is blocked with a
+probability $p(e)$, where $p(e)$ is known to the agent. The agent can
+perform {\em move} actions along an unblocked edge which incur a {\em
+  travel cost} $w(e)$.  Traditionally, the CTP was defined such that
+the status of an edge can only be revealed upon arriving at a node
+incident to that edge, i.e., only {\em local sensing} is allowed.
+
+A somewhat more general version of CTP is {\em CTP with sensing}. In
+this variant, in addition to move actions (and local sensing), an
+agent situated at a vertex $v$ can also perform {\em sense} actions
+and query the status of any edge $e \in G$. The sensing action incurs a
+{\em sensing cost} $sc(v,e)$. The task of the agent is to travel to
+the goal while minimizing a total cost
+$C_{total}=C_{travel}+C_{sensing}$.
+
+In a general case, value of information of a sensing action can be
+efficiently estimated only under rather strong simplifying
+assumptions, such as the free-space assumption
+\cite{Bnaya.sensing}. Special cases in which a better VOI estimate can
+be computed efficiently are of interest.
+
+In one such setting, the sensing costs are much smaller than the
+travel costs, and it makes sense to ensure that the path to be
+traversed is open before beginning traversal.  In this variant, called
+{\em CTP-Sensing-First} (CTP-SF), the problem is to minimize expected
+sensing costs in order to detect the shortest open path. The
+base-level action uses a polynomial-time algorithm (such as the
+Dijkstra algorithm for the single-source shortest path problem
+\cite{Kleinberg.algorithms}) to find the shortest path between the
+source and the target nodes.
+
+\subsection{Proposed research}
+\label{sec:app-ctp-research}
+
+An algorithm based on rational
+metareasoning can be used to solve the CTP-SF problem, which can be
+formulated as follows:
+\begin{itemize}
+\item The application of a polynomial-time CTP algorithm to the CTP
+  graph updated according to the remote sensing outcomes is the only
+  base-level action.
+\item The travel cost of the algorithm, taken with the negative sign,
+  corresponds to the utility of the base-level action.
+\item The remote sensing actions, performed before the traditional CTP
+  algorithm is applied, correspond to the computational actions.
+\end{itemize}
+This problem can be solved approximately using weaker simplifying
+assumptions than for the general case of CTP with sensing, since the
+sensing and the traversal are not interleaved, and the net utility of
+the base-level action is easily computable. Optimal solutions for
+restricted cases of the problem with particular graph topology may be
+discovered. Finally, the algorithm for solving the CTP-SF problem
+can be used to design an heuristic for solving the general CTP problem
+with sensing.

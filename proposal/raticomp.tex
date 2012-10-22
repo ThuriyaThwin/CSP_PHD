@@ -1,0 +1,151 @@
+The rational metareasoning approach is based on the assumption that
+the value of information of a computational action can be estimated
+cheaply compared to actually performing that computational action. Examples of
+successful applications of rational metareasoning
+(\cite{Russell.gametree}, \cite{Larson.deliberation_equilibrium}) rely
+on a domain-specific way to efficiently compute the VOI estimate of a
+computational action, through an approximating formula or smart
+caching. Such dependency on problem features impairs generality:
+before an algorithm is applied to a new problem, the algorithm
+designer must come up with a VOI estimate which is both cheap and
+robust---a challenging task akin to finding a good search heuristic.
+
+In general, computation of VOI, even under the commonly used
+simplifying myopic assumption, involves multidimensional integration
+of a general function \cite{Russell.right}; however, frequently an
+exact VOI is not needed in order to proceed---it is sufficient to
+determine that the VOI of a certain action is much lower than that of
+another action. Decisions when a VOI estimate should be computed and how
+an earlier computation of the VOI can be re-used can be  based on the
+same principles of rational metareasoning, and there are similar
+techniques of selective VOI recomputation for wide ranges of seemingly
+unrelated problems.
+
+\section{Persistent Actions}
+\label{sec:raticomp-persistent-actions}
+
+Often, the same computational action is available multiple times
+in the course of the algorithm, and the VOI of the action changes
+slowly. A description and analysis of selective recomputation of
+the VOI of such persistent actions in application to measurement selection
+problems appears in \cite{Tolpin.raticomp}.  However, the technique
+can also be used with other problems and search strategies.
+
+The computation $\mathbf{S}$ preceding a base-level action $A$ of a
+search algorithm is a sequence of computational actions $S_i$ from the
+set of computation actions available in the current state.
+As computational actions are selected and performed sequentially
+(Algorithm~\ref{alg:ramesrch-selecting-baselevel-action} in
+Chapter~\ref{ch:ramesrch}), the VOI of all computational actions are
+repeatedly recomputed (line~\ref{alg:ramesrch-sba-compute-voi}),
+because the performed action may have changed the VOI of other
+actions. When there are many computational actions available in the
+given state (e.g. when the outdegree is high in best-first search, or
+in measurement selection over a large search space) the VOI
+recomputation may take significant time and impact the metareasoning
+assumptions.
+
+When there are many computational actions available, and subsequences
+of actions can be applied in many different orders, the influence
+of one action on the VOI of other actions is small: it is unlikely,
+during most of the search, that the utility of the best action
+changes abruptly. Computational actions with low VOI estimates remain,
+with high likelihood, poor candidates for selection. Only the VOI of
+computational actions with potentially high impact should be
+recomputed, either because the VOI was high recently, or because the
+VOI estimate has become uncertain.
+
+To recompute the VOI selectively, the belief $\BEL(\Lambda_j)$ about
+the intrinsic VOI of computational action $S_j$ is represented by a belief
+distribution. In this research, the normal distribution with mean
+$\Lambda_j$ and variance $\varsigma_j^2$ is used:
+\begin{equation}
+\BEL(\Lambda_j)=\N(\Lambda_j, \varsigma_j^2)
+\end{equation}
+After a computational action is performed, the belief about
+$\Lambda_j$ becomes less certain. Under the assumption that the
+influence of each computational action on the VOI of other
+computational actions is independent of influence of any other
+computational action, the uncertainty is expressed by adding Gaussian
+noise with variance $\tau^2$ to the belief:
+\begin{equation}
+\varsigma_j^2 \leftarrow \varsigma_j^2+\tau^2
+\label{eq:varsigma}
+\end{equation}
+When $\Lambda_j$ of $S_j$ is computed, $\BEL(\Lambda_j)$
+becomes exact ($\varsigma_j^2 \leftarrow 0$).
+
+$W_k$ is efficiently computable
+and the subset of computational actions for which the VOI is computed is
+controlled by the computation cost $c_V$:
+\begin{equation}
+\label{eq:rational-w}
+W_k=\frac {\varsigma_k} {\sqrt {2\pi}}
+   e^{\left(-\frac {\left(V_\gamma-V_k\right)^2}
+         {2\varsigma_k^2}\right)}
+   -\left|V_\gamma-V_k\right|\Phi\left(-\frac {\left|V_\gamma-V_k\right|} {\varsigma_k} \right)-c_V
+\end{equation}
+where $V_\gamma$ is the highest VOI $V_\alpha$ if any but the highest
+VOI is recomputed, and the next to highest value of information $V_\beta$ if the
+highest VOI is recomputed; $\Phi(x)$ is the Gaussian cumulative
+probability of $x$ for $\mu=0,\;\sigma=1$.
+
+Uncertainty variance $\tau^2$ can be learned as a function of the
+total cost of performed measurements, either off-line from earlier
+runs on the same class of problems, or on-line. Learning $\tau^2(c)$ on-line from
+earlier VOI recomputations  proved to be robust and easy to implement.
+
+The approach to selective VOI recomputation appears to work well for a
+single step of search with metareasoning. However, there are still a
+few important topics for future research:
+
+\begin{itemize}
+\item The improved algorithm lacks theoretical runtime analysis.
+\item Gaussian distribution is chosen rather arbitrarily to model
+uncertainty about the VOI. Often, the VOI is non-increasing
+\cite{Guestrin.submodular}, and a skewed distribution from
+the exponential family should be chosen for better results.
+\item As described, the scheme reuses VOI computations preceding a
+single base-level action; but the VOI of a computational action may
+stay almost unchanged even after a state transition (e.g. in
+backtracking search, estimating the impact of an assignment may have
+the same VOI for different partial assignments). The algorithm should
+be extended to reuse VOI computations across state transitions.
+\end{itemize}
+
+\section{Infinite Spaces}
+\label{sec:raticomp-infinite-spaces}
+
+Even if estimating the VOI of a computational action is efficient,
+there can be too many computational actions available, and the time to
+estimate the VOI of each of the actions becomes prohibitively
+long. This difficulty appears, in particular, in parameter tuning
+(Section~\ref{sec:app-apt}), but is common to problems of
+complete-state search in large or infinite spaces in general.
+
+A rational agent should consider only a small subset of the available
+computational actions at each iteration of the main loop in
+Algorithm~\ref{alg:ramesrch-selecting-baselevel-action} of
+Chapter~\ref{ch:ramesrch} (lines~\ref{alg:ramesrch-sba-compute-voi-begin}--\ref{alg:ramesrch-sba-compute-voi-end}).
+A notion of agent locality must be introduced.
+
+If the agent locality is made a part of the internal, computational
+state, then all computational actions are available, but a distance
+cost function is introduced in such a way that the further a
+computational action from the current agent position, the lower is the
+VOI of the action. When a bounded distribution is used to model the
+action outcomes, actions with a high distance cost can be pruned
+without actually computing the VOI.
+
+Alternatively, if the agent locality becomes a part of the real-world
+state, then only the computational actions exploring a proximity of
+the current real-world state are considered, and there is a base-level
+action that moves the agent to another location with another subset of
+available computational actions.
+
+In the former approach, the real-world state remains intact, but
+the pruning imposes a limitation on the probabilistic modeling of action
+outcomes. In the latter approach, a new base-level action is
+introduced, and the expected utility of the action must be defined
+heuristically. Both ways to bound the set of simultaneously available
+computational actions should be explored and empricially evaluated.

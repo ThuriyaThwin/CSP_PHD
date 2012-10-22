@@ -1,0 +1,793 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>Rational Metareasoning for Problem Solving</title>
+  <!-- metadata -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="S5" />
+  <meta name="version" content="S5 1.1" />
+  <meta name="presdate" content="20050728" />
+  <meta name="author" content="Eric A. Meyer" />
+  <meta name="company" content="Complex Spiral Consulting" />
+  <!-- configuration parameters -->
+  <meta name="defaultView" content="slideshow" />
+  <meta name="controlVis" content="hidden" />
+  <!-- style sheet links -->
+  <link rel="stylesheet" href="ui/bgucs/slides.css" type="text/css" media="projection" id="slideProj" />
+  <link rel="stylesheet" href="ui/bgucs/outline.css" type="text/css" media="screen" id="outlineStyle" />
+  <link rel="stylesheet" href="ui/bgucs/print.css" type="text/css" media="print" id="slidePrint" />
+  <link rel="stylesheet" href="ui/bgucs/opera.css" type="text/css" media="projection" id="operaFix" />
+
+  <!-- ASCIIMathML JS
+  <script type="text/javascript" src="ASCIIMathML.js"></script>
+  -->
+
+  <!-- MathJAX -->
+  <script src="./mathjax/MathJax.js" type="text/javascript">
+    MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
+    noImageFonts: true
+    });
+  </script>
+
+  <!-- S5 JS -->
+  <script src="ui/bgucs/slides.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <div class="layout">
+    <div id="controls"><!-- DO NOT EDIT --></div>
+    <div id="currentSlide"><!-- DO NOT EDIT --></div>
+    <div id="header"></div>
+    <div id="footer">
+      <h1>Ben-Gurion University of the Negev/2011</h1>
+      <h2>Rational Metareasoning for Problem Solving</h2>
+    </div>
+
+  </div>
+
+
+  <div class="presentation">
+
+    <div class="slide">
+      <h1>Rational Metareasoning for Problem Solving</h1>
+      <h3>
+         PhD Thesis Proposal<br/>
+         David Tolpin
+      </h3>
+      <p style="margin-top: 2em"/>
+      <h4>
+        Ben-Gurion University of the Negev<br/>
+        Kreitman School for Advanced Graduate Studies
+      </h4>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Outline: Introduction</h1>
+      <ul>
+        <li><b>Introduction</b></li>
+        <li>Background</li>
+        <li>Rational Metareasoning in Search Algorithms</li>
+        <li>Rational Computation of Value of Information</li>
+        <li>Applications</li>
+        <li>Summary and Expected Contribution</li>
+      </ul>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Motivation</h1>
+	  <ul>
+	    <li>Agents solve AI problems: they act in an <i>environment</i> and try to reach a <i>goal</i>.</li>
+        <li>Simple but large class of problems is <i>problem-solving search</i>: a single agent in a neutral environment.</li>
+		<li>Search algorithms are often either:
+		  <ul>
+		    <li>General but slow: A*, MAC.</li>
+			<li>Domain-specific: work faster for particular problems due to <i> search heuristics.</i></li>
+	      </ul></li>
+		<li>Different heuristics work better on different problem instances.</li>
+		<li>Selecting and computing heuristics takes time.</li>
+		<li><i>Rational metareasoning</i> can help decide when and which heuristic to apply.</li>
+		<li>Same metareasoning techniques can be used in many problem domains.</li>
+	  </ul>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Related Work</h1>
+	  <ol>
+	    <li>1991: Stuart Russell and Eric Wefald. Do the right thing: studies in limited rationality.</li>
+		<li>1995: Eric Horvitz and Adrian Klein. Reasoning, metareasoning, and mathematical truth: Studies of theorem proving under limited resources.</li>
+        <li>2001: Eric Horvitz, Yongshao Ruan, Carla Gomes, Henry Kautz, Bart Selman, and Max Chickering. A bayesian approach to tackling hard computational problems.</li>
+		<li>1993: Shlomo Zilberstein. Operational Rationality through Compilation of Anytime Algorithms. </li>
+		<li>2008: Yan Radovilsky and Solomon Eyal Shimony. Observation subset selection as local compilation of performance profiles.</li>
+		<li>2005: Joannes Vermorel and Mehryar Mohri. Multi-armed bandit algorithms and empirical evaluation.</li>
+		<li>2001: Carla P. Gomes and Bart Selman. Algorithm portfolios.</li>
+		<li>2010: Carmel Domshlak, Erez Karpas, and Shaul Markovitch. To max or not to max: Online learning for speeding up optimal planning.</li>
+	  </ol>
+	
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Outline: Background</h1>
+      <ul>
+        <li>Introduction</li>
+        <li><b>Background</b></li>
+        <li>Rational Metareasoning in Search Algorithms</li>
+        <li>Rational Computation of Value of Information</li>
+        <li>Applications</li>
+        <li>Summary and Expected Contribution</li>
+      </ul>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Rational Metareasoning</h1>
+	    <table width="100%">
+          <tr><td>$$VOI(S_j)=\mathbb{E}(\mathbb{E}(U(S_j))-\mathbb{E}(U(A_\alpha)))$$</td><td>
+            <object data="rm-eu.svg" style="width: 100%; padding-bottom: 1em; border-bottom: thin solid #ccc" />
+            </td></tr>
+		  <tr><td>$$U(A_i, S_j) = U(A_i) - C(A_i, S_j)$$</td><td>
+            <object data="rm-voi.svg" style="width: 100%; padding-top: 1em" />
+            </td></tr>
+		</table>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Problem-Solving Search</h1>
+      <h2>Overview</h2>
+      <ul>
+        <li>Single agent in neutral environment.</li>
+        <li>The goal is to select a solution out of the set of feasible solution.</li>
+        <li><i>Evaluation function</i> can be computed for any member.</li>
+      </ul>
+      <h2>Satisfaction vs. Optimization</h2>
+      <dl>
+        <dt>Satisfaction:</dt>
+        <dd>Evaluation function is a goal test. Any satisfying member can be chosen.</dd>
+        <dt>Optimization:</dt>
+        <dd>Evaluation function is utility. A member that maximizes the utility must be chosen.</dd>
+      </dl>
+      <h2>Examples</h2>
+      <table width="100%" class="table-with-border"> 
+        <tr><td>Sliding tile puzzle<br/><small>optimization or satisfaction</small></td><td>N-queens puzzle<br/><small>satisfaction</small></td><td>Travelling salesman problem<br/><small>optimization</small></td><td>Multi-armed bandit<br/><small>optimization, exploration vs. exploitation</small></td></tr>
+      </table>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Problem-Solving Search: Complete vs. Partial State</h1>
+      <div style="text-align:center">
+        <object data="nqueens-states.svg" style="width: 60%" />
+      </div>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Problem-Solving Search: Algorithms</h1>
+      <table width="100%" class="table-with-border">
+        <tr><th>Best-first search</th><td>Used for route-finding and touring problems. Repeatedly expands the best node in the fringe.</td><td>Sliding tile puzzle, Travelling salesman problem</td></tr>
+        <tr><th>Backtracking search</th><td>Used for constraint satisfaction problems. Depth-first search that chooses assignments for variables and backtracks when no assignments.</td><td>Eight queens puzzle.</td></tr>
+        <tr><th>Local search</th><td>Complete-state algorithms, as opposite to best-first or backtracking search. Explores neighborhood of current state until a maximum is found.</td><td>Eight queens puzzle, Multi-armed bandit</td></tr>
+        <tr><th>Online search</th><td>Versions of other search algorithms suited for unknown or dynamic environment. The agent interleaves deliberation and action. Learning plays an important role.</td><td>RTA*, LRTA* </td></tr>
+      </table>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Outline: Rational Metareasoning in Search Algorithms</h1>
+      <ul>
+        <li>Introduction</li>
+        <li>Background</li>
+        <li><b>Rational Metareasoning in Search Algorithms</b></li>
+        <li>Rational Computation of Value of Information</li>
+        <li>Applications</li>
+        <li>Summary and Expected Contribution</li>
+      </ul>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Extending Search Algorithms with Metareasoning Layer</h1>
+      <h2>Metareasoning decisions</h2>
+      <ul>
+        <li>Whether to apply an heuristic computation or commit to an action.</li>
+        <li>Which of the heuristics or what combination thereof to use.</li>
+        <li>If the heuristic computation is parametrized, what parameter values result in the best
+performance.</li>
+      </ul>
+      <h2>Algorithms</h2>
+      <table width="100%" class="table-with-border">
+        <tr><th width="20%">Algorithm</th><th width="40%">Actions &amp; Computations</th><th width="40%">Metareasoning affects</th></tr>
+        <tr>
+          <th>Online best-first search:</th>
+          <td>Computation &mdash;node expansion.<br/>Base-level action&mdash; state transition.</td>
+          <td>
+            Lookup horizon.<br/>
+            Subset of nodes to expand.<br/>
+            Expansion order.
+          </td>
+        </tr>
+        <tr>
+          <th>Backtracking search</th>
+          <td>Computation&mdash;heuristic.<br/>Base-level action&mdash; assignment.</td>
+          <td>Selection and application of heuristics.</td>
+        </tr>
+        <tr>
+          <th>Local search</th>
+          <td>Computation&mdash;evaluation of state.<br/>Base-level action &mdash; final choice.</td>
+          <td>Next state to evaluate.</td>
+        </tr>
+      </table>
+      <div class="handout">
+
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Utility</h1>
+      The agent must be able to estimate:
+      <ul>
+        <li><b>utilities</b> of the base-level actions;</li>
+        <li><b>costs</b> of computational actions.</li>
+      </ul>
+      <dl>
+        <dt>Complete-state search</dt>
+        <dd>The <i>utility</i> is the value of the evaluation function.</dd>
+        <dt>Partial-state search</dt>
+        <dd>The <i>utility</i> is the solution quality less the amortized cost: $$U_{action}=Q_{solution}-\alpha C_{search},\quad \alpha \in (0, 1]$$</dd>
+        <dt>Satisfaction problems</dt>
+        <dd>$$U_{action}=-C_{search}$$</dd>
+      </dl>
+      The <i>computation cost</i> can be either estimated or learned.
+
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Beliefs</h1>
+      VOI of an action depends on <b>belief distribution</b> of outcomes of the action. During search:
+      <ul>
+        <li>Beliefs about quantities computed by the computational actions are updated based on
+        outcomes of the actions.</li>
+        <li>Beliefs about other quantities dependent on the computed quantities are revised
+        according to the dependencies.</li>
+        <li>Beliefs about error distributions of outcomes of computational actions are revised.</li>
+      </ul>
+      Proper handling of beliefs is crucial to algorithm performance:
+      <ul>
+        <li>Beliefs must be consistent with the problem.</li>
+        <li>The algorithm must behave rationally under uncertainty.</li>
+      </ul>
+      Sometimes, beliefs are vague.
+      <ul>
+        <li>Distributions are significantly different for different problem instances.</li>
+        <li>Approximation by "convenient" distributions is inappropriate.</li>
+      </ul>
+      Can a rational agent still be built?
+      <div class="handout">
+      </div>
+    </div>
+
+   <div class="slide">
+      <h1>Outline: Rational Computation of Value of Information</h1>
+      <ul>
+        <li>Introduction</li>
+        <li>Background</li>
+        <li>Rational Metareasoning in Search Algorithms</li>
+        <li><b>Rational Computation of Value of Information</b></li>
+        <li>Applications</li>
+        <li>Summary and Expected Contribution</li>
+      </ul>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+     <div class="slide">
+	    <h1>Persistent Actions: Problem Formulation</h1>
+        <div style="font-size: 0.9em">
+          <p>
+            Given:
+          </p>
+          <ul>
+            <li>A set of $N_s$ items $S=\{s_1, s_2, \ldots, s_{N_s}\}$.</li>
+            <li>A set of $N_f$ item features $Z=\{ z_1, z_2, \ldots, z_{N_f}\}$.</li>
+            <li>A joint distribution over the features of the items in $S$.</li>
+            <li>A set of measurement types $M=\{(c, p)_k\:|\; k \in 1..N_m\}$.</li>
+            <li>A utility function $u(\overline z):\mathbb{R}^{N_f}\to\mathbb{R}$ on features.</li>
+            <li>A measurement budget $C$.</li>
+          </ul>
+          <p>Find a policy of measurement decisions and a final selection
+          that maximize the expected reward:
+            $$\mathbf{max:}\;R=u(\overline z(s_\alpha))-\sum_{i=1}^{N_q}c_{k_i} \quad\mathbf{s.t.:}\;\sum_{i=1}^{N_q}c_{k_i}\le C$$
+          </p>
+          <p>where</p>
+          <ul>
+            <li>$Q=\{(k_i,s_i)\:|\;i \in 1..N_q\}$ is the performed measurement sequence</li>
+            <li>$s_\alpha$ is the selected item.</li>
+          </ul>
+        </div>
+	<div class="handout">
+          We are looking at problems of decision making under
+          uncertainty, where information about the state of the agent is
+          unavailable or incomplete. Often, in such problems the information
+          can be obtained through expensive actions &mdash; measurements. The measurements
+          can be inexact, noisy, and then the same measurement can be repeated multiple
+          times to increase confidence.
+
+          The particular problem we are tuckling is optimization: a single item or parameter
+          combination is selected after some managements where made. Let's define the problem
+          formally (and then present examples) [Problem formulation above]. 
+
+          Measurement can be either chosen in advance, offline, or sequentally, online. Offline 
+          selection is often called sensore selection. I will talk here about online selection,
+          when every measurement is selected after the outcome of the preceding measurement
+          is known.
+	 </div>
+   </div>
+
+  <div class="slide">
+	<h1>Rational Computation of VOI</h1>
+	<p>Belief $BEL(\Lambda_j)$ about intrinsic VOI is modeled by a
+	normal distribution:
+	$$BEL(\Lambda_j)=N(\Lambda_j, \varsigma_j^2)$$
+	</p>
+	<p>The uncertainty is expressed by adding Gaussian noise:
+	$$\varsigma_j^2 \leftarrow \varsigma_j^2+\tau^2$$
+	</p>
+	<p>Value of recomputing VOI is efficiently computable:
+	$$W_k=\frac {\varsigma_k} {\sqrt {2\pi}} e^{\left(-\frac {\left(V_\gamma-V_k\right)^2} {2\varsigma_k^2}\right)}-\left|V_\gamma-V_k\right|\Phi\left(-\frac {\left|V_\gamma-V_k\right|} {\varsigma_k} \right)-c_V$$
+	</p>
+	<h3>Obtaining The Uncertainty Parameter $\tau^2$</h3>
+	<ul>
+	  <li>Either offline, as a function of the total cost of measurements performed.</li>
+	  <li>Or online, from earlier recomputations of VOI during the same run &mdash; robust and easy to implement.</li>
+	</ul>
+	<div class="handout">
+	  How can we compute VOI with varying accuracy, and what is
+	  an imprecisely known value of information? We can model VOI
+	  by a normal belief, with the variance corresponding to our
+	  uncertainty about the true value being equal to the mean. In
+	  optimization under uncertainty, only a small portion of the
+	  measurements is actually performed, and most of the measurements
+	  remain available at every step of the algorithm.
+
+	  We assume that a single measurement doe snot update the beliefs
+	  about the features too much, and value of information of
+	  the rest of the measurements changes only slightly.  At each
+	  step, we'll recompute only a small portion of VOI, and will
+	  add uncertainty to the rest of VOI.  We'll select VOI for
+	  recomputation, based on its expected impact on our decision
+	  to select this or another measurement and will not recompute
+	  VOI of measurements for which the impact is smaller than the
+	  computation cost.
+	</div>
+  </div>
+
+  <div class="slide">
+      <h1>Persistent Actions: Algorithms</h1>
+      <table width="100%">
+        <tr><th>Original</th><th>Rational</th></tr>
+        <tr><td>
+  <p class="algorithm" style="font-size: smaller">budget \gets C$
+Initialize beliefs
+<kwd>loop</kwd>
+  <kwd>forall</kwd> items $s_i$
+      Compute $\mathbb{E}_i$
+  <kwd>endfor</kwd>
+  <span style="background-color: #fcc"><kwd>forall</kwd> measurements $m_j$
+    <kwd>if</kwd> $c_j \le budget$
+      Compute $V_j$
+    <kwd>else</kwd>
+      $V_j \gets 0$
+    <kwd>endif</kwd>
+  <kwd>endfor</kwd>
+  $j_{\max} \gets \arg \max_j V_j$</span>
+  <kwd>if</kwd> $V_{j_{\max}} > 0$
+    Perform measurement $m_{j_{\max}}$
+    Update beliefs
+    $budget \gets budget - c_{j_{max}}$
+  <kwd>else</kwd>
+    <kwd>break</kwd>
+  <kwd>endif</kwd>
+<kwd>endfor</kwd>
+$\alpha \gets \arg \max_i \mathbb{E} (U_i)$
+<kwd>return</kwd> $x_\alpha$</p>
+</td>
+<td>
+<p class="algorithm" style="font-size: smaller"><span style="background-color: #cfc"><kwd>forall</kwd> measurements $m_j$
+ <kwd>if</kwd> $c_j \le budget$
+     $V_j \gets \Lambda_j-c_j$; $\varsigma_j \gets \sqrt{\varsigma_j^2+\tau^2}$
+   <kwd>else</kwd>
+     $v_j \gets 0$; $\varsigma_j \gets 0$
+   <kwd>endif</kwd>
+<kwd>endfor</kwd>
+<kwd>loop</kwd>
+  <kwd>forall</kwd> measurements $m_k$
+     <kwd>if</kwd> $c_k \le budget$
+       Compute $W_k$
+     <kwd>else</kwd>
+       $W_k \gets 0$
+     <kwd>endif</kwd>
+  <kwd>endfor</kwd> 
+  $k_{\max} \gets \arg \max_k W_k$
+  <kwd>if</kwd> $W_{k_{\max}} \le 0$
+     <kwd>break</kwd>
+  <kwd>endif</kwd>
+  Compute $\Lambda_{k_{\max}}$; $V_{k_{\max}} \gets \Lambda_{k_{\max}}-c_{k_{\max}}$; $\varsigma_{k_{\max}} \gets 0$
+<kwd>endloop</kwd>
+$j_{\max} \gets \arg \max_j V_j$
+Compute $\Lambda_{j_{\max}}$; $V_{j_{\max}} \gets \Lambda_{j_{\max}}-c_{j_{\max}}$; $\varsigma_{j_{\max}} \gets 0$</span></p></td>
+        </tr>
+      </table>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Persistent Actions: Experiments</h1>
+      <div style="text-align:center">
+        <object data="ackley-blinkered.svg" style="width: 90%" />
+      </div>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide" style="font-size: 1.1em">
+      <h1>Persistent Actions: Conclusions</h1>
+       <ul>
+          <li>An improvement to VOI-based optimization algorithms.</li>
+          <li>The improvement allows to decrease the computation time while only slightly affecting the performance.</li>
+          <li>
+            The algorithm
+             <ul style="font-size: 1.1em">
+               <li>rationally reuses computations of VOI</li>
+               <li>only recomputes VOI which are likely to affect the choice of the next measurement.</li>
+             </ul>
+          </li>
+          <li><b>Future work:</b>
+              <ul style="font-size: 1.1em">
+                <li>Better uncertainty model for the VOI.</li>
+                <li>Reuse of VOI computations across state transitions.</li>
+                <li>Application to Monte Carlo tree search.</li>
+              </ul>
+          </li>
+       </ul>
+       <div class="handout">
+       </div>
+    </div>
+
+    <div class="slide">
+      <h1>Infinite Spaces</h1>
+      <div style="text-align:center">
+        <object data="is.svg" style="width: 80%" />
+      </div>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Outline: Applications</h1>
+      <ul>
+        <li>Introduction</li>
+        <li>Background</li>
+        <li>Rational Metareasoning in Search Algorithms</li>
+        <li>Rational Computation of Value of Information</li>
+        <li><b>Applications</b></li>
+        <li>Summary and Expected Contribution</li>
+      </ul>
+      <div class="handout">
+        
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Counting-based Heuristics for Constraint Satisfaction</h1>
+      <p>A constraint satisfaction problem (CSP) is defined by:</p>
+      <ul>
+        <li>A set of variables $\mathcal{X}=\{X_1, X_2, ...\}$, each with domain $D_i$</li>
+        <li>A set of constraints $\mathcal{C}=\{C_1, C_2, ...\}$.</li>
+      </ul>
+      <p>The objective is to find a <i>consistent assignment</i>.</p>
+      <ul>
+        <li>A commonly used algorithm is MAC (<b>M</b>aintaining <b>A</b>rc <b>C</b>onsistency).</li>
+        <li>Variable-ordering and value-ordering heuristics are typically used.</li>
+        <li>Powerful heuristics are expensive to compute:
+           <ul style="font-size: 1.1em">
+             <li>e.g. a value-ordering heuristic based on <i>solution-count estimates:</i>
+                <blockquote style="padding: 6pt">order values by descending number of solutions</blockquote>
+             </li>
+           </ul>
+        </li>
+        <li>Expensive heuristics might be applied selectively based on VOI...</li>
+        <li>but neither the utility (search time) no belief model are obvious.</li>
+      </ul>
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Counting-based Heuristics for Constraint Satisfaction: VOI</h1>
+      For $T_i$ &mdash; expected time to solution, $p_i$ &mdash; backtracking probability:
+      $$T_{s|\omega}=T_{\omega(1)}+\sum_{i=2}^{|D_k|}T_{\omega(i)}\prod_{j=1}^{i-1}p_{\omega(j)}$$
+      With initial beliefs $T_{def}$, $p_{def}$:
+      $$\Lambda_i=\mathbb{E}\left[T_1-T_i+(p_1-p_i)T_\mathrm{def}\frac{1-p_\mathrm{def}^{(|D_k|-1)}}{1-p_\mathrm{def}}\Big|\;\frac {T_i} {1-p_i} < \frac {T_1} {1-p_1}\right]$$
+      When $p_i$ is unknown:
+      $$\Lambda_i\approx\mathbb{E}\left[(T_1-T_i)|D_k|\,\Big|\; T_i&lt;T_1 \right]$$
+      For solution count estimating heuristic ($\nu$ &mdash; average number of solutions per assignment):
+      $$V(n_\mathrm{max}) \propto |D_k|e^{-\nu}\sum_{n=n_\mathrm{max}}^\infty \! \! \left( \frac 1 {n_\mathrm{max}} - \frac 1 n\right) \frac {\nu^n} {n!}-\gamma$$
+      <div class="handout">
+      </div>
+    </div>
+
+    <div class="slide">
+      <h1>Counting-based Heuristics for CSP: Algorithm</h1>
+      <p class="algorithm">
+<kwd>Procedure</kwd> ValueOrdering-SC($csp, X_k, N$)
+  $D \gets D_k$, $n_\mathrm{max} \gets \frac N {|D|}$
+  <kwd>forall</kwd> $i$ <kwd> in</kwd> $1..|D|$ <kwd> do</kwd> $n_i \gets n_\mathrm{max}$
+  <kwd>While</kwd> $V(n_\mathrm{max})>0$
+    choose $y_{ki} \in D$ arbitrarily
+    $D \gets D \setminus \{y_{ki}\}$
+    $csp' \gets csp$ with $D_k=\{y_{ki}\}$
+    $n_i \gets$ EstimateSolutionCount($csp'$)
+    <kwd>if</kwd> $n_i>n_\mathrm{max}$ <kwd> then</kwd> $n_\mathrm{max} \gets n_i$
+  <kwd>EndWhile</kwd>
+  $D_{ord} \gets$ sort $D_k$ by non-increasing $n_i$
+  <kwd>return</kwd> $D_{ord}$
+<kwd>EndProcedure</kwd>
+         </p>
+         <div class="handout">
+         </div>
+       </div>
+
+       <div class="slide">
+        <h1>Counting-based Heuristics for CSP: Heuristics</h1>
+        <table width="100%">
+          <tr style="vertical-align: bottom">
+            <td style="border-right: thin solid #ccc; padding-right: 1em"><object data="csp-benchmarks.svg" style="width: 90%"/></td>
+            <td style="padding-left: 1em"><object data="csp-random-problems.svg" style="width: 90%" /></td>
+          </tr>
+          <tr style="text-align: center; font-size: smaller"><td>a. Benchmarks</td><td>b. Random problems</td></tr>
+        </table>
+        <div class="handout">
+        </div>
+      </div>      
+
+      <div class="slide" style="font-size: 1.1em">
+        <h1>Counting-based Heuristics for CSP: Conclusions</h1>
+        <ul>
+          <li>Model for adaptive deployment of value-ordering heuristics in CSP.</li>
+          <li>&#x201c;Off the shelf&#x201d; heuristic is deployed selectively based on <i>value of information.</i></li>
+          <li>Steady improvement in the overall algorithm performance is achieved compared to <i>always</i> computing
+the estimates.</li>
+          <li>The optimum performance is achieved when solution counts are estimated only in a relatively <i>small number</i> of search states.</li>
+          <li>Belief structure is derived from the algorithm, not from a set of problem instances.</li>
+          <li>
+            <b>Future work:</b> 
+            <ul style="font-size: 1.1em">
+              <li>Other heuristics for CSP.</li>
+              <li>Selective application of heuristics in other domains.</li>
+              <li>Heuristic selection of heuristics.</li>
+            </ul>
+          </li>
+        </ul>
+        <div class="handout">
+        </div>
+     </div>
+
+     <div class="slide">
+       <h1>Canadian Traveler Problem</h1>
+       <p>
+       The agent is given:
+       </p>
+       <ul>
+         <li>Undirected connected weighted graph $G=(V,E)$.</li>
+         <li>Source vertex $s \in V$,  and target vertex $t \in V$.</li>
+         <li>Each edge $e$ has weight $w(e)$ and blocked with probability $p(e)$.</li>
+         <li>The status of $e$ is revealed when the agent is at a node incident to $e$.</li>
+       </ul>
+       <p>
+       The <b>objective</b> is to minimize the cost of traveling from $s$ to $t$.
+       </p>
+       <h2>Variants</h2>
+       <ul>
+         <li><b>CTP with sensing</b> &#x2014; remote sensing is allowed, at a cost.</li>
+         <li><b>CTP with sensing-first:</b>
+         <ul>
+           <li>Remote sensing is performed before the first move.</li>
+           <li>An open path from $s$ to $t$ is chosen for traversal.</li>
+           <li>The sensing policy must minimize total cost $C_{total}=C_{sensing}+C_{traversal}$</li>
+         </ul>
+         </li>
+       </ul>
+       <div class="handout">
+       </div>
+     </div>
+     
+     
+     <div class="slide">
+        <h1>Remote Sensing in Canadian Traveller Problem: Example</h1>
+		<table width="100%">
+			<tr><td colspan="2" style="text-align: center; padding-bottom: 1em; border-bottom: thin solid #ccc"><object data="ctpmin.svg" style="width: 50%" /></td></tr>
+			<tr><td style="text-align: center; padding-top: 0.5em"><h3>Open</h3></td><td style="text-align: center; padding-top: 0.5em"><h3>Closed</h3></td></tr>
+			<tr><td style="text-align: center; padding-right: 0.5em; border-right: thin solid #ccc"><object data="ctpmin-open.svg" style="width: 90%" /></td><td style="padding-left: 0.5em; text-align: center"><object data="ctpmin-blocked.svg" style="width: 90%" /></td></tr>
+		</table>
+        <div class="handout">
+        </div>
+      </div>
+
+      
+     <div class="slide">
+        <h1>Remote Sensing in Canadian Traveller Problem: Approach</h1>
+        Metareasoning algorithm:
+        <ul>
+          <li>Base-level action:  a polynomial-time CTP algorithm on the CTP
+          graph after remove sensing.</li>
+          <li>Utility: the travel cost (with the negative sign).</li>
+          <li>Computational actions: remote sensing.</li>
+        </ul>
+        Research directions:
+        <ul>
+          <li>Approximate solutions using weaker assumptions than for a general case.</li>
+          <li>Optimal solutions for restricted cases of CTP graph topology.</li>
+          <li>The algorithm for solving the CTP-SF problem
+          can be used as an heuristic for solving the general CTP problem
+          with sensing.</li>
+        </ul>
+       <div class="handout">
+       </div>
+     </div>
+
+     <div class="slide">
+        <h1>Learning Bayesian Networks</h1>
+        <h2>Bayesian network</h2>
+        <p>
+          $B=(G=(V,E), \Theta)$
+        </p>          
+        <ul>
+          <li>Vertices $V$ correspond to variables.</li>
+          <li>Edges $E$ correspond to relations between variables.</li>
+          <li>Vertix labels $\Theta$ quantify the relations.</li>
+        </ul>
+        <p>
+          Network structure $G$ and parameters $\Theta$ can be provided
+          by an expert or <i>learned</i>.
+        </p>
+        <h2>Learning approaches</h2>
+        <ul>
+          <li>Constraint-based: learn relations from independency tests.</li>
+          <li>
+            <b>Score-based:</b> local search in the space of candidate networks.
+            <p style="margin-left: 2em">
+              Selection criterion &#x2014; posterior log-probability:
+              $$log(D,B)=log(B)+log(D|B)$$
+            </p>
+          </li>
+        </ul>
+        
+        <div class="handout">
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Learning Bayesian Networks: Large Datasets</h1>
+        <div style="text-align:center">
+          <object data="bnl-field.svg" style="width: 60%" />
+        </div>
+        <div class="handout">
+          
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Learning Bayesian Networks: Local Search</h1>
+        <div style="text-align:center">
+          <object data="bnl-a.svg" style="width: 80%" />
+        </div>
+        <div class="handout">
+          
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Learning Bayesian Networks: Transition Utility</h1>
+        <div style="text-align:center">
+          <object data="bnl-a.svg" style="width: 60%; padding-bottom: 1em" />
+        </div>
+        <div style="text-align:center; border-top: thin solid #ccc; padding-top: 1em">
+          <object data="bnl-b.svg" style="width: 60%" />
+        </div>
+        <div class="handout">
+          
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Outline: Summary and Expected Contribution</h1>
+        <ul>
+          <li>Introduction</li>
+          <li>Background</li>
+          <li>Rational Metareasoning in Search Algorithms</li>
+          <li>Rational Computation of Value of Information</li>
+          <li>Applications</li>
+          <li><b>Summary and Expected Contribution</b></li>
+        </ul>
+        <div class="handout">
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Summary and Expected Contribution</h1>
+        <h2>Research directions</h2>
+        <ul>
+          <li>Rational computation of VOI.</li>
+          <li> Case studies of application of rational metareasoning to
+  selection and application of heuristic computations.</li>
+        </ul>
+        <h2>Rational computation of VOI.</h2>
+        <p/>
+        <h3>Done</h3>
+        <ul>
+          <li>Rational computation of VOI for measurement selection.</li>
+        </ul>
+        <h3>Future work</h3>
+        <ul>
+          <li>Uncertainty model for the VOI.</li>
+          <li>Reuse of VOI computations across state transitions.</li>
+          <li>Application to Monte Carlo tree search.</li>
+          <li>Algorithms for rational search in infinite spaces.</li>
+        </ul>
+        <div class="handout">
+        </div>
+      </div>
+      <div class="slide">
+        <h1>Summary and Expected Contribution: Case Studies</h1>
+        <h2>Case studies</h2>
+        <p/>
+        <h3>Done</h3>
+        <ul>
+          <li>Parameter tuning: rational computation of VOI for measurement selection.</li>
+          <li>Constraint satisfaction: rational deployment of CSP heuristics.</li>
+        </ul>
+        <h3>Future work</h3>
+        <ul>
+          <li>Parameter tuning: large and high-dimensional search spaces.</li>
+          <li>Remote sensing in the Canadian Traveller Problem: theory, algorithms, experiments.</li>
+          <li>Bayesian network learning: rational metareasoning algorithm for
+          score-based learning.</li>
+        </ul>
+        <div class="handout">
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>

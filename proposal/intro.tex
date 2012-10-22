@@ -1,0 +1,86 @@
+A common approach in Artificial intelligence (AI)
+solves computational problems by designing {\em agents}. Agents
+act in an environment, exploring and possibly modifying the
+environment in order to reach the {\em goal}: a solution of the
+problem. Agent behavior is determined by the {\em agent function} that
+maps the agent's knowledge about the environment to actions. AI
+classifies problems according to the number of agents, the type of
+interaction among the agents and between the agents and the
+environment, as well as by the {\em problem domain}---properties of
+the environment which help design efficient problem-specific agents.
+
+A simple yet large class of problems is {\em problem-solving
+  search}. In problem-solving search, a single agent acts in a neutral
+environment to reach the goal. Many problems, such as routing and
+path-finding problems, finite-domain constraint satisfaction, function
+optimization, fit within the problem-solving search abstraction. The
+problem-solving search agent's behavior is described by a {\em search
+  algorithm}. The same search algorithms can be used to solve
+different search problems, but a general search algorithm often
+requires adaptation to solve a particular problem efficiently.
+
+Computer scientists approach problem-solving search in two ways. On
+the one hand, general search algorithms capable of solving large sets
+of search problems are designed, such as A* search for path-finding
+problems, or the Maintaing Arc Consistency (MAC) algorithm for
+finite-domain constraint satisfaction \cite{Russell.aima}. Theoretical
+performance bounds can often be proved for these algorithms, and the
+same algorithm can efficiently solve many problem instances with
+little or no adaptation. On the other hand, the algorithm performance
+can be significantly improved by tuning the algorithm to a particular
+problem domain. For example, specialized algorithms for task
+scheduling outperform general constraint satisfaction algorithms by
+orders of magnitude \cite{Wolf.scheduling}. However, such fine-tuned
+algorithms exhibit good performance only on small sets of search
+problems, and the effort invested in the algorithm design cannot be
+reused in other problem domains.
+
+Specialized versions of general search algorithms are often created by
+combination and selective application of {\em search
+  heuristics}---domain-specific modifications or extensions of search
+algorithms. A human expert decides which heuristics to use with the
+problem domain, and specifies how the search algorithm should apply
+the heuristics to solve a particular problem instance. A search
+algorithm that rationally select and applies heuristics would decrease
+the need for the costly human expertise.
+
+The principles of rational metareasoning \cite{Russell.right} can be
+used to design rational search agents. A rational agent deliberates
+before acting. The deliberation is composed of {\em computational
+  actions}. The purpose of the deliberation is to select the best {\em
+  base-level action}. A base-level action affects the state of the
+search algorithm looking for a solution of a problem instance, for
+example, by a exploring the search space, or pruning a part of the
+search that does not contain a solution. Computational actions are
+selected according to their net value of information, the difference
+between the expected benefit and the cost of the action, and the agent
+deliberates only if there is a computational action with positive
+value of information.
+
+Some rational search algorithms were designed and shown to compare to
+or even outperform manually tuned algorithms
+\cite{Russell.right}. However, wide adoption of rational metareasoning
+algorithms for problem solving search is hindered both by theoretical
+difficulties and by lack of problem domain specific case studies. This
+research aims at lifting some of the theoretical difficulties in
+application of the rational methodology. In particular, the problem of
+efficiency of estimating the value of information of computational
+actions is considered. In addition, this research proposes rational
+metareasoning extensions for several search algorithms, and
+theoretically and empirically analyses the gain in performance due to
+the extensions.
+
+The rest of the research proposal is organized as
+follows. Chapter~\ref{ch:bg} provides the necessary background
+information about the rational metareasoning approach as well as about
+search problems and algorithms. Chapter~\ref{ch:ramesrch}
+describes application of the rational metareasoning approach to 
+search problems and discusses difficulties arising in design of
+search algorithms based on the approach. Chapter~\ref{ch:raticomp} introduces 
+rational computation of value of information---an important issue in
+design of efficient search algorithms based on rational
+metareasoning. Applications of the rational metareasoning approach to
+several search problems are presented and evaluated in
+Chapter~\ref{ch:applications}. Chapter~\ref{ch:summary} concludes this
+research proposal with a summary of achieved results and further
+research directions.

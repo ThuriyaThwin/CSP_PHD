@@ -1,0 +1,292 @@
+Performance of backtracking search
+(Section~\ref{sec:bg-backtracking-search}) for constraint satisfaction
+problems is strongly influenced by the quality of heuristics
+\cite{Tsang.csp}. There are both domain-specific heuristics, helpful
+in solving a particular class of problems, such as heuristics for SAT
+solvers \cite{Krautz.sat}, and domain independent heuristics,
+applicable to a wide range of problems, such asvariable and value
+ordering heuristics based on characteristics of the constraint graph
+\cite{Tsang.csp}.
+
+Sophisticated heuristics are computationally intensive, and the effect
+of an heuristic may or may not justify the computation time
+\cite{Refalo.impact}. Heuristic parameters are introduced to control
+selective or adaptive application of heuristics
+\cite{Wallace.macheur}.
+
+The metareasoning layer can control adaptive application
+of certain CSP heuristics. One such heuristic is the {\em solution counting}
+heuristic for value ordering \cite{Kask.solcount}. 
+
+\subsection{Constraint satisfaction problem}
+
+A constraint satisfaction problem (CSP) is defined by a set
+of variables, $X_1$, $X_2$, ..., $X_n$, and a set of constraints,
+$C_1$, $C_2$, ..., $C_n$. Each variable $X_i$ has a non-empty domain
+$D_i$ of possible values. Each constraint $C_i$ involves some subset
+of the variables---the scope of the constraint--- and specifies the
+allowable combinations of values for that subset. An assignment that
+does not violate any constraints is called a consistent assignment.
+
+A constraint satisfaction problem may or may not have a consistent
+assignment. A problem instance is called consistent if there is a
+consistent assignment, and inconsistent otherwise. In this section,
+the satisfaction problem of finding a consistent assignment or proving
+that no such assignment exists is considered. Graph coloring
+and sudoku puzzle are examples of such problems.
+
+The performance of a search algorithm for the CSP problem is
+determined by the computation time required to either find a
+consistent assignment or to prove that the problem is inconsistent. In
+general, the CSP problem is NP-hard (by reduction from 3SAT), but many
+instances are actually solvable in polynomial time with the help of
+appropriate heuristics.
+
+\subsection{Maintaining arc consistency}
+
+The basic algorithm on top of which many heuristic algorithms are
+built is the MAC (Maintaining Arc Consistency) algorithm
+\cite{Sabin.mac}. There are several versions of MAC. The versions
+differ in efficiency, but share the common feature of maintaining {\em
+arc consistency}, defined for CSP problems with binary constraints. A
+variable $X_i$ is arc-consistent with $X_j$ if for every value $a$ of
+$X_i$ from the domain $D_i$ there is a value $b$ of $X_j$ from the
+domain $D_j$ satisfying the constraing between $X_i$ and $X_j$. MAC
+maintains arc constistency for all pairs of variables.
+
+Arc consistency is implemented in the function {PropagateConstraints}
+of Algorithm~\ref{alg:bg-backtracking-search} of
+Section~\ref{sec:bg-backtracking-search}.  A pseudocode for MAC-3
+\cite{Russell.aima} is presented in Algorithm~\ref{alg:app-csp-mac-3}.
+\begin{algorithm}
+\caption{Maintaining Arc Consistency}
+\label{alg:app-csp-mac-3}
+\begin{algorithmic}[1]
+\item[{\bf MAC-3}$(csp):$]
+\STATE $queue \leftarrow$ all arcs in $csp$
+\WHILE {$queue$ not empty}
+  \STATE $(X_i, X_J) \leftarrow RemoveFirst(queue)$
+  \IF {$RemoveInconsistentValues(X_i, X_j)$}
+    \FORALL {$X_k$ {\bf in} $Neighbors(X_i)$}
+      \STATE $Add(queue, (X_k, X_i))$
+    \ENDFOR
+  \ENDIF
+\ENDWHILE
+\vspace{1em}
+\item[${\bf RemoveInconsistentValues}(X_i, X_j)$]
+  \STATE $removed \leftarrow {\bf false}$
+  \FORALL {$x$ {\bf in} $D_i$}
+    \IF {no value $y$ in $D_j$ allows $(x, y)$}
+        \STATE $D_i \leftarrow D_i \setminus \{x\}$
+        \STATE $removed \leftarrow {\bf true}$
+    \ENDIF
+  \ENDFOR
+  \RETURN {$removed$}
+\end{algorithmic}
+\end{algorithm}
+MAC speeds up the backtracking search by pruning many inconsistent
+branches. However, the variable and value ordering heuristics
+significantly improve the algorithm performance. Many such heuristics,
+based on the variable domain, degree \cite{Sabin.mac}, impact of the
+value assignment \cite{Refalo.impact} etc, are known.
+
+\subsection{Counting-based value-ordering}
+
+A powerful value-ordering heuristic is based on solution counting
+\cite{Meisels.solcount}: solution counts for each value
+assignment of the current variable are estimated, and an assignment
+with the greatest solution count is selected. The heuristic is based
+on the assumptions that sizes of the subtrees for each of the
+assignment do not vary too much, and thus the more solutions there are
+in the subtree, the shorter the time to arrive at the first solution.
+Experiments show that the heuristic indeed significantly improves the
+search performance for a range of problem domains
+\cite{Meisels.solcount}\cite{Kask.solcount}.
+
+Computing the exact number of solutions is \#P-hard (because CSP is
+NP-hard), but there are several ways to estimate the solution count:
+\begin{itemize}
+  \item Meisels, Shimony and Solotorevsky \cite{Meisels.solcount}
+        reduce solution counting to computing marginal probabilities in a
+        Bayesian network equivalent to the constraint graph.
+  \item Kask, Dechter and Gogate \cite{Kask.solcount} use Iterative
+        Joint Graph Propagation adapted for solution counting.
+  \item Gomes, Hoeve et al. \cite{Gomes.solcount} propose a technique
+        that adds random generalized XOR constraints and counts solutions with
+        high precision.
+\end{itemize}
+The methods vary by the computation time and precision, and a
+thorough comparative study should be conducted to choose the best
+implementation of the heuristic. However, application of principles of
+rational metareasoning is independent of the implementation choice.
+
+\subsection{Rational application of the heuristic}
+\label{sec:app-csp-rational}
+
+Solution counting is computationally intensive, and empirical evaluation
+\cite{Kask.solcount} demonstrates that while in general the heuristic
+improves the algorithm performance, for certain problem sizes it is
+better to order values arbitrarily instead of computing the heuristic.
+
+A rational agent can apply the heuristic sequentially, one assignment
+at a time. When the expected speedup is less than the time to estimate
+the solution count, the agent chooses a value ordering and commits to
+an assignment. It remains to determine how the solution count and the
+time to a solution are interrelated.
+
+To estimate the VOI, a simplified model of the value ordering must be
+devised.
+\begin{enumerate}
+\item Subproblem sizes corresponding to all value assignments to a
+   given variable are assumed equal: the expected time to find a solution
+   depends only on the solution count. This assumption can be lifted
+   later, by combining solution counting with an impact-based
+   heuristic \cite{Refalo.impact}. Experiments conducted in prior work
+   \cite{Meisels.solcount}\cite{Kask.solcount} demonstrate that
+   ignoring the differences in subproblem sizes is justified.
+\item Solutions are assumed to be evenly distributed in the search
+  space, that is, the time to find a solution is distributed as the
+  time between events in the Poisson process.
+\item The solution count estimate is the mean number of solutions
+  in the subproblem. The number of solutions is distributed according
+  to the Poisson distribution.
+\end{enumerate}
+In the above assumptions, distributions are used in the Bayesian
+sense and denote beliefs rather than frequencies. 
+
+Consider first the hypothetical case when solution counts are computed
+exactly. Let $N$ be the number of solutions in the tree, and the mean
+time to find all of the solutions is $T$. Then, knowing the number of
+solutions $n$ for a particular assignment of value $y$ to variable $X$
+with domain $D$ may improve the expected time to the first solution in
+one of the following two ways:
+\begin{itemize}
+\item Either $\frac T {|D|n} < \frac T N$, and then the time gets shorter by $T \left( \frac 1 N - \frac 1 {|D|n}\right)$. 
+\item Or $\frac T {|D|n} > \frac T N$, but then $\frac {T(|D|-1)} {|D|(N-n)} < \frac T N$, and the time gets shorter by $T \left( \frac 1 N - \frac {|D|-1} {|D|(N-n)}\right)$.
+\end{itemize}
+
+Continuing recursively, if the currently highest solution count
+$n_\alpha$ is achieved for some assignment $X=y_a$, then the
+improvement due to counting solutions for another assignment is:
+\begin{itemize}
+\item Either $\frac T {|D|} \left( \frac 1 {n_\alpha} - \frac 1 n\right)$ if $n > n_\alpha$.
+\item Or $\frac T {|D|} \left (\frac 1 {n_\alpha} - \frac {|D'|-1} {N'-n} \right)$ if $\frac {N'-n} {|D'|-1} > n_\alpha$.
+\end{itemize}
+where $D'$ is the set of assignments for which the solution count was
+not estimated, and $N'$ is the total number of solutions corresponding
+to the assignments, computed as the total number of solutions $N$ less
+the sum of the computed solution counts: $N'=N-\sum_{y \in D\setminus D'} SC(y)$.
+Unless $|D'|\approx 1$, the latter case is significantly less
+influential than the former and can be ignored for simplicity.
+
+When only the {\em mean values of beliefs} about the number of solutions are
+known, the computation becomes more involved: the assignment with the
+highest mean solution count $\nu_{\alpha}$ can actually lead, with the
+corresponding probability, to any number of solutions, including no
+solutions. The search backtracks with probability
+$p_0=e^{-\nu_{\alpha}}$ from the assignment and continues to other
+assignments. However, efficiency in estimating VOI is more important
+than accuracy, and the probability of no solutions
+decreases rapidly with the mean number of solutions $\nu$, $\approx 0.14$ for
+$\nu=2$, $\approx 0.007$ for $\nu=5$, $\approx 0.00005$ for $\nu=10$
+and so on. Consequently, for the purpose of estimating the VOI the
+event of backtracking from the assignment can be ignored, and the
+{\em benefit} (intrinsic value of information) of computing the number of
+solutions of an assignment can thus be estimated as follows:
+\begin{equation}
+\label{eq:app-csp-lambda-simplified}
+\Lambda = \frac T {|D|} \sum_{n_\alpha=1}^\infty\left[\sum_{n=n_\alpha}^\infty \left( \frac 1 {n_\alpha} - \frac 1 n\right) p_\nu(n)\right]p_{\nu_{\alpha}}(n_\alpha)
+\end{equation}
+Further on, the outer summation by can be approximated by setting $n_\alpha=\nu_\alpha$:
+\begin{equation}
+\label{eq:app-csp-lambda-simple}
+\Lambda= \frac T {|D|} \sum_{n=\nu_\alpha}^\infty \left( \frac 1 {\nu_\alpha} - \frac 1 n\right) p_\nu(n)
+\end{equation}
+where $\nu=\frac {N'} {|D'|}$ -- solution rate per assignment, and
+$p_\nu(n)=\frac {e^{-\nu}\nu^n} {n!}$ is the probability to find $n$
+solutions when the mean number of solutions is  $\nu$.
+
+Estimating solution counts makes sense only if the expected improvement in the
+running time ($\Lambda$) is greater than the time $T_c$ spent
+estimating the solution count. While $T_c$ can be estimated for a
+particular implementation of solution counting, $T$ in the equation
+for the benefit is still unknown and {\em depends on application of
+the heuristic}. However, it is reasonable to assume that counting
+solutions is somewhat similar to finding solutions, and that $T_c$ is
+proportional to $T$ with an unknown factor $\gamma < 1$.
+\begin{equation}
+\label{eq:app-csp-gamma}
+T_c = \gamma T
+\end{equation}
+Then, $T$ can be eliminated from both $T_c$ and $\Lambda$. Solutions
+are counted when
+\begin{equation}
+\label{eq:app-csp-solcount-condition}
+\sum_{n=\nu_\alpha}^\infty \left( \frac 1 {\nu_\alpha} - \frac 1 {n}\right) \frac {\nu^n} {n!} > {|D|}e^\nu \gamma
+\end{equation}
+and $\gamma$ can be learned offline from a set of problem instances of a certain kind
+for the given implementation of the search algorithm and the solution
+counting heuristic. While there is still a parameter that must be
+learned empirically, the decision whether to apply the heuristic is
+based on a solid foundation of the decision theory.
+
+Algorithm~\ref{alg:app-csp-solcount} implements the value ordering heuristics based on solution counting.
+\begin{algorithm}
+\caption{Value Ordering via Solution Counting}
+\label{alg:app-csp-solcount}
+\begin{algorithmic}[1]
+\item[{\bf ValueOrdering-SC}$(csp, X)$]
+\STATE compute the total mean solution count: $N \leftarrow SolutionCount(csp)$
+\STATE retrieve the domain of $X$: $D \leftarrow Domain(X)$
+\STATE initialize the highest mean solution count: $\nu_\alpha \leftarrow \frac N {|D|}$
+\FORALL {$y$ {\bf in} $Domain(X)$}
+  \STATE initialize solution count for assignment: $\nu(y) \leftarrow \nu_\alpha$
+\ENDFOR
+
+\WHILE {$VOI(nu_\alpha)>0$}
+  \STATE choose $y \in D$ arbitrarily
+  \STATE remove $y$ from the domain $D$: $D \leftarrow D \ \{y\}$
+  \STATE restrict the domain of $x$ in $csp$ to a single value: $csp' \leftarrow CSP|Domain(x)=\{y\}$
+  \STATE count solutions in $CSP'$: $\nu(y) \leftarrow SC(CSP')$
+  \STATE decrease the remaining solution count by $\nu(y)$: $N \leftarrow N - \nu(y)$
+  \STATE update solution count for all uncounted values to: $N/|D|$
+  \IF {$\nu(y) > \nu_\alpha$}
+    \STATE update the highest count: $\nu_\alpha \leftarrow \nu(y)$
+  \ENDIF
+  \ENDWHILE
+\RETURN $Domain(X)$ in the decreasing order of $nu(y)$
+\end{algorithmic}
+\end{algorithm}
+
+Initial experiments on Sudoku and random CSP instances show that the
+amount on computation can be flexibly controlled by changing the value
+of $\gamma$.
+
+\subsection{Future research}
+
+Theoretical analysis of the solution counting heuristic must be
+completed. In particular, a VOI estimate that accounts for the
+probability of backtracking and the distribution of solution counts
+for the currently best assignment must be compared with the simplified
+estimate, theoretically and empirically. Optimally, an estimate that
+combines simplicity and provable approximation bounds should be
+derived.
+ 
+Except for the early encouraging results on relatively small problem
+instances, empirical evaluation of the algorithm with rational
+heuristic application has not been conducted yet and is required to
+assess the improvement in performance and robustness. Different
+algorithms for solution counting must be compared, and the most
+appropriate algorithm should be chosen for implementation of the
+heuristic. 
+
+Solution counting for value ordering is just one heuristic among the
+many used to solve CSP problems. In particular, there are
+heuristics, such as the impact-based heuristic proposed by
+Refalo \cite{Refalo.impact}, which are based on the assumption that
+the CSP instance is inconsistent, and the whole tree will have to be
+traversed or pruned to prove the inconsistency. Rationally choosing between
+heuristics working better for either consistent or inconsistent
+problem instances, in addition to rational selective application of
+heuristics within each group, may further improve the search
+performance. 

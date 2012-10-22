@@ -1,0 +1,103 @@
+Performance of heuristic algorithms and processes often depends on a
+set of parameters. The parameters allow to optimize an algorithm for a
+certain class of problems or to adapt a process to a particular
+environment \cite{Leyton.paramils}. For example, classification
+quality of a kernel-based classifier varies significantly depending on
+kernel parameters; high-performance SAT solvers often have a number of
+parameters, and must be tuned for a particular class of problems
+\cite{Hutter.sat}. Thus, the optimization of algorithm performance by
+automatically identifying good parameter settings is an important
+problem, and a number of solution methods have been recently developed
+\cite{Hutter.spo}. In general, the goal of the optimization problem is
+to find, given a parameterized algorithm $\mathcal{A}$ and its utility
+$u(\mathcal{A}, p)$ on a problem instance $p$, parameter settings for
+$\mathcal{A}$ that maximize the expected utility $\IE_{p\in
+\mathcal{P}}(u(\mathcal(A),p)$ over a set of problem instances
+$\mathcal{P}$.
+
+\subsection{Parameter Optimization as Selection Problem}
+
+The parameter optimization problem can be viewed as a selection
+problem \cite{TolpinShimony.blinkered} and solved using a
+complete-state search:
+\begin{itemize}
+\item The state is a parameter assignment.
+\item The utility of a state is the expected utility of $\mathcal{A}$
+  on the problem set $\mathcal{P}$. 
+\item A computational action estimates the expected utility of
+  $\mathcal{A}$ by running $\mathcal{A}$ on a subset of $\mathcal{P}$.
+\end{itemize}
+Observe that the computational action provides a noisy utility
+estimate both because $\mathcal{A}$ can be randomized, and because
+$\mathcal{A}$ is applied only to a subset of the problems.
+
+\subsubsection{Examples}
+
+In the problem of tuning parameters for an {\bf SVM classifier}
+based on RBF kernel \cite{TolpinShimony.blinkered}, the parameters are
+the kernel curvature $\gamma$ and the misclassification cost $C$. The
+parameters are selected based on a training set for a particular
+problem domain. The classifier with the chosen parameters is then used
+for classification of samples in the domain.
+
+{\bf Mixed integer programming solvers} are highly parameterized
+\cite{Hutter.mip}. Their parameters control a wide range of design
+choices on preprocessing techniques, branching and cutting heuristics,
+details of the underlying linear programming solver. Robust default
+parameter settings can sometimes be identified, but an algorithm tuned
+for a particular family of problem instance can significantly
+outperform the default configuration.
+
+\subsection{Solution techniques}
+
+The basic metareasoning algorithm used to solve the selection problem
+selects computational actions according to the myopic estimate
+\cite{Russell.right} and generally works well. However, the
+simplifying assumptions behind the myopic estimate are related to the
+notion of {\it non-increasing returns}: an implicit hypothesis that
+the intrinsic value of information grows slower than the cost. When
+the hypothesis is incorrect, the estimate performance can be
+poor. Semi-myopic estimates improve the algorithm performance and be
+used to solve problems with noisy utility estimates, such as in the
+case of assessing the algorithm performance based on a small subset of
+the problem set \cite{TolpinShimony.blinkered}.
+
+However, the metareasoning algorithm still requires rather tight
+parameter ranges containing the optimal combination of values, and
+only works well for a relatively small number of parameters.  In some
+cases, feasible ranges of parameter values can be guessed, and the
+most influential parameters can be identified through
+pre-processing. In the general case, however, algorithms that can
+handle large and high dimensional parameter spaces are important.
+
+\subsection{Future research}
+\label{sec:app-apt-research}
+
+{\bf Large} or {\bf infinite parameter space} requires an algorithm
+that bounds the set of simultaneously available computational actions
+(Section~\ref{sec:raticomp-infinite-spaces}). Such algorithm would
+alleviate the need to heuristically guess default or initial parameter
+values before the search, as is currently done, for example, for the
+SVM classifier, and, at the same time, determine a good parameter
+assignment with greater accuracy.
+
+{\bf High dimensional parameter spaces} are challenging because
+the number of computational actions is proportional to the size of the
+parameter product domain. One technique is applicable when the evaluation
+of a single combination of parameters is cheap, and dependencies
+between parameters are hierarchical. In such a case, a semi-sequential
+parameter optimization can be used: the most
+influential parameters at the top of the hierarchy can be determined
+using a metareasoning search, and each computational action determines
+the best combination of a subset of parameters belonging to a subtree
+using a simpler technique such as sequential parameter optimization or
+even uninformed search. 
+
+Initial results in this direction were obtained for optimization
+of thresholds in a rule-based classifier.  The rule tree had 10
+optimization parameters. Three parameters were heuristically chosen
+for optimization using a rational search algorithm, values for the remaining
+seven parameters were chosen using a simple search algorithm
+(iterative sequential optimization). The new parameter values improved
+accuracy of the classifier, already optimized using a different
+optimization method, from 0.948 to 0.969.

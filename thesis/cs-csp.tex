@@ -1,7 +1,7 @@
 % $Id: thesis.tex,v 1.60 2010/04/13 11:12:30 dvd Exp $
 
 
-\section{Introduction}
+\subsection{Introduction}
 
 Large search spaces are common in artificial intelligence, heuristics being
 of major importance in limiting search efforts.
@@ -48,8 +48,7 @@ possible future extensions of the proposed mechanism are discussed
 (Section~\ref{sec:summary}).
 
 
-\section{Background}
-\label{sec:background}
+\subsection{Constraint Satisfaction}
 
 A constraint satisfaction problem (CSP) is defined by a set
 of variables $\mathcal{X}=\{X_1, X_2, ...\}$, and a set of
@@ -112,7 +111,7 @@ heavy. Principles of rational metareasoning can be applied
 independently of the choice of implementation, to decide when
 to deploy these heuristics.
 
-\section{Rational Value-Ordering}
+\subsection{Rational Value-Ordering}
 \label{sec:generic}
 
 The role of (dynamic) value ordering is to determine the order of
@@ -236,7 +235,7 @@ Finally, since (\ref{eq:backtracking-probability-estimate}), (\ref{eq:p-approx-o
 \Lambda_i\approx\IE\left[(T_1-T_i)|D_k|\,\Big|\; T_i<T_1 \right]
 \end{eqnarray}
 
-\section{VOI of Solution Count Estimates}
+\subsection{VOI of Solution Count Estimates}
 \label{sec:csp-rational}
 
 The estimated solution count for an assignment may be used to estimate
@@ -340,7 +339,7 @@ estimates of value assignments, is returned
 \end{algorithmic}
 \end{algorithm}
 
-\section{Empirical Evaluation}
+\subsection{Empirical Evaluation}
 \label{sec:empirical}
 
 %The dependence of the searchm time on $\gamma$
@@ -380,7 +379,7 @@ Equation~(\ref{eq:csp-gamma}) is a reasonable
 approximation for this implementation. The source code is available from
 \url{http://ftp.davidashen.net/vsc.tar.gz}.
 
-\subsection{Benchmarks}
+\subsubsection{Benchmarks}
 
 \begin{figure}[h]
 \centering
@@ -445,7 +444,7 @@ occasions</em> selected using rational metareasoning.
 \label{fig:random-problems}
 \end{figure}
 
-\subsection{Random instances}
+\subsubsection{Random instances}
 
 Based on the results on benchmarks, we chose $\gamma=10^{-3}$, and
 applied it to two sets of 100 problem instances. 
@@ -486,7 +485,7 @@ Thus, the value of $\gamma$ chosen based on a small set of hard instances
 gives good results on a set of instances with different parameters and
 of varying hardness.
 
-\subsection{Generalized Sudoku}
+\subsubsection{Generalized Sudoku}
 
 Randomly generated problem instances have played a key role in the
 design and study of heuristics for CSP. However, one might argue that the
@@ -529,7 +528,7 @@ performance on Model RB.
 \label{tbl:sudoku}
 \end{table}
 
-\subsection{Deployment patterns}
+\subsubsection{Deployment patterns}
 
 One might ask whether trivial methods for selective deployment would
 work, such as estimating solution counts for a certain number of
@@ -563,7 +562,7 @@ random         & 31.421                  & 42.085                    & 20.038
 \label{tbl:voirnd}
 \end{table}
 
-\section{Discussion and Related Work}
+\subsection{Discussion and Related Work}
 \label{sec:discussion}
 
 The principles of bounded rationality appear in

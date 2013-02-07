@@ -1,0 +1,131 @@
+% $Id: thesis.tex,v 1.60 2010/04/13 11:12:30 dvd Exp $
+
+\documentclass[oneside]{report}
+
+\usepackage[noend]{algpseudocode}
+\usepackage[ruled]{algorithm}
+\usepackage{url}
+\usepackage{setspace,geometry}
+\usepackage{framed}
+\usepackage{amsfonts,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage{color}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.symbols}
+\usetikzlibrary{shadows}
+\usetikzlibrary{arrows}
+
+
+\geometry{bindingoffset=0.4in,margin=1.2in}
+\onehalfspacing
+\doublespacing
+
+\input{defs}
+
+\title {Rational Metareasoning in Problem-Solving~Search}
+
+\author {David Tolpin}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+{\large Ben-Gurion University of the Negev
+\\
+Kreitman School for Advanced Graduate Studies}
+\vspace{1in}
+
+{\bf\LARGE Rational~Metareasoning in Problem-Solving~Search}
+\vspace{1in}
+
+{\large PhD Thesis
+\\
+\vspace{1in}
+
+by David Tolpin
+\\
+Under the supervision of Professor Solomon Eyal Shimony
+\\
+\vfill
+
+\today}
+
+\vspace{1in}
+%Author's Signature: \rule{10em}{1pt}
+%\\
+%Advisor's Signature: \rule{10em}{1pt}
+%\\
+%Chairman's Signature: \rule{10em}{1pt}
+
+\end{center}
+\end{titlepage}
+
+\pagenumbering{roman}
+
+\setcounter{page}{1}
+\pagenumbering{roman}
+
+\input{abstract}
+
+\setcounter{tocdepth}{5}
+\tableofcontents
+%\listoffigures
+%\listoftables
+
+\newpage
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+\chapter{Introduction}
+\label{ch:intro}
+\input{intro}
+
+\chapter{Background}
+\label{ch:bg}
+
+\section{Rational Metareasoning}
+\label{sec:ratimeta}
+\input{ratimeta}
+
+\section{Problem-Solving Search}
+\label{sec:search}
+\input{search}
+
+\section{Related Work}
+\label{sec:related}
+\input{related}
+
+\chapter{Rational Metareasoning in~Search~Algorithms}
+\label{ch:ramesrch}
+\input{ramesrch}
+
+\chapter{Rational~Computation of~Value~of~Information}
+\label{ch:raticomp}
+\input{raticomp}
+
+\chapter{Case Studies}
+\label{ch:case-studies}
+
+\section{Rational Deployment of CSP Heuristics}
+\label{sec:cs-csp}
+\input{cs-csp}
+
+\section{VOI-aware Monte-Carlo Tree Search}
+\label{sec:cs-mcts}
+\input{cs-mcts}
+
+\section{Rational Deployment of Multiple Heuristics in A*}
+\label{sec:cs-rla}
+\input{cs-lra}
+
+\chapter {Summary and Contribution}
+\label{ch:summary}
+\input{summary}
+
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+\end{document}

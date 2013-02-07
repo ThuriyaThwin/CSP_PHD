@@ -1,0 +1,256 @@
+
+%Since $t_2$ is often greater than $t_1$ additional search time may be saved if
+%we can reduce the number of evaluations of $h_2$, even if this results in
+%additional expansions and evaluations of $h_1$.
+%We not present an algorithm which attempts to
+%An algorithm attempting
+%optimally manage such tradeoffs, which we call \textit{Rational Lazy A*}.
+%is called \textit{Rational Lazy A*}.
+
+Using the principles of rational meta-reasoning \cite{RussellWefald},
+theoretically every computational operator (heuristic function evaluation, node
+expansion, open list operation) should be treated as an action in a sequential
+decision-making meta-level problem, and actions should be chosen so as to
+achieve the minimal expected search time. However, the appropriate
+general meta-reasoning problem is extremely hard to define precisely, and even harder
+to solve optimally.
+
+Therefore, we focus here on just one decision type, to be
+made in the context of \lazyastar, when $n$ re-emerges from \OPEN~(Line 8).
+We have two options: {\bf (1)}  Evaluate the second heuristic $h_2(n)$ and add
+the node back to \OPEN~(Lines 8-10) like \lazyastar, or {\bf 2} bypass the
+computation of $h_2(n)$ and expand $n$ right way (Lines 11 -13), thereby
+saving timeby not computing $h_2$, at the risk of additional expansions and evaluations of $h_1$.
+An method which attempts to
+optimally manage this tradeoff, which we call \textit{Rational Lazy A*}, is presented next.
+In order to choose rationally we define a criterion based on value of
+information (VOI) of evaluating $h_2(n)$ in this context.
+
+\subsection{VOI of evaluating $h_2$}
+
+The only addition of RLA* to LA* is the option to bypass $h_2$ computations (Lines 8-10).
+Suppose that we choose to compute $h_2$ --- this results in one of the
+following outcomes:
+\begin{enumerate}
+\item $n$ is eventually expanded.
+% EK: removed unnecessary detail
+% : either immediately because $n$ still has the smallest $f$-cost,
+% or it now has a higher $f$-cost, is re-inserted into \OPEN, but is still expanded later on.
+\item $n$ is re-inserted into \OPEN, and the goal is found without ever expanding $n$.
+\end{enumerate}
+
+Observe that computing $h_2$ can be beneficial only in outcome 2, where
+potential time savings are due to pruning a search subtree at the expense of
+the time $t_2(n)$. However, whether outcome 2 takes place after a given state
+is not known to the algorithm until the goal is found, and the algorithm must
+decide whether to evaluate $h_2$ according to what it \textit{believes to be}
+the probability of each of the outcomes. We derive a \textit{rational policy}
+for when to evaluate $h_2$, under the myopic assumption that the algorithm
+continues to behave like \lazyastar~afterwards (i.e., it will never again
+consider bypassing the computation of $h_2$).
+
+The time wasted by being sub-optimal in deciding whether to evaluate $h_2$ is
+called the {\em regret} of the decision. If $h_2(n)$ is not helpful and we decide to compute it, the effort for evaluating $h_2(n)$ turns out to be wasted. On the other hand, if $h_2(n)$ is helpful but we decide to bypass it, we needlessly expand $n$. Due to the myopic assumption, \rationallazyastar~would evaluate both $h_1$ and $h_2$ for all successors of
+$n$.
+
+\begin{table}[t]
+\begin{small}
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+               & Compute $h_2$ & Bypass $h_2$\\
+\hline
+$h_2$ helpful &   0            & $t_e+(b(n)-1)t_d$\\
+\hline
+$h_2$ not helpful & $t_d$      & 0 \\
+\hline
+\end{tabular}
+\end{center}
+\end{small}\vspace{-0.2cm}
+\caption{Time losses in Rational Lazy A*}
+\label{tbl:rational-lazy-a-time}
+\end{table}
+
+Table~\ref{tbl:rational-lazy-a-time}
+summarizes the regret of each possible decision, for each possible future
+outcome; each column in the table represents a decision, while each row
+represents a future outcome.
+In the table, $t_d$ is the to time compute $h_2$ and re-insert $n$ into
+\OPEN~thus delaying the expansion of $n$, $t_e$ is the time to remove $n$ from \OPEN,
+expand $n$, evaluate $h_1$ on each of the $b(n)$ (``local branching factor'')
+children $\{n'\}$ of $n$, and insert $\{n'\}$ into the open list.
+Computing $h_2$ needless ``wastes'' $t_d$ time.
+Bypassing $h_2$ computation when $h_2$ would have been helpful ``wastes''
+$t_e+b(n)t_d$ time, but because computing $h_2$ would have cost $t_d$, the
+regret is $t_e+(b(n)-1)t_d$.
+
+
+
+% In outcome 1, $n$ is eventually expanded, hence the effort for evaluating $h_2$
+% turns out to be wasted. The time wasted by being sub-optimal in deciding
+% whether to evaluate $h_2$ is called the {\em regret} of the decision. At each
+% step of the algorithm, the regret is affected by two criteria:
+% \begin{itemize}
+% \item Whether the evaluation of $h_2$ would prevent expansion of $n$
+%   altogether (denoted ``$h_2$ helpful'' below).
+% \item Whether $h_2$ is evaluated.
+% \end{itemize}
+% Table~\ref{tbl:rational-lazy-a-time} presents the regret
+% for each of the possible combinations.
+% In the table, $t_d$ is the
+% time compute $h_2$ and re-insert $n$ into \OPEN~thus delaying
+% the expansion of $n$, $t_e$ is the time to remove $n$ from \OPEN, expand $n$,
+% evaluate $h_1$ on each of the $b(n)$ (``local branching factor'') children
+% $\{n'\}$ of $n$, and insert $\{n'\}$ into the open list.
+
+% \begin{table}[tbh]
+% \begin{small}
+% \begin{center}
+% \begin{tabular}{|c| c|l|}
+% \hline
+% $h_2$ helpful & $h_2$ evaluated & time lost \\ \hline
+% no & no & 0 \\
+% no & yes & $t_d$ \\
+% yes & no & $t_e+(b(n)-1)t_d$ \\
+% yes & yes & 0\\
+% \hline
+% \end{tabular}
+% \end{center}
+% \end{small}\vspace{-0.2cm}
+% \caption{Time losses in Rational Lazy A*}
+% \label{tbl:rational-lazy-a-time}
+% \end{table}
+
+% The value in the third row---\textit{$h_2$ would be helpful but is not evaluated}--- is obtained by observing that due to the myopic
+% assumption and consistency of $h_2$, RLA* would evaluate $h_2(n')$ for all children $n'$ of $n$. Therefore, instead of spending the time $T_d$ once on
+% evaluating $n$, RLA* will spend at most the extra time $t_d$
+% on each of the $b(n)$ children $\{n'\}$ of $n$.
+
+Let us denote the probability that $h_2$ is helpful by
+$p_h$.
+%Due to line 2 in the table,
+The expected regret of computing $h_2$ is thus $(1-p_h) t_d$.
+%Due to line 3 in the table,
+On other hand, the expected regret of bypassing $h_2$ is $p_h(
+t_e+(b(n)-1)t_d)$. As we wish to minimize the expected regret, we should thus evaluate $h_2$ just when:
+\begin{equation}
+(1-p_h) t_d < p_h (t_e+(b(n)-1)t_d)
+\end{equation}
+or equivalently:
+\begin{equation}
+(1-b(n) p_h) t_d < p_h t_e
+\end{equation}
+
+If $p_h b(n) \ge 1$, then the expected regret is minimized by always
+evaluating $h_2$, regardless of the values of $t_d$ and $t_e$.
+In these cases, RLA* cannot be expected to do better than \lazyastar.
+For example, in the 15-puzzle and its variants, the
+effective branching factor is $\approx 2$. Therefore, if $h_2$ is expected to be helpful for more than half of the nodes $n$
+on which \lazyastar~evaluates $h_2(n)$, then one should simple use \lazyastar.
+
+For $p_h b(n) < 1$,  the decision of whether to evaluate $h_2$
+depends on the values of $t_d$ and $t_e$:
+\begin{equation}
+\mbox{\bf evaluate }h_2\mbox{ \bf if }t_d<\frac {p_h} {1-p_hb(n)} t_e
+\label{eqn:criterion-general}
+\end{equation}
+Let us analyze $t_d$ and $t_e$. Denote by
+%$t_o$  the time
+%to insert a single node into (or remove it from) \OPEN,
+$t_c$ the time to generate the children of $n$. Then we have:
+\begin{align}
+t_d&=t_2+t_o\nonumber\\
+t_e&=t_o + t_c+b (n) t_1 + b(n) t_o
+\label{eqn:t-del-exp-expanded}
+\end{align}
+By substituting
+(\ref{eqn:t-del-exp-expanded}) into (\ref{eqn:criterion-general}), obtain: {\bf evaluate} $h_2$ {\bf if}:
+\begin{equation}
+{t_2+t_o}<\frac {p_h \left[{t_c} + b (n)t_1+(b(n)+1){t_o}\right]} {1-p_hb(n)}
+\label{eqn:criterion-expanded}
+\end{equation}
+The factor $\frac {p_h} {1-p_hb(n)}$ depends on the potentially unknown
+probability $p_h$, making it difficult to reach the optimum decision.
+However, if our goal is just to do better than \lazyastar, then it is safe to replace $p_h$ by an upper bound on $p_h$.
+
+We now turn to implementation-specific estimation of the respective runtimes.
+\OPEN~in \astar~is frequently implemented as a priority queue, and thus we have, approximately,
+$t_o=\tau \log N_o$ for some $\tau$, when the size of \OPEN~is $N_o$.
+Evaluating $h_1$ is cheap in many domains, as is the
+case with MD in discrete domains, $t_o$ is the most significant part of
+$t_{e}$. In such cases,
+rule (\ref{eqn:criterion-expanded}) can be approximated as (\ref{eqn:criterion-gamma}):
+\begin{align}
+  &\mbox{\bf evaluate }h_2\mbox{ \bf if } t_2 < \frac {\tau p_h} {1-p_hb(n)} (b(n)+1)\log N_o
+\label{eqn:criterion-gamma}
+\end{align}
+Rule (\ref{eqn:criterion-gamma})
+recommends to evaluate $h_2$ mostly at late stages of the search,
+when the open list is large, and in nodes with a higher branching factor.
+
+In other domains, such as planning, both $t_1$ and $t_2$ are
+significantly greater than both $t_o$ and $t_c$, and terms
+not involving $t_1$ or $t_2$ can be dropped from
+(\ref{eqn:criterion-expanded}), resulting in Rule (\ref{eqn:criterion-beta}):
+\begin{align}
+  &\mbox{\bf evaluate }h_2\mbox{ \bf if } \frac{t_2}{t_1} < \frac {p_hb(n)} {1-p_hb(n)}
+\label{eqn:criterion-beta}
+\end{align}
+The right side of (\ref{eqn:criterion-beta}) grows with $b(n)$, and here it is beneficial to evaluate $h_2$
+only for nodes with a sufficiently large branching factor. On rearranging equation \ref{eqn:criterion-beta},
+we get the criterion which we actually use for planning domains,
+which is to evaluate $h_2$ only when:
+\begin{equation}
+b(n) > \frac{t_2}{t_1 p_h (1 + \frac{t_2}{t_1})}
+\label{eq:planning-rule}
+\end{equation}
+
+\subsection{Empirical results: weighted 15 puzzle}
+
+
+\begin{table*}
+\begin{centering}
+\begin{small}
+\begin{tabular}{|c|| r r || r r r r || r r r r r | } \hline
+&\multicolumn{2}{|c||}{\astar}&\multicolumn{4}{c||}{\lazyastar}&\multicolumn{5}{c|}{\rationallazyastar}\\
+\hline
+lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Good1   & Good2  & $h_2$     & time \\ \hline
+         6 & 889,930  & {\bf 0.601}  & 889,930  & 257,598 & 632,332 & 0.462   & 944,750 &  299,479 & 239,320 &  405,951   & 0.446  \\ \hline
+         8 & 740513  & 0.700  & 740,513  & 197,107 & 543,406 & {\bf 0.431}   & 892,216 &  233,370 & 303,655 &  260,823   & 0.402  \\ \hline
+         10 & 612010 & 0.929  & 612,010  & 145,687 & 466,327 & 0.474   & 859,220 &  278,431 & 445,846 &  134,943   & {\bf 0.378}  \\ \hline
+         12 & 454171 & 1.128  & 454,171  & 95,118  & 359,053 & 0.621   & 807,846 &  277,783 & 428,686 &  101,377   & 0.465  \\ \hline
+\end{tabular}
+\end{small}
+\end{centering}\vspace{-0.3cm}
+\caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}\vspace{-0.3cm}
+\label{tbl:rational-lazy-a-star}
+\end{table*}
+
+In the uniform-cost 15 puzzle, the open list contains only a few different f-costs,
+and is frequently implemented using buckets, violating the assumption of logarithmic time for which RLA* is beneficial. In order to
+better evaluate the latter, we therefore use
+the weighted 15-puzzle variant~\cite{thayer:bss}, where the
+cost of moving each tile is equal to the number on the tile.  For consistency
+of comparison, we used a subset of 36 problem instances out of the set of 100
+15-puzzle instances by~\cite{BFID85}, keeping the problems which could
+be solved with 2Gb of RAM and 15 minutes timeout using the Weighted Manhattan
+heuristic (WMD) for $h_1$. As the second, expensive and informative, $h_2$ heuristic for \lazyastar~and \rationallazyastar, we a heuristic based
+on lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound $d$ we applied a bounded depth-first search from a node $n$ and backtracked when we reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values from leaves were propagated to $n$.
+
+
+
+
+Table~\ref{tbl:rational-lazy-a-star} presents the results averaged on all instances solved. The running times are reported relative to
+the time of \astar with WMD (with no lookahead), which generated 2012643 nodes (not reported in the table). The first 3 columns of Table
+\ref{tbl:rational-lazy-a-star} shows the results for \astar~with the lookahead
+heuristic for different lookahead depths. The best time is achieved
+for lookahead 6, (0.601 compared to \astar~with WMD). The fact that the time is not continuing to decrease with deeper lookaheads is clearly due to the fact that although the resulting heuristic improves as a function of lookahead depth (expanding and generating fewer nodes), the increasing overheads of computing the heuristic eventually outweights the computation time it saved by expanding fewer nodes.
+
+
+The next 4 columns show the results for \lazyastar~
+with WMD as $h_1$, lookahead as
+$h_2$, for different lookahead depths.  The {\em Good1} column presents the number of nodes where \lazyastar saved the computation of $h_2$ while the $h_2$ column presents the number of nodes where $h_2$ was computed. $\approx 28\%$ of nodes were {\em Good1} and since $t_2$ was the most dominant time cost, most of this saving is reflected in the timing results.  The best results are achieved for lookahead 8, with a runtime of 0.431 compared to \astar~ with WMD.
+
+The final columns show the results of RLA* with different lookaheads for
+empirically best values of $\tau$. The {\em Good2} column counts the number of times that RLA* decided to bypass the $h_2$ computation and expand the node right away.Observe that RLA* outperforms \lazyastar, which in turn outperforms standard A*, for all lookahead depths. The lowest time with RLA* (0.378 of \astar with WMD) and empirically best $\tau$  was obtained for lookahead 10. That is achieved because the more expensive $h_2$ heuristic is computed less often, reducing its effective computational overhead, with little or no adverse effect in the number of expanded nodes. Although LA* expanded fewer nodes, RLA* performed much fewer $h_2$ computations as can be seen in the table, resulting in decreased overall runtimes for all lookahead depths.
+

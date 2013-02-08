@@ -306,11 +306,11 @@ large. Consequently, online search algorithms come into use. In an
 online search algorithm, the agent interleaves computation and action,
 accounting for action outcomes in further computations.
 
-Online versions of best-first search explore the search space up to
-a limited horizon, use the current state of the search to choose an
-action, perform the action, and continue the search from the new
-state. Real-time A* is formulated as an offline search algorithm,
-but can be used unchanged by online search agents.
+Online versions of best-first search explore the search space up to a
+limited horizon \emph{TODO: or through sampling}, use the current state
+of the search to choose an action, perform the action, and continue
+the search from the new state. Real-time A* is formulated as an offline
+search algorithm, but can be used unchanged by online search agents.
 
 The simplest form of local search, hill climbing, can also be
 viewed as an online search algorithm. Other variants of local search
@@ -327,3 +327,7 @@ example of learning in online search is the LRTA* algorithm
 \cite{Korf.rta}, an extension of RTA*. LRTA* continuously
 updates cost estimates of visited states and used the current cost
 estimates to choose the ``apparently best'' move.
+
+\subsection{Heuristics}
+
+\emph{TODO: how one obtains heuristics}

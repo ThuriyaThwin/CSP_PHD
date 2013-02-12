@@ -84,48 +84,6 @@ Bypassing $h_2$ computation when $h_2$ would have been helpful ``wastes''
 $t_e+b(n)t_d$ time, but because computing $h_2$ would have cost $t_d$, the
 regret is $t_e+(b(n)-1)t_d$.
 
-
-
-% In outcome 1, $n$ is eventually expanded, hence the effort for evaluating $h_2$
-% turns out to be wasted. The time wasted by being sub-optimal in deciding
-% whether to evaluate $h_2$ is called the {\em regret} of the decision. At each
-% step of the algorithm, the regret is affected by two criteria:
-% \begin{itemize}
-% \item Whether the evaluation of $h_2$ would prevent expansion of $n$
-%   altogether (denoted ``$h_2$ helpful'' below).
-% \item Whether $h_2$ is evaluated.
-% \end{itemize}
-% Table~\ref{tbl:rational-lazy-a-time} presents the regret
-% for each of the possible combinations.
-% In the table, $t_d$ is the
-% time compute $h_2$ and re-insert $n$ into \OPEN~thus delaying
-% the expansion of $n$, $t_e$ is the time to remove $n$ from \OPEN, expand $n$,
-% evaluate $h_1$ on each of the $b(n)$ (``local branching factor'') children
-% $\{n'\}$ of $n$, and insert $\{n'\}$ into the open list.
-
-% \begin{table}[tbh]
-% \begin{small}
-% \begin{center}
-% \begin{tabular}{|c| c|l|}
-% \hline
-% $h_2$ helpful & $h_2$ evaluated & time lost \\ \hline
-% no & no & 0 \\
-% no & yes & $t_d$ \\
-% yes & no & $t_e+(b(n)-1)t_d$ \\
-% yes & yes & 0\\
-% \hline
-% \end{tabular}
-% \end{center}
-% \end{small}\vspace{-0.2cm}
-% \caption{Time losses in Rational Lazy A*}
-% \label{tbl:rational-lazy-a-time}
-% \end{table}
-
-% The value in the third row---\textit{$h_2$ would be helpful but is not evaluated}--- is obtained by observing that due to the myopic
-% assumption and consistency of $h_2$, RLA* would evaluate $h_2(n')$ for all children $n'$ of $n$. Therefore, instead of spending the time $T_d$ once on
-% evaluating $n$, RLA* will spend at most the extra time $t_d$
-% on each of the $b(n)$ children $\{n'\}$ of $n$.
-
 Let us denote the probability that $h_2$ is helpful by
 $p_h$.
 %Due to line 2 in the table,
@@ -208,7 +166,7 @@ b(n) > \frac{t_2}{t_1 p_h (1 + \frac{t_2}{t_1})}
 \subsection{Empirical results: weighted 15 puzzle}
 
 
-\begin{table*}
+\begin{table}
 \begin{centering}
 \begin{small}
 \begin{tabular}{|c|| r r || r r r r || r r r r r | } \hline
@@ -224,7 +182,7 @@ lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Go
 \end{centering}\vspace{-0.3cm}
 \caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}\vspace{-0.3cm}
 \label{tbl:rational-lazy-a-star}
-\end{table*}
+\end{table}
 
 In the uniform-cost 15 puzzle, the open list contains only a few different f-costs,
 and is frequently implemented using buckets, violating the assumption of logarithmic time for which RLA* is beneficial. In order to

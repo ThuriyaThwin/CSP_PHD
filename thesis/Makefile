@@ -5,17 +5,12 @@ all: thesis.pdf
 
 thesis.tex:
 	intro.tex related.tex ratimeta.tex search.tex ramesrch.tex \
-    cs-csp.tex cs-mcts.tex cs-rla.tex \
+	cs-csp.tex cs-mcts.tex cs-rla.tex \
 	summary.tex
 
-thesis.pdf: thesis.tex thesis.bbl
+thesis.pdf: thesis.tex
 	pdflatex thesis
-	pdflatex thesis
-
-thesis.bbl: thesis.tex refs.bib thesis.aux
 	bibtex thesis
-
-thesis.aux: thesis.tex
 	pdflatex thesis
 
 clean:

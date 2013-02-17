@@ -28,7 +28,7 @@ measurements based on the principles of limited rationality
 
 \sloppy
 Although it may be possible to use this idea in more general settings,
-in this paper the content is on-line most informative measurement
+here the content is on-line most informative measurement
 selection \cite{Guestrin.submodular} \cite{BilgicGetoor.voila}, an
 approach which is commonly used to solve problems of optimization
 under uncertainty \cite{Rish.efficient} \cite{Krause.water}. Since this
@@ -38,7 +38,7 @@ time \cite{Russell.right}, it is important in this setting to ascertain
 that VOI estimation indeed does not consume excessive computational
 resources.
 
-\subsection{The Measurement Selection Problem}
+\section{The Measurement Selection Problem}
 \label{sec:greedy}
 
 Let us examine the following optimization problem:
@@ -241,11 +241,11 @@ appropriate uncertainty model, it can be shown that the VOI
 of only a few of the measurements must be recomputed after each
 measurement, thus decreasing the computation time and ensuring that
 the greedy algorithm exhibits a more rational behavior
-w.r.t. computational resources. The focus of this paper is to explore
+w.r.t. computational resources. The focus here is to explore
 an improvement in the algorithm due to selective VOI
 recomputation.
 
-\subsection{Rational Computation of the Value of Information}
+\section{Rational Computation of the Value of Information}
 \label{sec:rational}
 
 For the selective VOI recomputation, the VOI of each
@@ -253,7 +253,7 @@ measurement is modeled as {\em known with uncertainty}. The belief
 $\BEL(V_j)$ about the VOI
 of measurement $q_j$ is represented by a belief distribution. In
 particular, the normal distribution with mean $\Lambda_j$ and variance
-$\varsigma_j^2$ is used in this paper, although other distributions
+$\varsigma_j^2$ is used, although other distributions
 models could be used as necessary.
 \begin{equation}
 \BEL(V_j)=\N(V_j, \varsigma_j^2)
@@ -352,7 +352,7 @@ where
   \end{array}\right.$.
 \end{itemize}
 
-\subsection{\normalsize Obtaining Uncertainty Parameters}
+\section{\normalsize Obtaining Uncertainty Parameters}
 \label{sec:uncertainty}
 
 Uncertainty variance $\tau^2$ depends on the current beliefs about
@@ -391,7 +391,7 @@ $g(c)$ online from earlier VOI recomputations during
 the same run proved to be robust and easy to implement by gradually
 updating $\tau^2$ after each VOI recomputation.
 
-\subsection{\normalsize Computation Time}
+\section{\normalsize Computation Time}
 \label{sec:comptime}
 
 Influence of the rational VOI recomputation on the computation time
@@ -432,7 +432,7 @@ cost:
 where $\alpha$ is a constant.  Empirical evaluations
 (Section~\ref{sec:empirical}) confirm this estimate.
 
-\subsection{\normalsize Empirical Evaluation}
+\section{\normalsize Empirical Evaluation}
 \label{sec:empirical}
 
 Experiments in this section compare performance of the algorithm that recomputes the VOI
@@ -484,7 +484,7 @@ recomputing algorithm decreases with the logarithm of the computation
 cost $c_V$ (Equation~\ref{eq:eta}), the computation cost axis is
 scaled logarithmically.
 
-\subsection{The Ackley Function}
+\section{The Ackley Function}
 
 \begin{figure}[t]
 \centering
@@ -514,7 +514,7 @@ The results are presented in Figure~\ref{fig:ackley-myopic} for the
 myopic scheme, and in Figure~\ref{fig:ackley-blinkered} for the
 blinkered scheme \cite{TolpinShimony.blinkered}.
 
-\subsection{SVM Parameter Search}
+\section{SVM Parameter Search}
 \label{sec:svm}
 
 \begin{figure}[h]
@@ -545,7 +545,7 @@ The results are presented in Figure~\ref{fig:svmguide2-myopic} for the
 myopic scheme, and in Figure~\ref{fig:svmguide2-blinkered} for the
 blinkered scheme \cite{TolpinShimony.blinkered}.
 
-\subsection{Discussion of Results}
+\section{Discussion of Results}
 
 In all experiments, a significant decrease in computation time is
 achieved with only a slight degradation of the reward; performance of
@@ -558,10 +558,10 @@ overhead caused by the VOI recomputations varies among problems and depends
 both on the problem properties and on the VOI estimate used in the
 algorithm.
 
-\subsection{\normalsize Conclusion and Further Research}
+\section{\normalsize Conclusion and Further Research}
 \label{sec:conclusion}
 
-The paper proposes an improvement to a widely used class of VOI-based
+This chapter proposes an improvement to a widely used class of VOI-based
 optimization algorithms. The improvement allows to decrease the
 computation time while only slightly affecting the reward. The
 proposed algorithm rationally reuses computations of VOI estimates and

@@ -1,11 +1,131 @@
+\subsection{Introduction}
 
-%Since $t_2$ is often greater than $t_1$ additional search time may be saved if
-%we can reduce the number of evaluations of $h_2$, even if this results in
-%additional expansions and evaluations of $h_1$.
-%We not present an algorithm which attempts to
-%An algorithm attempting
-%optimally manage such tradeoffs, which we call \textit{Rational Lazy A*}.
-%is called \textit{Rational Lazy A*}.
+
+The \astar~algorithm \cite{ASTR68} is a best-first heuristic search
+algorithm guided by the cost function $f(n)=g(n)+h(n)$. %\astar~is
+often described as being `optimal', in that it %{\em expands} the
+minimum number of unique nodes.  If the heuristic $h(n)$ is admissible (never
+overestimates the real cost to the goal) then the set of nodes expanded
+by \astar~is both necessary and sufficient to find the optimal path
+to the goal~\cite{ASTR85}.
+
+This paper examines the case where we have several available admissible
+heuristics. Clearly, we can evaluate all these heuristics, and use their {\em
+maximum} as an admissible heuristic, a scheme we call \astarmax.
+The problem with naive maximization is that all the heuristics are
+computed for all the generated nodes.
+In order to reduce the time spent on heuristic computations, Lazy $\astar$ (or
+\lazyastar, for short) evaluates the heuristics one at a time, lazily. When a node $n$ is
+generated, \lazyastar~only computes one heuristic, $h_1(n)$, and adds $n$ to
+\OPEN.  Only when $n$ re-emerges as the top of \OPEN~is another heuristic, $h_2(n)$,
+evaluated; if this results in an increased heuristic estimate, $n$ is
+re-inserted into \OPEN.  This idea was briefly mentioned by~\cite{zhang-bacchus:aaai-2012} in the
+context of the MAXSAT heuristic for planning domains.
+\lazyastar~is as informative as \astarmax, but can significantly reduce
+search time, as we will not need to compute $h_2$ for many nodes.
+
+\lazyastar~reduces the search time, while maintaining the informativeness of \astarmax.
+However, as noted by \cite{domshlak-et-al:jair-2012},  if the goal is reducing
+search time, it is sometimes better to compute a fast heuristic on
+several nodes, rather than to compute a slow but informative heuristic on only one
+node.
+Based on this idea, they formulated {\em selective max} (Sel-MAX), an online
+learning scheme which chooses one heuristic to compute at each
+state. Sel-MAX chooses to compute the more expensive heuristic $h_2$ for
+node $n$ when its classifier predicts that $h_2(n) - h_1(n)$ is greater than
+some threshold, which is a function of heuristic computation times and the average
+branching factor.
+
+We combine the ideas of lazy heuristic evaluation and of trading off more node expansions
+for less heuristic computation time, into a {\em new} variant of \lazyastar~called
+{\em rational lazy} \astar~(\rationallazyastar).
+\rationallazyastar~is based on rational meta-reasoning, and uses a myopic {\em
+value-of-information} criterion to decide whether to compute $h_2(n)$ or to
+bypass the computation of $h_2$ and expand $n$ immediately when $n$ re-emerges
+from \OPEN. \rationallazyastar~aims to reduce search time, even at the expense of
+more node expansions than \astarmax.
+
+\subsection{Lazy \astar}
+
+Throughout this paper we assume for clarity that we have two available admissible heuristics, $h_1$ and $h_2$.
+Extension to multiple heuristics is straightforward, at least for \lazyastar.
+Unless stated otherwise, we assume that $h_1$ is faster to compute than $h_2$
+but that $h_2$ is {\em weakly more informed}, i.e., $h_1(n) \leq h_2(n)$ for
+the majority of the nodes $n$, although counter cases where $h_1(n) > h_2(n)$
+are possible.
+We say that $h_2$ {\em dominates} $h_1$, if such counter cases do not
+exist and $h_2(n) \geq h_1(n)$ for {\em all} nodes $n$.
+We use $f_1(n)$ to denote $g(n)+h_1(n)$. Likewise, $f_2(n)$
+denotes $g(n)+h_2(n)$, and $f_{max}(n)$ denotes $g(n) + \max(h_1(n),h_2(n))$.
+%We use the notation $h(n)=\{x,y\}$ to mean that $h_1(n)=x$ and that $h_2(x)=y$.
+We denote the cost of the optimal solution by $\optcost$. Additionally, we
+denote the computation time of $h_1$ and of $h_2$ by $t_1$ and $t_2$,
+respectively and denote the overhead of an {\em insert/pop} operation in
+\OPEN~by $t_o$. Unless stated otherwise we assume that $t_2$ is much greater
+than $t_1 + t_o$. \lazyastar~thus mainly aims to reduce computations of $h_2$.
+
+\begin{algorithm}[h]
+\caption{Lazy \astar}
+\begin{algorithmic}[1]
+\Procedure{LAZY-\astar}{}
+    \State Apply all heuristics to Start
+    \State Insert Start into \OPEN
+    \While{\OPEN~ not empty}
+        \State $n$ $\gets$ best node from \OPEN
+        \If{Goal(n)}
+            \Return Trace(n)
+        \EndIf
+        \If{$h_2$ was not applied to $n$}
+            \State Apply $h_2$ to $n$
+            State Insert $n$ into \OPEN
+			\State {\bf continue} \Comment next node in OPEN
+        \EndIf
+        \ForAll{child $c$ of $n$}
+            \State Apply $h_1$ to $c$.
+            \State Insert $c$ into \OPEN
+        \EndFor
+        \State Insert $n$ into \CLOSED
+    \EndWhile
+    \Return FAILURE
+\EndProcedure
+\end{algorithmic}
+\label{LAZYA}
+\end{algorithm}
+
+The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}, and is
+very similar to \astar.
+In fact, without lines 7 -- 10, \lazyastar~would be identical to
+\astar~using the $h_1$ heuristic.
+When a node $n$ is generated we only compute $h_1(n)$ and $n$ is added to
+\OPEN ~(Lines 11 -- 13), without computing $h_2(n)$ yet.
+When $n$ is first removed from \OPEN~(Lines 7 -- 10), we compute $h_2(n)$ and
+reinsert it into \OPEN, this time with $f_{max}(n)$.%(h_1,h_2)$.
+%Later on in this paper we discuss several important implementation details, %which further enhance $\lazyastar$.
+
+It is easy to see that \lazyastar~is as informative as \astarmax, as they both
+generate and expand and the same set of nodes (up to differences caused by
+tie-breaking). The reason is that a node $n$ is expanded by both \astarmax~and
+by \lazyastar~when $f_{max}(n)$ is the best $f$-value in \OPEN. %However, different
+% actions are taken while the node is in \OPEN.
+
+In its general form \astar~generates many nodes that it does not expand. These
+nodes, called {\em surplus} nodes~\cite{Felner2012}, are in \OPEN~when we
+expand the goal node with $f=\optcost$. All nodes in \OPEN~with $f>\optcost$ are
+surely surplus but some nodes with $f=\optcost$ may also be surplus. The number
+of surplus nodes in OPEN can grow exponentially in the size of the domain, resulting in
+significant costs.
+
+\lazyastar~avoids $h_2$ computations for many of these surplus nodes. Consider
+a node $n$ that is generated with $f_1(n) > \optcost$. This node is inserted
+into \OPEN~but will never reach the top of \OPEN, as the goal node will be found
+with $f=\optcost$. In fact, if \OPEN~breaks ties in favor of small $h$-values,
+the goal node with $f=\optcost$ will be expanded as soon as it is generated and such
+savings of $h_2$ will be obtained for some nodes with $f_1=\optcost$ too. We
+refer to such nodes where we saved the computation of $h_2$ as {\em good} nodes. Other nodes,
+those with $f_1(n) < \optcost$ (and some with $f_1(n) = \optcost$) are called
+{\em regular nodes} as we apply both heuristics for them.
+
+\subsection{Rational Lazy A*}
 
 Using the principles of rational meta-reasoning \cite{Russell.right},
 theoretically every computational operator (heuristic function evaluation, node
@@ -25,8 +145,6 @@ An method which attempts to
 optimally manage this tradeoff, which we call \textit{Rational Lazy A*}, is presented next.
 In order to choose rationally we define a criterion based on value of
 information (VOI) of evaluating $h_2(n)$ in this context.
-
-\subsection{VOI of evaluating $h_2$}
 
 The only addition of RLA* to LA* is the option to bypass $h_2$ computations (Lines 8-10).
 Suppose that we choose to compute $h_2$ --- this results in one of the
@@ -163,11 +281,11 @@ b(n) > \frac{t_2}{t_1 p_h (1 + \frac{t_2}{t_1})}
 \label{eq:planning-rule}
 \end{equation}
 
-\subsection{Empirical results: weighted 15 puzzle}
+\subsection{Empirical results}
 
 
 \begin{table}
-\begin{centering}
+%\begin{centering}
 \begin{small}
 \begin{tabular}{|c|| r r || r r r r || r r r r r | } \hline
 &\multicolumn{2}{|c||}{\astar}&\multicolumn{4}{c||}{\lazyastar}&\multicolumn{5}{c|}{\rationallazyastar}\\
@@ -179,36 +297,91 @@ lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Go
          12 & 454171 & 1.128  & 454,171  & 95,118  & 359,053 & 0.621   & 807,846 &  277,783 & 428,686 &  101,377   & 0.465  \\ \hline
 \end{tabular}
 \end{small}
-\end{centering}\vspace{-0.3cm}
+%\end{centering}
 \caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}\vspace{-0.3cm}
 \label{tbl:rational-lazy-a-star}
 \end{table}
 
-In the uniform-cost 15 puzzle, the open list contains only a few different f-costs,
-and is frequently implemented using buckets, violating the assumption of logarithmic time for which RLA* is beneficial. In order to
-better evaluate the latter, we therefore use
-the weighted 15-puzzle variant~\cite{thayer:bss}, where the
-cost of moving each tile is equal to the number on the tile.  For consistency
-of comparison, we used a subset of 36 problem instances out of the set of 100
-15-puzzle instances by~\cite{BFID85}, keeping the problems which could
-be solved with 2Gb of RAM and 15 minutes timeout using the Weighted Manhattan
-heuristic (WMD) for $h_1$. As the second, expensive and informative, $h_2$ heuristic for \lazyastar~and \rationallazyastar, we a heuristic based
-on lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound $d$ we applied a bounded depth-first search from a node $n$ and backtracked when we reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values from leaves were propagated to $n$.
+In the uniform-cost 15 puzzle, the open list contains only a few different
+f-costs, and is frequently implemented using buckets, violating the
+assumption of logarithmic time for which RLA* is beneficial. In order
+to better evaluate the latter, we therefore use the weighted 15-puzzle
+variant~\cite{thayer:bss}, where the cost of moving each tile is equal
+to the number on the tile.  For consistency of comparison, we used a
+subset of 36 problem instances out of the set of 100 15-puzzle instances
+by~\cite{BFID85}, keeping the problems which could be solved with 2Gb
+of RAM and 15 minutes timeout using the Weighted Manhattan heuristic
+(WMD) for $h_1$. As the second, expensive and informative, $h_2$
+heuristic for \lazyastar~and \rationallazyastar, we a heuristic based on
+lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound $d$ we applied
+a bounded depth-first search from a node $n$ and backtracked when we
+reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values
+from leaves were propagated to $n$.
 
 
+Table~\ref{tbl:rational-lazy-a-star} presents the results averaged
+on all instances solved. The running times are reported relative
+to the time of \astar with WMD (with no lookahead), which generated
+2012643 nodes (not reported in the table). The first 3 columns of Table
+\ref{tbl:rational-lazy-a-star} shows the results for \astar~with the
+lookahead heuristic for different lookahead depths. The best time is
+achieved for lookahead 6, (0.601 compared to \astar~with WMD). The fact
+that the time is not continuing to decrease with deeper lookaheads is
+clearly due to the fact that although the resulting heuristic improves
+as a function of lookahead depth (expanding and generating fewer nodes),
+the increasing overheads of computing the heuristic eventually outweights
+the computation time it saved by expanding fewer nodes.
 
 
-Table~\ref{tbl:rational-lazy-a-star} presents the results averaged on all instances solved. The running times are reported relative to
-the time of \astar with WMD (with no lookahead), which generated 2012643 nodes (not reported in the table). The first 3 columns of Table
-\ref{tbl:rational-lazy-a-star} shows the results for \astar~with the lookahead
-heuristic for different lookahead depths. The best time is achieved
-for lookahead 6, (0.601 compared to \astar~with WMD). The fact that the time is not continuing to decrease with deeper lookaheads is clearly due to the fact that although the resulting heuristic improves as a function of lookahead depth (expanding and generating fewer nodes), the increasing overheads of computing the heuristic eventually outweights the computation time it saved by expanding fewer nodes.
-
-
-The next 4 columns show the results for \lazyastar~
-with WMD as $h_1$, lookahead as
-$h_2$, for different lookahead depths.  The {\em Good1} column presents the number of nodes where \lazyastar saved the computation of $h_2$ while the $h_2$ column presents the number of nodes where $h_2$ was computed. $\approx 28\%$ of nodes were {\em Good1} and since $t_2$ was the most dominant time cost, most of this saving is reflected in the timing results.  The best results are achieved for lookahead 8, with a runtime of 0.431 compared to \astar~ with WMD.
+The next 4 columns show the results for \lazyastar~ with WMD as $h_1$,
+lookahead as $h_2$, for different lookahead depths.  The {\em Good1}
+column presents the number of nodes where \lazyastar saved the computation
+of $h_2$ while the $h_2$ column presents the number of nodes where $h_2$
+was computed. $\approx 28\%$ of nodes were {\em Good1} and since $t_2$
+was the most dominant time cost, most of this saving is reflected in
+the timing results.  The best results are achieved for lookahead 8,
+with a runtime of 0.431 compared to \astar~ with WMD.
 
 The final columns show the results of RLA* with different lookaheads for
-empirically best values of $\tau$. The {\em Good2} column counts the number of times that RLA* decided to bypass the $h_2$ computation and expand the node right away.Observe that RLA* outperforms \lazyastar, which in turn outperforms standard A*, for all lookahead depths. The lowest time with RLA* (0.378 of \astar with WMD) and empirically best $\tau$  was obtained for lookahead 10. That is achieved because the more expensive $h_2$ heuristic is computed less often, reducing its effective computational overhead, with little or no adverse effect in the number of expanded nodes. Although LA* expanded fewer nodes, RLA* performed much fewer $h_2$ computations as can be seen in the table, resulting in decreased overall runtimes for all lookahead depths.
+empirically best values of $\tau$. The {\em Good2} column counts the
+number of times that RLA* decided to bypass the $h_2$ computation and
+expand the node right away.Observe that RLA* outperforms \lazyastar,
+which in turn outperforms standard A*, for all lookahead depths. The
+lowest time with RLA* (0.378 of \astar with WMD) and empirically best
+$\tau$  was obtained for lookahead 10. That is achieved because the
+more expensive $h_2$ heuristic is computed less often, reducing its
+effective computational overhead, with little or no adverse effect in
+the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
+performed much fewer $h_2$ computations as can be seen in the table,
+resulting in decreased overall runtimes for all lookahead depths.
 
+\subsection{Conclusion}
+
+We discussed two schemes for decreasing heuristic evaluation times. \lazyastar~is very simple to implement
+and is as informative as \astarmax. \lazyastar~can significantly speed up the search, especially if $t_2$ dominates
+the other time costs, as seen in weighted 15 puzzle and planning domains.
+Rational \lazyastar~allows additional cuts in $h_2$ evaluations, at the expense
+of being less informed than \astarmax. However, due to a rational tradeoff, this
+allows for an additional speedup, and Rational \lazyastar~achieves the best
+overall performance in our domains.
+
+In particular, \rationallazyastar~is simpler to implement than its direct
+competitor, selective max, but its decision can be more informed.  When
+\rationallazyastar~has to decide whether to compute $h_2$ for some node
+$n$, it already {\em knows} that $f_1(n) \leq \optcost$.  By contrast,
+although selective max uses a much more complicated decision rule, it
+chooses which heuristic to compute when $n$ is first generated, and does
+not know whether $h_1$ will be informative enough to prune $n$. Rational
+\lazyastar~outperforms selective max in our planning experiments.
+
+Rational \lazyastar~and its analysis can be seen as an instance of the
+rational meta-reasoning framework~\cite{Russell.right}. While
+this framework is very general, it is extremely hard to
+apply in practice. Recent work exists on meta-reasoning in DFS
+algorithms for CSP) \cite{TolpinShimony.csp} and in Monte-Carlo tree
+search~\cite{HayRussellTolpinShimony.selecting}. This paper applies these
+methods successfully to a variant of~\astar.  There are numerous other
+ways to use rational meta-reasoning to improve~\astar, starting from
+generalizing \rationallazyastar~to handle more than two heuristics, to
+using the meta-level to control decisions in other variants of \astar. All
+these potential extensions provide fruitful ground for future work.

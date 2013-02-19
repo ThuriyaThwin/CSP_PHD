@@ -623,4 +623,31 @@ thereby significantly reducing the heuristic's ``effective''
 computational overhead, with an improvement in 
 performance for problems of different size and hardness.
 
+\subsection{Summary and Future Research}
+\label{sec:summary}
+
+This paper suggests a model for adaptive deployment of value ordering
+heuristics in algorithms for constraint satisfaction problems. As a
+case study, the model was applied to a value-ordering heuristic based
+on solution count estimates, and a steady improvement in the overall
+algorithm performance was achieved compared to {\em always} computing
+the estimates, as well as to other simple deployment tactics.  The
+experiments showed that for many problem instances the optimum
+performance is achieved when solution counts are estimated only in a
+relatively small number of search states.
+
+The methods introduced in this paper can be extended in numerous
+ways. First, generalization of the VOI to deploy different types of
+heuristics for CSP, such as variable ordering heuristics, as well as
+reasoning about deployment of more than one heuristic at a time, are
+natural non-trivial extensions. Second, an explicit evaluation of the
+quality of the distribution model is an interesting issue, coupled
+with a better candidate model of the distribution.  Such distribution
+models can also employ more disciplined statistical learning methods
+in tandem, as suggested above. Finally, applying the methods suggested
+in this paper to search in other domains can be attempted, especially
+to heuristics for planning.  In particular, examining whether
+the meta-reasoning scheme can improve reasoning over deployment of
+heuristics based solely on learning methods is an interesting future
+research issue.
 

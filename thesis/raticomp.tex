@@ -1,3 +1,5 @@
+\section{Introduction}
+
 Problems of decision-making under uncertainty frequently contain cases
 where information can be obtained using some costly actions \cite{WicklerPotter.information-gathering}, called
 measurement actions. In order to act rationally in the
@@ -352,7 +354,7 @@ where
   \end{array}\right.$.
 \end{itemize}
 
-\section{\normalsize Obtaining Uncertainty Parameters}
+\section{ Obtaining Uncertainty Parameters}
 \label{sec:uncertainty}
 
 Uncertainty variance $\tau^2$ depends on the current beliefs about
@@ -391,7 +393,7 @@ $g(c)$ online from earlier VOI recomputations during
 the same run proved to be robust and easy to implement by gradually
 updating $\tau^2$ after each VOI recomputation.
 
-\section{\normalsize Computation Time}
+\section{ Computation Time}
 \label{sec:comptime}
 
 Influence of the rational VOI recomputation on the computation time
@@ -432,7 +434,7 @@ cost:
 where $\alpha$ is a constant.  Empirical evaluations
 (Section~\ref{sec:empirical}) confirm this estimate.
 
-\section{\normalsize Empirical Evaluation}
+\section{ Empirical Evaluation}
 \label{sec:empirical}
 
 Experiments in this section compare performance of the algorithm that recomputes the VOI
@@ -484,7 +486,7 @@ recomputing algorithm decreases with the logarithm of the computation
 cost $c_V$ (Equation~\ref{eq:eta}), the computation cost axis is
 scaled logarithmically.
 
-\section{The Ackley Function}
+\subsection{The Ackley Function}
 
 \begin{figure}[t]
 \centering
@@ -514,7 +516,7 @@ The results are presented in Figure~\ref{fig:ackley-myopic} for the
 myopic scheme, and in Figure~\ref{fig:ackley-blinkered} for the
 blinkered scheme \cite{TolpinShimony.blinkered}.
 
-\section{SVM Parameter Search}
+\subsection{SVM Parameter Search}
 \label{sec:svm}
 
 \begin{figure}[h]
@@ -545,7 +547,7 @@ The results are presented in Figure~\ref{fig:svmguide2-myopic} for the
 myopic scheme, and in Figure~\ref{fig:svmguide2-blinkered} for the
 blinkered scheme \cite{TolpinShimony.blinkered}.
 
-\section{Discussion of Results}
+\subsection{Discussion of Results}
 
 In all experiments, a significant decrease in computation time is
 achieved with only a slight degradation of the reward; performance of
@@ -558,7 +560,7 @@ overhead caused by the VOI recomputations varies among problems and depends
 both on the problem properties and on the VOI estimate used in the
 algorithm.
 
-\section{\normalsize Conclusion and Further Research}
+\section{Conclusion and Further Research}
 \label{sec:conclusion}
 
 This chapter proposes an improvement to a widely used class of VOI-based

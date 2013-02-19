@@ -1,3 +1,76 @@
+\subsection{Introduction}
+
+MCTS, and especially UCT \cite{Kocsis.uct} appears in numerous search
+applications, such as \cite{Eyerich.ctp}. Although these methods are
+shown to be successful empirically, most authors appear to be using
+UCT ``because it has been shown to be successful in the past'', and
+``because it does a good job of trading off exploration and
+exploitation''. While the latter statement may be correct for the
+Multi-armed Bandit problem and for the UCB1 algorithm \cite{Auer.ucb},
+we argue that a simple reconsideration from basic principles can
+result in schemes that outperform UCT.
+
+The core issue is that in MCTS for adversarial search and search in
+``games against nature'' the goal is typically to find the best
+first action of a good (or even optimal) policy, which is closer to
+minimizing the simple regret, rather than the cumulative regret
+minimized by UCB1.  However, the simple and the cumulative regret
+cannot be minimized simultaneously; moreover, \cite{Bubeck.pure} shows
+that in many cases the smaller the cumulative regret, the greater the
+simple regret.
+
+We begin with background definitions and related work.  VOI estimates
+for arm pulls in MAB are presented, and a VOI-aware sampling policy is
+suggested, both for the simple regret in MAB and for MCTS.  Finally,
+the performance of the proposed sampling policy is evaluated on sets
+of Bernoulli arms and on Computer GO, showing the improved
+performance.
+
+\subsection{Background and Related Work}
+\label{sec:related-work}
+
+Monte-Carlo tree search was initially suggested as a scheme for
+finding approximately optimal policies for Markov Decision Processes
+(MDP).  MCTS explores an MDP by performing
+\emph{rollouts}---trajectories from the current state to a state in
+which a termination condition is satisfied (either the goal or a
+cutoff state).
+
+Taking a sequence of samples in order to minimize the regret of a
+decision based on the samples is captured by the Multi-armed Bandit
+problem (MAB) \cite{Vermorel.bandits}. In MAB, we have a set of $K$
+arms. Each arm can be pulled multiple times. When the $i$th arm is
+pulled, a random reward $X_i$ from an unknown stationary distribution
+is encountered. In the \textit{cumulative setting}, all encountered rewards are
+collected.  UCB1 \cite{Auer.ucb} was shown to be
+near-optimal in this respect. UCT, an extension of UCB1 to MCTS is
+described in \cite{Kocsis.uct}, and shown to outperform many state of
+the art search algorithms in both MDP and adversarial search
+\cite{Gelly.mogo,Eyerich.ctp}. In the \textit{simple regret setting}, the agent
+gets to collect only the reward of the last pull.
+\begin{dfn}
+The \textbf{simple regret} of a sampling policy for MAB
+is the expected difference between the best expected reward
+$\mu_*$ and the expected reward $\mu_j$ of the empirically best arm
+$\overline X_j=\max_i\overline X_i$:
+\begin{equation}
+\IE r=\sum_{j=1}^K\Delta_j\Pr(\overline X_j=\max_i\overline X_i)
+\label{eqn:simple-regret}
+\vspace{-8pt}
+\end{equation}
+where $\Delta_j=\mu_*-\mu_j$.
+\end{dfn}
+Strategies that minimize the simple regret are called pure exploration
+strategies \cite{Bubeck.pure}. 
+
+A different scheme for control of sampling can use the principles of
+bounded rationality \cite{Horvitz.reasoningabout} and rational
+metareasoning \cite{Russell.right,HayRussell.MCTS}.  In search, one
+maintains a current best action $\alpha$, and finds the expected gain
+from finding another action $\beta $ to be better than the current
+best.
+
+
 \subsection{Upper bounds on Value of Information}\label{approx-nonbayesian-section}
 
 
@@ -355,4 +428,20 @@ in our VOI-based scheme, the VOI based-scheme
 win rate is even higher than shown in Figure~\ref{fig:voi-wins}. This is as expected,
 as this setting (which is somewhat unfair to Pachi) is closer to
 meeting the assumptions underlying the selection MDP.
+
+\subsection{Summary and Future Work}
+
+This work suggested a Monte-Carlo sampling policy in which sample
+selection is based on upper bounds on the value of
+information. Empirical evaluation showed that this policy outperforms
+heuristic algorithms for pure exploration in MAB, as well as for MCTS.
+
+MCTS still remains a largely unexplored field of
+application of VOI-aware algorithms. More elaborate VOI estimates,
+taking into consideration re-use of samples in future search states
+should be considered. The policy introduced in the paper differs from
+the UCT algorithm only at the first step, where the VOI-aware
+decisions are made. Consistent application of principles of rational
+metareasoning at all steps of a rollout may further improve the
+sampling.
 

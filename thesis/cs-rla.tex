@@ -171,8 +171,7 @@ The time wasted by being sub-optimal in deciding whether to evaluate $h_2$ is
 called the {\em regret} of the decision. If $h_2(n)$ is not helpful and we decide to compute it, the effort for evaluating $h_2(n)$ turns out to be wasted. On the other hand, if $h_2(n)$ is helpful but we decide to bypass it, we needlessly expand $n$. Due to the myopic assumption, \rationallazyastar~would evaluate both $h_1$ and $h_2$ for all successors of
 $n$.
 
-\begin{table}[t]
-\begin{small}
+\begin{table}[h!]
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
@@ -184,7 +183,6 @@ $h_2$ not helpful & $t_d$      & 0 \\
 \hline
 \end{tabular}
 \end{center}
-\end{small}\vspace{-0.2cm}
 \caption{Time losses in Rational Lazy A*}
 \label{tbl:rational-lazy-a-time}
 \end{table}
@@ -285,7 +283,7 @@ b(n) > \frac{t_2}{t_1 p_h (1 + \frac{t_2}{t_1})}
 
 
 \begin{table}
-%\begin{centering}
+\parindent -1in
 \begin{small}
 \begin{tabular}{|c|| r r || r r r r || r r r r r | } \hline
 &\multicolumn{2}{|c||}{\astar}&\multicolumn{4}{c||}{\lazyastar}&\multicolumn{5}{c|}{\rationallazyastar}\\
@@ -297,7 +295,6 @@ lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Go
          12 & 454171 & 1.128  & 454,171  & 95,118  & 359,053 & 0.621   & 807,846 &  277,783 & 428,686 &  101,377   & 0.465  \\ \hline
 \end{tabular}
 \end{small}
-%\end{centering}
 \caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}\vspace{-0.3cm}
 \label{tbl:rational-lazy-a-star}
 \end{table}

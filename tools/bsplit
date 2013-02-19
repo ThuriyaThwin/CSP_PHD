@@ -1,0 +1,21 @@
+#!/bin/sh
+
+BIB=${1:-"refs.bib"}
+DIR=${2:-entries}
+
+if [ \! -d $DIR ] ; then
+	mkdir $DIR
+fi
+echo `csplit -f $DIR/ $BIB "/^\s*@/" "{*}"`
+for entry in $DIR/[0-9]*; do
+	name=`head -1 $entry|sed 's/^\s*@\s*[^{]\+\s*{\s*\([^, }]\+\).*/\1/'`
+	name=`echo $name|sed 's/\//_/g'`
+	if [ -z "$name" ] ; then
+		echo "*** NO NAME in $entry:" `cat $entry`
+		rm $entry
+	else
+		echo $name
+		mv $entry $DIR/$name
+	fi
+done
+

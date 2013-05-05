@@ -100,13 +100,11 @@ When a node $n$ is generated we only compute $h_1(n)$ and $n$ is added to
 \OPEN ~(Lines 11 -- 13), without computing $h_2(n)$ yet.
 When $n$ is first removed from \OPEN~(Lines 7 -- 10), we compute $h_2(n)$ and
 reinsert it into \OPEN, this time with $f_{max}(n)$.%(h_1,h_2)$.
-%Later on in this paper we discuss several important implementation details, %which further enhance $\lazyastar$.
 
 It is easy to see that \lazyastar~is as informative as \astarmax, as they both
 generate and expand and the same set of nodes (up to differences caused by
 tie-breaking). The reason is that a node $n$ is expanded by both \astarmax~and
-by \lazyastar~when $f_{max}(n)$ is the best $f$-value in \OPEN. %However, different
-% actions are taken while the node is in \OPEN.
+by \lazyastar~when $f_{max}(n)$ is the best $f$-value in \OPEN.
 
 In its general form \astar~generates many nodes that it does not expand. These
 nodes, called {\em surplus} nodes~\cite{Felner2012}, are in \OPEN~when we
@@ -201,10 +199,7 @@ $t_e+b(n)t_d$ time, but because computing $h_2$ would have cost $t_d$, the
 regret is $t_e+(b(n)-1)t_d$.
 
 Let us denote the probability that $h_2$ is helpful by
-$p_h$.
-%Due to line 2 in the table,
-The expected regret of computing $h_2$ is thus $(1-p_h) t_d$.
-%Due to line 3 in the table,
+$p_h$. The expected regret of computing $h_2$ is thus $(1-p_h) t_d$.
 On other hand, the expected regret of bypassing $h_2$ is $p_h(
 t_e+(b(n)-1)t_d)$. As we wish to minimize the expected regret, we should thus evaluate $h_2$ just when:
 \begin{equation}
@@ -295,7 +290,7 @@ lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Go
          12 & 454171 & 1.128  & 454,171  & 95,118  & 359,053 & 0.621   & 807,846 &  277,783 & 428,686 &  101,377   & 0.465  \\ \hline
 \end{tabular}
 \end{small}
-\caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}\vspace{-0.3cm}
+\caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
 \label{tbl:rla-rational-lazy-a-star}
 \end{table}
 
@@ -351,6 +346,23 @@ effective computational overhead, with little or no adverse effect in
 the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
 performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
+
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|l | c | c | c | } \hline
+  &\astarmax&\lazyastar&\rationallazyastar\\ \hline 
+$h_1$ & 1,482,271 & 1,482,271 & 1,521,163 \\ \hline
+$t_1, sec$ & 0.979     & 0.979     & 1.026 \\ \hline
+$h_2$ & 1,482,271 & 1,117,826 & 868,182 \\ \hline
+$t_2, sec$ & 4.122     & 2.425     & 1.938 \\ \hline
+$t_1+t_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
+\end{tabular}
+\end{center}
+\caption{Weighted 15 puzzle: comparison of heuristic computation times in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
+\label{tbl:rla-amax-la-rla-times}
+\end{table}
+
 
 \subsection{Conclusion}
 

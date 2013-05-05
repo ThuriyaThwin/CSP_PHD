@@ -41,7 +41,7 @@ that VOI estimation indeed does not consume excessive computational
 resources.
 
 \section{The Measurement Selection Problem}
-\label{sec:greedy}
+\label{sec:raticomp-greedy}
 
 Let us examine the following optimization problem:
 given a set of items of unknown utility (but a
@@ -115,7 +115,7 @@ perform a probe.
 \hangafter=0
 {\bf SVM parameter optimization:} Classification accuracy of a support
 vector machine (SVM) depends on one or more parameters (see
-Section~\ref{sec:svm} for a case study). While there are heuristics
+Section~\ref{sec:raticomp-svm} for a case study). While there are heuristics
 for selecting good parameter values for particular kernel types and
 data sets, several combinations of parameters must be tried before a
 good one can be chosen. A good setting must be found under certain time
@@ -248,7 +248,7 @@ an improvement in the algorithm due to selective VOI
 recomputation.
 
 \section{Rational Computation of the Value of Information}
-\label{sec:rational}
+\label{sec:raticomp-rational}
 
 For the selective VOI recomputation, the VOI of each
 measurement is modeled as {\em known with uncertainty}. The belief
@@ -355,7 +355,7 @@ where
 \end{itemize}
 
 \section{ Obtaining Uncertainty Parameters}
-\label{sec:uncertainty}
+\label{sec:raticomp-uncertainty}
 
 Uncertainty variance $\tau^2$ depends on the current beliefs about
 item features. Beliefs are changed with each measurement, and the
@@ -394,7 +394,7 @@ the same run proved to be robust and easy to implement by gradually
 updating $\tau^2$ after each VOI recomputation.
 
 \section{ Computation Time}
-\label{sec:comptime}
+\label{sec:raticomp-comptime}
 
 Influence of the rational VOI recomputation on the computation time
 can be estimated under the assumption that there are potentially many
@@ -432,10 +432,10 @@ cost:
 \label{eq:eta}
 \end{equation}
 where $\alpha$ is a constant.  Empirical evaluations
-(Section~\ref{sec:empirical}) confirm this estimate.
+(Section~\ref{sec:raticomp-empirical}) confirm this estimate.
 
 \section{ Empirical Evaluation}
-\label{sec:empirical}
+\label{sec:raticomp-empirical}
 
 Experiments in this section compare performance of the algorithm that recomputes the VOI
 selectively with the original algorithm in which the VOI
@@ -517,7 +517,7 @@ myopic scheme, and in Figure~\ref{fig:ackley-blinkered} for the
 blinkered scheme \cite{TolpinShimony.blinkered}.
 
 \subsection{SVM Parameter Search}
-\label{sec:svm}
+\label{sec:raticomp-svm}
 
 \begin{figure}[h]
 \centering
@@ -561,7 +561,7 @@ both on the problem properties and on the VOI estimate used in the
 algorithm.
 
 \section{Conclusion and Further Research}
-\label{sec:conclusion}
+\label{sec:raticomp-conclusion}
 
 This chapter proposes an improvement to a widely used class of VOI-based
 optimization algorithms. The improvement allows to decrease the

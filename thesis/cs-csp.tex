@@ -30,22 +30,22 @@ Following the metareasoning approach, the value of information (VOI) of
 a heuristic is defined in terms of total search time saved, and the
 heuristic is computed such that the expected net VOI is positive.
 
-We begin with background on metareasoning and CSP (Section~\ref{sec:background}), 
+We begin with background on metareasoning and CSP (Section~\ref{sec:csp-background}), 
 followed by a re-statement of value ordering in terms
-of rational metareasoning (Section~\ref{sec:generic}), allowing a definition of VOI
+of rational metareasoning (Section~\ref{sec:csp-generic}), allowing a definition of VOI
 of a value-ordering heuristics --- a contribution of this paper.
 This scheme is then instantiated to handle
-our case-study of backtracking search in CSP (Section~\ref{sec:csp-rational}),
+our case-study of backtracking search in CSP (Section~\ref{sec:csp-csp-rational}),
 with parameters specific to value-ordering
 heuristics based on solution-count estimates, the main contribution of this paper.
-Empirical results (Section~\ref{sec:empirical})
+Empirical results (Section~\ref{sec:csp-empirical})
 show that the proposed mechanism successfully balances the tradeoff
 between decreasing backtracking and
 heuristic computational overhead, resulting in a significant overall search time reduction.
 Other aspects of such tradeoffs are also analyzed empirically.
-Finally, related work is examined (Section~\ref{sec:discussion}), and
+Finally, related work is examined (Section~\ref{sec:csp-discussion}), and
 possible future extensions of the proposed mechanism are discussed
-(Section~\ref{sec:summary}).
+(Section~\ref{sec:csp-summary}).
 
 
 \subsection{Constraint Satisfaction}
@@ -112,7 +112,7 @@ independently of the choice of implementation, to decide when
 to deploy these heuristics.
 
 \subsection{Rational Value-Ordering}
-\label{sec:generic}
+\label{sec:csp-generic}
 
 The role of (dynamic) value ordering is to determine the order of
 values to assign to a variable $X_k$ from its domain $D_k$, at a
@@ -161,7 +161,7 @@ Since both $T^H$ (the ``time cost'' of $H$ in metareasoning terms)
 and $T^{s|\omega_H}$ contribute to $T$, even a heuristic that
 improves the estimates and ordering may not be useful.  It may be better not
 to deploy $H$ at all, or to update $T_i, p_i$ only for some of the assignments.
-According to the rational metareasoning approach (Section~\ref{sec:ratimeta}),
+According to the rational metareasoning approach (Section~\ref{sec:csp-ratimeta}),
 the intrinsic VOI $\Lambda_i$ of estimating $T_i, p_i$ for the $i$th assignment
 is the expected decrease in the expected search time:
 \begin{equation}
@@ -236,7 +236,7 @@ Finally, since (\ref{eq:backtracking-probability-estimate}), (\ref{eq:p-approx-o
 \end{eqnarray}
 
 \subsection{VOI of Solution Count Estimates}
-\label{sec:csp-rational}
+\label{sec:csp-csp-rational}
 
 The estimated solution count for an assignment may be used to estimate
 the expected time to find a solution for the assignment under the
@@ -297,7 +297,7 @@ V(n_\mathrm{max}) \propto |D_k|e^{-\nu}\sum_{n=n_\mathrm{max}}^\infty \! \! \lef
 The infinite series in
 (\ref{eq:csp-solcount-condition}) rapidly converges, and an
 approximation of the sum can be computed efficiently. As done
-in Section \ref{sec:empirical}, $\gamma$ can be learned
+in Section \ref{sec:csp-empirical}, $\gamma$ can be learned
 offline from a set of problem instances of a certain kind for the
 given implementation of the search algorithm and the solution counting
 heuristic.
@@ -340,7 +340,7 @@ estimates of value assignments, is returned
 \end{algorithm}
 
 \subsection{Empirical Evaluation}
-\label{sec:empirical}
+\label{sec:csp-empirical}
 
 %The dependence of the searchm time on $\gamma$
 %(\ref{eq:csp-solcount-condition}) over a range of constraint satisfaction
@@ -383,7 +383,7 @@ approximation for this implementation. The source code is available from
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.67]{csp-benchmarks.pdf}
+\includegraphics[scale=0.75]{csp-benchmarks.pdf}
 \caption{Influence of $\gamma$ in CSP benchmarks}
 \label{fig:benchmarks}
 \end{figure}
@@ -438,7 +438,7 @@ occasions} selected using rational metareasoning.
 
 \begin{figure}[h] 
 \centering
-\includegraphics[scale=0.67]{csp-random-problems-arrows+legend.pdf}
+\includegraphics[scale=0.75]{csp-random-problems-arrows+legend.pdf}
 \caption{Search time comparison on sets of random instances (using
   Model RB)}
 \label{fig:random-problems}
@@ -563,7 +563,7 @@ random         & 31.421                  & 42.085                    & 20.038
 \end{table}
 
 \subsection{Discussion and Related Work}
-\label{sec:discussion}
+\label{sec:csp-discussion}
 
 The principles of bounded rationality appear in
 \cite{Horvitz.reasoningabout}. \cite{Russell.right}
@@ -624,7 +624,7 @@ computational overhead, with an improvement in
 performance for problems of different size and hardness.
 
 \subsection{Summary and Future Research}
-\label{sec:summary}
+\label{sec:csp-summary}
 
 This paper suggests a model for adaptive deployment of value ordering
 heuristics in algorithms for constraint satisfaction problems. As a

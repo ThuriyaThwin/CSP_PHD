@@ -27,7 +27,7 @@ of Bernoulli arms and on Computer GO, showing the improved
 performance.
 
 \subsection{Background and Related Work}
-\label{sec:related-work}
+\label{sec:mcts-related-work}
 
 Monte-Carlo tree search was initially suggested as a scheme for
 finding approximately optimal policies for Markov Decision Processes
@@ -55,7 +55,7 @@ $\mu_*$ and the expected reward $\mu_j$ of the empirically best arm
 $\overline X_j=\max_i\overline X_i$:
 \begin{equation}
 \IE r=\sum_{j=1}^K\Delta_j\Pr(\overline X_j=\max_i\overline X_i)
-\label{eqn:simple-regret}
+\label{eqn:mcts-simple-regret}
 \end{equation}
 where $\Delta_j=\mu_*-\mu_j$.
 \end{dfn}
@@ -110,11 +110,11 @@ $N$ times, and the number of
 samples already taken from the $i$th arm by $n_i$.
 \begin{thm} $\Lambda_i^b$ is bounded from above as
 \begin{align}
-\label{eqn:thm-be}
-  \Lambda_\alpha^b&\le \frac {N \overline X_\beta^{n_\beta}} {n_\alpha} \Pr(\overline X_\alpha^{n_\alpha+N}\le\overline X_\beta^{n_\beta})\nonumber\\
-\Lambda_{i|i\ne\alpha}^b&\le \frac {N(1-\overline X_\alpha^{n_\alpha})} {n_i}\Pr(\overline   X_i^{{n_i}+N}\ge\overline X_\alpha^{n_\alpha})
+\label{eqn:mcts-thm-be}
+\Lambda_{i|i\ne\alpha}^b&\le \frac {N(1-\overline X_\alpha^{n_\alpha})} {n_i}\Pr(\overline   X_i^{{n_i}+N}\ge\overline X_\alpha^{n_\alpha})\nonumber\\
+\Lambda_\alpha^b&\le \frac {N \overline X_\beta^{n_\beta}} {n_\alpha} \Pr(\overline X_\alpha^{n_\alpha+N}\le\overline X_\beta^{n_\beta})
 \end{align}
-\label{thm:be}
+\label{thm:mcts-be}
 \end{thm}
 \begin{proof} For the case $i\ne \alpha$, the probability that the
 	  $i$th arm is finally chosen instead of $\alpha$ is
@@ -135,72 +135,65 @@ samples already taken from the $i$th arm by $n_i$.
 
 The probabilities can be bounded from above using the
 Hoeffding inequality \cite{Hoeffding.ineq}:
-\begin{thm} The probabilities in Equation~(\ref{eqn:thm-be}) are bounded from above as
+\begin{thm} For any $A\ge\overline X_{i|i\ne\alpha}^{n_i}$ and $B\le\overline X_\alpha^{n_\alpha}$ the probabilities $\Pr(\overline X_{i|i\ne\alpha}^{n_i+N} \ge A)$, $\Pr(\overline X_\alpha^{{n_\alpha}+N} \le B)$ are bounded from above as
 \begin{align}
-  \label{eqn:probound-blnk-hoeffding}
-  \Pr&(\overline X_\alpha^{{n_\alpha}+N} \le \overline X_\beta^{n_\beta})
-  \le 2\exp\left(- \varphi (\overline X_\alpha^{n_\alpha} - \overline X_\beta^{n_\beta})^2 n_\alpha
-  \right)\nonumber\\
-  \Pr&(\overline X_{i|i\ne\alpha}^{n_i+N} \ge \overline X_\alpha^{n_\alpha})
-  \le 2\exp\left(- \varphi (\overline X_\alpha^{n_\alpha} -\overline  X_i^{n_i})^2 n_i \right)
+  \label{eqn:mcts-probound-blnk-hoeffding}
+  \Pr&(\overline X_{i|i\ne\alpha}^{n_i+N} \ge A) \le 2\exp\left(- \varphi (A -\overline  X_i^{n_i})^2 n_i \right)\nonumber\\
+  \Pr&(\overline X_\alpha^{{n_\alpha}+N} \le B) \le 2\exp\left(- \varphi (\overline X_\alpha^{n_\alpha} - B)^2 n_\alpha\right)
 \end{align}
 where $\varphi=\min \left(2(\frac {1+n/N} {1+\sqrt {n/N}})^2\right)=8(\sqrt 2 - 1)^2 > 1.37$.
-\label{thm:hoeffding-prob-bounds}
+\label{thm:mcts-hoeffding-prob-bounds}
 \end{thm}
 
 
 \begin{proof}
-	Equation~(\ref{eqn:probound-blnk-hoeffding}) follows from the
-	observation that if $i\ne\alpha$, $\overline X_i^{n_i+N}>\overline X_\alpha^{n_i}$
+	Equation~(\ref{eqn:mcts-probound-blnk-hoeffding}) follows from the
+	observation that if $i\ne\alpha$, $\overline X_i^{n_i+N}>A$
 	if and only if the mean $\overline X_i^N$ of $N$ samples from $n_i+1$
-	to $n_i+N$ is at least $\overline X_\alpha^{n_i}+(\overline X_\alpha^{n_i}-\overline
+	to $n_i+N$ is at least $A+(A-\overline
 	X_i^{n_i})\frac {n_i} N$.
 
 	For any $\delta$, the probability that $\overline X_i^{n_i+N}$ is greater
-	than $\overline X_\alpha^{n_i}$ is less than the probability that
+	than $A$ is less than the probability that
 	$\IE[X_i]\ge\overline X_i^n+\delta$
-	\emph{or} $\overline X_i^N\ge \IE[X_i]+\overline X_\alpha^{n_\alpha}
-	- \overline X_i^{n_i} - \delta +(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})\frac {n_i} N$,
+	\emph{or} $\overline X_i^N\ge \IE[X_i]+A -\overline X_i^{n_i} - \delta +(A - \overline X_i^{n_i})\frac {n_i} N$,
 	thus, by the union bound, less than the sum of the probabilities:
 	\begin{align}
-	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_i})\nonumber\\
+	\Pr&(\overline X_i^{n_i+N}\ge A)\nonumber\\
 	   &\le\Pr(\IE[X_i]-\overline X_i^{n_i} \ge \delta)\\
-	   &+\Pr\left(\overline X_i^N - \IE[X_i] \ge \overline X_\alpha^{n_\alpha}
-	           - \overline X_i^{n_i} - \delta +(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})\frac {n_i} N\right)\nonumber
+	   &+\Pr\left(\overline X_i^N - \IE[X_i] \ge A
+	           - \overline X_i^{n_i} - \delta +(A - \overline X_i^{n_i})\frac {n_i} N\right)\nonumber
 	\end{align}
 	Bounding the probabilities on the right-hand side using the Hoeffding
 	inequality, obtain:
 	\begin{align}
-	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_\alpha})\nonumber\\
+	\Pr&(\overline X_i^{n_i+N}\ge A)\nonumber\\
 	    &\le\exp(-2\delta^2n_i)\nonumber\\
-	    &+\exp\left(-2\left((\overline X_\alpha^{n_\alpha}
-	         - \overline X_i^{n_i})\left(1+\frac {n_i} N\right)
-	         - \delta\right)^2N\right)
-	\label{eqn:app-hoeffding-le-maxexp}
+	    &+\exp\left(-2\left((A - \overline X_i^{n_i})\left(1+\frac {n_i} N\right)-\delta\right)^2N\right)
+	\label{eqn:mcts-app-hoeffding-le-maxexp}
 	\end{align}
 	Find $\delta$ for which the two terms on the right-hand side of
-	Equation~(\ref{eqn:app-hoeffding-le-maxexp}) are equal:
+	Equation~(\ref{eqn:mcts-app-hoeffding-le-maxexp}) are equal:
 	\begin{equation}
-	\exp(-\delta^2n) = \exp\left(-2\left((\overline X_\alpha - \overline X_i)(1+\frac {n_i} N) - \delta\right)^2N\right)\label{eqn:app-hoeffding-eq-exp}
+	\exp(-\delta^2n) = \exp\left(-2\left((A - \overline X_i^{n_i})(1+\frac {n_i} N) - \delta\right)^2N\right)\label{eqn:mcts-app-hoeffding-eq-exp}
 	\end{equation}
-	Solve Equation~(\ref{eqn:app-hoeffding-eq-exp}) for $\delta$: $\delta=\frac {1+\frac {n_i} N} {1+\sqrt {\frac {n_i} N}} (\overline X_\alpha^{n_\alpha}
-	- \overline X_i^{n_i}) \ge 2(\sqrt 2 - 1)(\overline X_\alpha^{n_\alpha}-\overline X_i^{n_i})$. Substitute $\delta$ into 
-	Equation~(\ref{eqn:app-hoeffding-le-maxexp}) and obtain
+	Solve Equation~(\ref{eqn:mcts-app-hoeffding-eq-exp}) for $\delta$: $\delta=\frac {1+\frac {n_i} N} {1+\sqrt {\frac {n_i} N}} (A - \overline X_i^{n_i}) \ge 2(\sqrt 2 - 1)(A-\overline X_i^{n_i})$. Substitute $\delta$ into 
+	Equation~(\ref{eqn:mcts-app-hoeffding-le-maxexp}) and obtain
 	\begin{align}
-	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_\alpha}) \nonumber\\
+	\Pr&(\overline X_i^{n_i+N}\ge A) \nonumber\\
 	& \le 2\exp\left(-2\left( \frac {1+\frac {n_i} N} {1+\sqrt {\frac {n_i} N}}
 	                          (\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})\right)^2 n_i\right)\nonumber \\
-	& \le 2\exp(-8(\sqrt 2 - 1)^2(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})^2n_i)\nonumber\\
-	& = 2\exp(-\varphi(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})^2n_i)
+	& \le 2\exp(-8(\sqrt 2 - 1)^2(A - \overline X_i^{n_i})^2n_i)\nonumber\\
+	& = 2\exp(-\varphi(A - \overline X_i^{n_i})^2n_i)
 	\end{align}
 	Derivation for the case $i=\alpha$ is similar.
 \end{proof}	
 
 \begin{crl}
 An upper bound on the VOI estimate $\Lambda_i^b$ is obtained
-by substituting Equation~(\ref{eqn:probound-blnk-hoeffding}) into (\ref{eqn:thm-be}).
+by substituting Equation~(\ref{eqn:mcts-probound-blnk-hoeffding}) into (\ref{eqn:mcts-thm-be}).
 \begin{align}
-  \label{eqn:bound-blnk-hoeffding}
+  \label{eqn:mcts-bound-blnk-hoeffding}
   \Lambda&_{i|i\ne\alpha}^b\le \hat\Lambda_i^b=  \frac {2N(1-\overline  X_\alpha^{n_\alpha})} {n_i}\exp\left(- \varphi(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})^2 n_i\right)\\
   \Lambda&_\alpha^b \le \hat\Lambda_\alpha^b=\frac {2N\overline X_\beta^{n_\beta}} {n_\alpha}\exp\left(- \varphi(\overline X_\alpha^{n_\alpha} - \overline X_\beta^{n_\beta})^2 n_\alpha\right)\nonumber
 \end{align}
@@ -208,10 +201,10 @@ by substituting Equation~(\ref{eqn:probound-blnk-hoeffding}) into (\ref{eqn:thm-
 \end{crl}
 
 More refined bounds can be obtained through tighter estimates on the
-probabilities in Equation~(\ref{eqn:thm-be}), for example, based on the empirical Bernstein
+probabilities in Equation~(\ref{eqn:mcts-thm-be}), for example, based on the empirical Bernstein
 inequality~\cite{MaurerPontil.benrstein}, or through a more careful
-application of the Hoeffding inequality, resulting in Theorem~\ref{thm:better-bound-blnk-hoeffding}:
-\begin{thm}
+application of the Hoeffding inequality, resulting in Theorem~\ref{thm:mcts-better-bound-blnk-hoeffding}:
+\begin{thm} $\Lambda_i^b$ is bounded from above as
 \begin{align}
 \Lambda_{i|i\ne \alpha}^b&\le\frac {\sqrt \pi} {\sqrt {\varphi n_i}}
   \left[\mathrm{erf}\left(\left(\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})-\overline X_i^{n_i}\right)\sqrt {\varphi n_i}\right)
@@ -219,38 +212,29 @@ application of the Hoeffding inequality, resulting in Theorem~\ref{thm:better-bo
 \Lambda_\alpha^b&\le\frac {\sqrt \pi} {\sqrt {\varphi n_\alpha}}
   \left[\mathrm{erf}\left(\left(\overline X_\alpha^{n_\alpha}-\overline X_\beta^{n_\beta}+\frac N {N+n_\alpha} \overline X_\beta^{n_\beta}\right)\sqrt {\varphi n_\alpha}\right)
       -\mathrm{erf}\left((\overline X_\alpha^{n_\alpha} - \overline X_\beta^{n_\beta})\sqrt{\varphi n_\alpha}\right)\right]
-\label{eqn:erf-blinkered}
+\label{eqn:mcts-erf-blinkered}
 \end{align}
-\label{thm:better-bound-blnk-hoeffding}
+\label{thm:mcts-better-bound-blnk-hoeffding}
 \end{thm}
 
-\begin{proof}
-
+\begin{proof}By definition,
+\begin{equation}
+\Lambda_i^b=\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}(x-\overline X_\alpha^{n_\alpha})\Pr\left(\overline X_i^{n_i+N}=x\right)dx
+\label{eqn:mcts-lambda-blinkered-by-def}
+\end{equation}
+Integrating by parts, obtain
 \begin{align}
-\Lambda_i^p&=\int\limits_{\overline X_\alpha}^1\Pr[\overline X_i'=x]dx\nonumber\\
-&\le \int\limits_{\overline X_\alpha}^1e^{-2(x-\overline X_i)^2n_i}dx
-=\int\limits_{(\overline X_\alpha - \overline X_i)\sqrt{2n_i}}^{(1- \overline X_i)\sqrt{2n_i}}e^{-u^2}du\nonumber\\
-&=\frac {\sqrt \pi} {2 \sqrt {2n_i}}
-  \left[\mathrm{erf}\left((1-\overline X_i)\sqrt {2n_i}\right)
-      -\mathrm{erf}\left((\overline X_\alpha - \overline X_i)\sqrt{2n_i}\right)\right]\nonumber\\
-\Lambda_\alpha^p&\le\frac {\sqrt \pi} {2 \sqrt {2n_\alpha}}
-  \left[\mathrm{erf}\left(\overline X_\alpha\sqrt {2n_\alpha}\right)
-      -\mathrm{erf}\left((\overline X_\alpha - \overline X_\beta)\sqrt{2n_\alpha}\right)\right]
-\label{eqn:erf-perfect}
+\Lambda_i^b=&-\left.(x-\overline X_\alpha^{n_\alpha})\Pr\left(\overline X_i^{n_i+N}\ge x\right)\right|_{\overline X_\alpha^{n_\alpha}}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}+\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}\Pr\left(\overline X_i^{n_i+N}\ge x\right)dx\nonumber\\
+=&\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}\Pr\left(\overline X_i^{n_i+N}\ge x\right)dx
+\label{eqn:mcts-better-bound-by-parts}
 \end{align}
-
-\paragraph{Blinkered VOI:} 
-
+Substituting the bound on $\Pr\left(\overline X_i^{n_i+N}\ge x\right)$ from Theorem~\ref{thm:mcts-hoeffding-prob-bounds} into (\ref{eqn:mcts-better-bound-by-parts}), finally obtain:
 \begin{align}
-\Lambda_i^b&\le\frac {N\sqrt \pi} {n_i \sqrt {\varphi n_i}}
-  \left[\mathrm{erf}\left((1-\overline X_i)\sqrt {\varphi n_i}\right)
-      -\mathrm{erf}\left((\overline X_\alpha - \overline X_i)\sqrt{\varphi n_i}\right)\right]\nonumber\\
-\Lambda_\alpha^b&\le\frac {N\sqrt \pi} {n_\alpha \sqrt {\varphi n_\alpha}}
-  \left[\mathrm{erf}\left(\overline X_\alpha\sqrt {\varphi n_\alpha}\right)
-      -\mathrm{erf}\left((\overline X_\alpha - \overline X_\beta)\sqrt{\varphi n_\alpha}\right)\right]
-\label{eqn:erf-blinkered}
+\Lambda_i^b\le&\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}2\exp\left(-\varphi(x-\overline X_i^{n_i})n_i\right)dx\nonumber\\
+ =&\frac {\sqrt \pi} {\sqrt {\varphi n_i}}
+  \left[\mathrm{erf}\left(\left(\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})-\overline X_i^{n_i}\right)\sqrt {\varphi n_i}\right)-\mathrm{erf}\left((\overline X_\alpha - \overline X_i^{n_i})\sqrt{\varphi n_i}\right)\right]
 \end{align}
-
+Derivation for the case $i=\alpha$ is similar.
 \end{proof}
 
 
@@ -264,7 +248,7 @@ Assuming that the sample costs are constant,
 a semi-myopic policy will decide to test the arm that has the best
 current VOI estimate. 
 When the distributions are unknown, it makes sense
-to use the upper bounds established in Theorem~\ref{thm:be}, as we do in the following.
+to use the upper bounds established in Theorem~\ref{thm:mcts-be}, as we do in the following.
 This evaluation assumes a fixed budget of samples, which is
 completely used up by each of the candidate schemes, making a stopping
 criterion irrelevant.
@@ -284,8 +268,8 @@ the mean rewards of the arms are distributed uniformly in~$[0,1]$,
 for a range of sample budgets~$200..2000$, with multiplicative
 step of~$2$, averaging over 10000 trials.  We compare UCB1 with the 
 policies based on the bounds in
-Equation~(\ref{eqn:bound-blnk-hoeffding}) (VOI) and
-Equation~(\ref{eqn:erf-blinkered}) (VOI+).
+Equation~(\ref{eqn:mcts-bound-blnk-hoeffding}) (VOI) and
+Equation~(\ref{eqn:mcts-erf-blinkered}) (VOI+).
 UCB1 is always considerably worse than the VOI-aware sampling policies.
 
 
@@ -293,7 +277,7 @@ UCB1 is always considerably worse than the VOI-aware sampling policies.
 
 
 \subsection{Sampling in trees}
-\label{sec:empirical-evaluation}\label{mcts-section}
+\label{sec:mcts-empirical-evaluation}
 
 The previous section addressed the selection problem in the flat case.
 Selection in trees is more complicated.  The goal of Monte-Carlo tree 
@@ -311,7 +295,7 @@ We thus propose the following hybrid sampling scheme \cite{TolpinShimony.mcts}:
 	at \emph{non-root nodes}, sample using UCT.
 
 Strictly speaking, even at the root node the stationarity assumptions\footnote{This is not a restriction,
-however, of the general formalism in Section~\ref{sec:optimal}.} 
+however, of the general formalism in Section~\ref{sec:mcts-optimal}.} 
 underlying our belief-state
 MDP for selection do not hold exactly. UCT is an adaptive scheme, and therefore the values
 generated by sampling at non-root nodes will typically cause values observed at
@@ -319,21 +303,21 @@ children of the root node to be non-stationary.
 Nevertheless, sampling based on VOI estimates
 computed as for stationary distributions works well in
 practice. As illustrated
-by the empirical evaluation (Section~\ref{sec:empirical-evaluation}),
+by the empirical evaluation (Section~\ref{sec:mcts-empirical-evaluation}),
 estimates based on upper bounds on the VOI result in good sampling
 policies, which exhibit performance comparable to the performance of
 some state-of-the-art heuristic algorithms.
 
 
 \subsubsection{Stopping criterion}
-\label{sec:control-stopping-criterion}
+\label{sec:mcts-control-stopping-criterion}
 
 When a sample has a known cost commensurable with the value of
 information of a measurement, an upper bound on the intrinsic VOI can also
 be used to stop the sampling if the intrinsic VOI of any arm
 is less than the total cost of sampling $C$: $\max_i \Lambda_i \le C$.
 
-The VOI estimates of Equations~(\ref{eqn:thm-be}) and~({eqn:bound-blnk-hoeffding})
+The VOI estimates of Equations~(\ref{eqn:mcts-thm-be}) and~({eqn:mcts-bound-blnk-hoeffding})
 include the remaining sample budget $N$ as a
 factor, but given the cost of a single sample $c$, the cost of the
 remaining samples accounted for in estimating the intrinsic VOI is
@@ -346,16 +330,16 @@ giving a reasonable stopping criterion:
 \frac 1 N \max_i\Lambda_i^b\le &\max_i\frac {(1-\overline X_\alpha^{n_\alpha})} {n_i}\Pr(\overline
   X_i^{n_i+N}\ge\overline X_\alpha^{n_\alpha})\le c\nonumber\\
     &\forall i: i\ne\alpha
-\label{eqn:stopping-blnk}
+\label{eqn:mcts-stopping-blnk}
 \end{align}
-The empirical evaluation (Section~\ref{sec:empirical-evaluation})
+The empirical evaluation (Section~\ref{sec:mcts-empirical-evaluation})
 confirms the viability of this stopping criterion and illustrates the
 influence of the sample cost $c$ on the performance of
 the sampling policy. When the sample cost $c$ is unknown, one can perform initial calibration experiments
 to determine a reasonable value, as done in the following.
 
 \subsubsection{Sample redistribution in trees}
-\label{sec:control-redistribution}
+\label{sec:mcts-control-redistribution}
 
 The above hybrid approach assumes
 that the information obtained from rollouts in the
@@ -374,7 +358,7 @@ Alternately, one can behave myopically with respect to the search tree depth:
 \begin{enumerate}
 \item Estimate VOI as though the information is discarded after each step,
 \item Stop early if the VOI is below a certain threshold
-   (see Section~\ref{sec:control-stopping-criterion}), and
+   (see Section~\ref{sec:mcts-control-stopping-criterion}), and
 \item Save the unused sample budget for search in future states, such that
    if the nominal budget is $N$, and the unused budget in the last state
    is $N_u$, the search budget in the next state will be $N+N_u$.
@@ -383,14 +367,14 @@ In this approach, the cost $c$ of a sample in the current state is the
 VOI of increasing the budget of a future state by one sample.  It is
 unclear whether this cost can be accurately estimated, but supposing
 a fixed value for a given problem type and algorithm implementation
-would work. Indeed, the empirical evaluation (Section~\ref{sec:emp-go})
+would work. Indeed, the empirical evaluation (Section~\ref{sec:mcts-emp-go})
 confirms that stopping and sample redistribution based on a learned
 fixed cost  substantially improve the performance of the VOI-based
 sampling policy in game tree search.
 
 
 \subsubsection{Playing Go against UCT}
-\label{sec:emp-go}
+\label{sec:mcts-emp-go}
 
 The hybrid policies were compared on the game Go, a search domain
 in which UCT-based MCTS has been particularly successful
@@ -444,7 +428,7 @@ is almost always better than UCT, and reaches the winning rate of
 
 Figure~\ref{fig:voi-wins}
 shows the winning rate of VOI against UCT $c=10^{-6}$. In agreement with the intuition
-(Figure~\ref{sec:control-redistribution}), VOI-based stopping and
+(Figure~\ref{sec:mcts-control-redistribution}), VOI-based stopping and
 sample redistribution is most influential for intermediate numbers of
 samples per ply. When the maximum number of samples is too low, early
 stopping would result in poorly selected moves. On the other hand,

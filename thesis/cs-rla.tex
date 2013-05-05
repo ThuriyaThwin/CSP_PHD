@@ -184,10 +184,10 @@ $h_2$ not helpful & $t_d$      & 0 \\
 \end{tabular}
 \end{center}
 \caption{Time losses in Rational Lazy A*}
-\label{tbl:rational-lazy-a-time}
+\label{tbl:rla-rational-lazy-a-time}
 \end{table}
 
-Table~\ref{tbl:rational-lazy-a-time}
+Table~\ref{tbl:rla-rational-lazy-a-time}
 summarizes the regret of each possible decision, for each possible future
 outcome; each column in the table represents a decision, while each row
 represents a future outcome.
@@ -226,7 +226,7 @@ For $p_h b(n) < 1$,  the decision of whether to evaluate $h_2$
 depends on the values of $t_d$ and $t_e$:
 \begin{equation}
 \mbox{\bf evaluate }h_2\mbox{ \bf if }t_d<\frac {p_h} {1-p_hb(n)} t_e
-\label{eqn:criterion-general}
+\label{eqn:rla-criterion-general}
 \end{equation}
 Let us analyze $t_d$ and $t_e$. Denote by
 %$t_o$  the time
@@ -235,13 +235,13 @@ $t_c$ the time to generate the children of $n$. Then we have:
 \begin{align}
 t_d&=t_2+t_o\nonumber\\
 t_e&=t_o + t_c+b (n) t_1 + b(n) t_o
-\label{eqn:t-del-exp-expanded}
+\label{eqn:rla-t-del-exp-expanded}
 \end{align}
 By substituting
-(\ref{eqn:t-del-exp-expanded}) into (\ref{eqn:criterion-general}), obtain: {\bf evaluate} $h_2$ {\bf if}:
+(\ref{eqn:rla-t-del-exp-expanded}) into (\ref{eqn:rla-criterion-general}), obtain: {\bf evaluate} $h_2$ {\bf if}:
 \begin{equation}
 {t_2+t_o}<\frac {p_h \left[{t_c} + b (n)t_1+(b(n)+1){t_o}\right]} {1-p_hb(n)}
-\label{eqn:criterion-expanded}
+\label{eqn:rla-criterion-expanded}
 \end{equation}
 The factor $\frac {p_h} {1-p_hb(n)}$ depends on the potentially unknown
 probability $p_h$, making it difficult to reach the optimum decision.
@@ -253,30 +253,30 @@ $t_o=\tau \log N_o$ for some $\tau$, when the size of \OPEN~is $N_o$.
 Evaluating $h_1$ is cheap in many domains, as is the
 case with MD in discrete domains, $t_o$ is the most significant part of
 $t_{e}$. In such cases,
-rule (\ref{eqn:criterion-expanded}) can be approximated as (\ref{eqn:criterion-gamma}):
+rule (\ref{eqn:rla-criterion-expanded}) can be approximated as (\ref{eqn:rla-criterion-gamma}):
 \begin{align}
   &\mbox{\bf evaluate }h_2\mbox{ \bf if } t_2 < \frac {\tau p_h} {1-p_hb(n)} (b(n)+1)\log N_o
-\label{eqn:criterion-gamma}
+\label{eqn:rla-criterion-gamma}
 \end{align}
-Rule (\ref{eqn:criterion-gamma})
+Rule (\ref{eqn:rla-criterion-gamma})
 recommends to evaluate $h_2$ mostly at late stages of the search,
 when the open list is large, and in nodes with a higher branching factor.
 
 In other domains, such as planning, both $t_1$ and $t_2$ are
 significantly greater than both $t_o$ and $t_c$, and terms
 not involving $t_1$ or $t_2$ can be dropped from
-(\ref{eqn:criterion-expanded}), resulting in Rule (\ref{eqn:criterion-beta}):
+(\ref{eqn:rla-criterion-expanded}), resulting in Rule (\ref{eqn:rla-criterion-beta}):
 \begin{align}
   &\mbox{\bf evaluate }h_2\mbox{ \bf if } \frac{t_2}{t_1} < \frac {p_hb(n)} {1-p_hb(n)}
-\label{eqn:criterion-beta}
+\label{eqn:rla-criterion-beta}
 \end{align}
-The right side of (\ref{eqn:criterion-beta}) grows with $b(n)$, and here it is beneficial to evaluate $h_2$
-only for nodes with a sufficiently large branching factor. On rearranging equation \ref{eqn:criterion-beta},
+The right side of (\ref{eqn:rla-criterion-beta}) grows with $b(n)$, and here it is beneficial to evaluate $h_2$
+only for nodes with a sufficiently large branching factor. On rearranging equation \ref{eqn:rla-criterion-beta},
 we get the criterion which we actually use for planning domains,
 which is to evaluate $h_2$ only when:
 \begin{equation}
-b(n) > \frac{t_2}{t_1 p_h (1 + \frac{t_2}{t_1})}
-\label{eq:planning-rule}
+b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
+\label{eqn:rla-planning-rule}
 \end{equation}
 
 \subsection{Empirical results}
@@ -296,7 +296,7 @@ lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Go
 \end{tabular}
 \end{small}
 \caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}\vspace{-0.3cm}
-\label{tbl:rational-lazy-a-star}
+\label{tbl:rla-rational-lazy-a-star}
 \end{table}
 
 In the uniform-cost 15 puzzle, the open list contains only a few different
@@ -316,11 +316,11 @@ reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values
 from leaves were propagated to $n$.
 
 
-Table~\ref{tbl:rational-lazy-a-star} presents the results averaged
+Table~\ref{tbl:rla-rational-lazy-a-star} presents the results averaged
 on all instances solved. The running times are reported relative
 to the time of \astar with WMD (with no lookahead), which generated
 2012643 nodes (not reported in the table). The first 3 columns of Table
-\ref{tbl:rational-lazy-a-star} shows the results for \astar~with the
+\ref{tbl:rla-rational-lazy-a-star} shows the results for \astar~with the
 lookahead heuristic for different lookahead depths. The best time is
 achieved for lookahead 6, (0.601 compared to \astar~with WMD). The fact
 that the time is not continuing to decrease with deeper lookaheads is

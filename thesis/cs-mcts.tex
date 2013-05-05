@@ -56,7 +56,6 @@ $\overline X_j=\max_i\overline X_i$:
 \begin{equation}
 \IE r=\sum_{j=1}^K\Delta_j\Pr(\overline X_j=\max_i\overline X_i)
 \label{eqn:simple-regret}
-\vspace{-8pt}
 \end{equation}
 where $\Delta_j=\mu_*-\mu_j$.
 \end{dfn}
@@ -115,7 +114,6 @@ samples already taken from the $i$th arm by $n_i$.
   \Lambda_\alpha^b&\le \frac {N \overline X_\beta^{n_\beta}} {n_\alpha} \Pr(\overline X_\alpha^{n_\alpha+N}\le\overline X_\beta^{n_\beta})\nonumber\\
 \Lambda_{i|i\ne\alpha}^b&\le \frac {N(1-\overline X_\alpha^{n_\alpha})} {n_i}\Pr(\overline   X_i^{{n_i}+N}\ge\overline X_\alpha^{n_\alpha})
 \end{align}
-\vspace{-24pt}
 \label{thm:be}
 \end{thm}
 \begin{proof} For the case $i\ne \alpha$, the probability that the
@@ -127,9 +125,9 @@ samples already taken from the $i$th arm by $n_i$.
 	\begin{align}
 	\label{eq:simplistic}
 	\frac{ N(1-\overline  X_\alpha^{n_\alpha})}
-	  {N+n_i}&\Pr(\overline X_i^{{n_i}+N}\hspace{-0.5em}\ge\overline X_\alpha^{n_\alpha})\nonumber \\
+	  {N+n_i}&\Pr(\overline X_i^{{n_i}+N}\ge\overline X_\alpha^{n_\alpha})\nonumber \\
 	&\le\frac{ N(1-\overline  X_\alpha^{n_\alpha})}
-	{n_i}\Pr(\overline X_i^{{n_i}+N}\hspace{-0.5em}\ge\overline X_\alpha^{n_\alpha})
+	{n_i}\Pr(\overline X_i^{{n_i}+N}\ge\overline X_\alpha^{n_\alpha})
 	\end{align}
 	  Proof for the case $i=\alpha$ is similar.
 \end{proof}
@@ -140,11 +138,11 @@ Hoeffding inequality \cite{Hoeffding.ineq}:
 \begin{thm} The probabilities in Equation~(\ref{eqn:thm-be}) are bounded from above as
 \begin{align}
   \label{eqn:probound-blnk-hoeffding}
-  \Pr&(\overline X_\alpha^{{n_\alpha}+N}\hspace{-6pt} \le \overline X_\beta^{n_\beta})
+  \Pr&(\overline X_\alpha^{{n_\alpha}+N} \le \overline X_\beta^{n_\beta})
   \le 2\exp\left(- \varphi (\overline X_\alpha^{n_\alpha} - \overline X_\beta^{n_\beta})^2 n_\alpha
   \right)\nonumber\\
-  \Pr&(\overline X_{i|i\ne\alpha}^{n_\alpha+N}\hspace{-6pt} \ge \overline X_\beta^{n_\beta})
-  \le 2\exp\left(- \varphi (\overline X_\alpha^{n_\alpha} -\overline  X_i^{n_i})^2 n_i \right)\hspace{-6pt}
+  \Pr&(\overline X_{i|i\ne\alpha}^{n_i+N} \ge \overline X_\alpha^{n_\alpha})
+  \le 2\exp\left(- \varphi (\overline X_\alpha^{n_\alpha} -\overline  X_i^{n_i})^2 n_i \right)
 \end{align}
 where $\varphi=\min \left(2(\frac {1+n/N} {1+\sqrt {n/N}})^2\right)=8(\sqrt 2 - 1)^2 > 1.37$.
 \label{thm:hoeffding-prob-bounds}
@@ -167,15 +165,15 @@ where $\varphi=\min \left(2(\frac {1+n/N} {1+\sqrt {n/N}})^2\right)=8(\sqrt 2 - 
 	\begin{align}
 	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_i})\nonumber\\
 	   &\le\Pr(\IE[X_i]-\overline X_i^{n_i} \ge \delta)\\
-	   &\hspace{0.25em}+\Pr\left(\overline X_i^N\hspace{-0.5em} - \IE[X_i] \ge \overline X_\alpha^{n_\alpha}\hspace{-0.5em}
-	           - \overline X_i^{n_i}\hspace{-0.5em} - \delta +(\overline X_\alpha^{n_\alpha}\hspace{-0.5em} - \overline X_i^{n_i})\frac {n_i} N\right)\nonumber
+	   &+\Pr\left(\overline X_i^N - \IE[X_i] \ge \overline X_\alpha^{n_\alpha}
+	           - \overline X_i^{n_i} - \delta +(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})\frac {n_i} N\right)\nonumber
 	\end{align}
 	Bounding the probabilities on the right-hand side using the Hoeffding
 	inequality, obtain:
 	\begin{align}
-	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_\alpha})\le \nonumber\\
-	    &\exp(-2\delta^2n_i)+\nonumber\\
-	    &\quad\exp\left(-2\left((\overline X_\alpha^{n_\alpha}\hspace{-0.5em}
+	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_\alpha})\nonumber\\
+	    &\le\exp(-2\delta^2n_i)\nonumber\\
+	    &+\exp\left(-2\left((\overline X_\alpha^{n_\alpha}
 	         - \overline X_i^{n_i})\left(1+\frac {n_i} N\right)
 	         - \delta\right)^2N\right)
 	\label{eqn:app-hoeffding-le-maxexp}
@@ -185,11 +183,11 @@ where $\varphi=\min \left(2(\frac {1+n/N} {1+\sqrt {n/N}})^2\right)=8(\sqrt 2 - 
 	\begin{equation}
 	\exp(-\delta^2n) = \exp\left(-2\left((\overline X_\alpha - \overline X_i)(1+\frac {n_i} N) - \delta\right)^2N\right)\label{eqn:app-hoeffding-eq-exp}
 	\end{equation}
-	Solve Equation~(\ref{eqn:app-hoeffding-eq-exp}) for $\delta$: $\delta=\frac {1+\frac {n_i} N} {1+\sqrt {\frac {n_i} N}} (\overline X_\alpha^{n_\alpha}\hspace{-0.5em}
-	- \overline X_i^{n_i}) \ge 2(\sqrt 2 - 1)(\overline X_\alpha^{n_\alpha}\hspace{-0.5em}-\overline X_i^{n_i})$. Substitute $\delta$ into 
+	Solve Equation~(\ref{eqn:app-hoeffding-eq-exp}) for $\delta$: $\delta=\frac {1+\frac {n_i} N} {1+\sqrt {\frac {n_i} N}} (\overline X_\alpha^{n_\alpha}
+	- \overline X_i^{n_i}) \ge 2(\sqrt 2 - 1)(\overline X_\alpha^{n_\alpha}-\overline X_i^{n_i})$. Substitute $\delta$ into 
 	Equation~(\ref{eqn:app-hoeffding-le-maxexp}) and obtain
 	\begin{align}
-	\Pr&(\overline X_i^{n_i}\ge \overline X_\alpha^{n_\alpha}) \nonumber\\
+	\Pr&(\overline X_i^{n_i+N}\ge \overline X_\alpha^{n_\alpha}) \nonumber\\
 	& \le 2\exp\left(-2\left( \frac {1+\frac {n_i} N} {1+\sqrt {\frac {n_i} N}}
 	                          (\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})\right)^2 n_i\right)\nonumber \\
 	& \le 2\exp(-8(\sqrt 2 - 1)^2(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})^2n_i)\nonumber\\
@@ -203,33 +201,35 @@ An upper bound on the VOI estimate $\Lambda_i^b$ is obtained
 by substituting Equation~(\ref{eqn:probound-blnk-hoeffding}) into (\ref{eqn:thm-be}).
 \begin{align}
   \label{eqn:bound-blnk-hoeffding}
-  \Lambda&_\alpha^b \le \hat\Lambda_\alpha^b=\frac {2N\overline X_\beta^{n_\beta}} {n_\alpha}\exp\left(- \varphi(\overline X_\alpha^{n_\alpha}\hspace{-0.5em} - \overline X_\beta^{n_\beta})^2 n_\alpha\right)\\
-  \Lambda&_{i|i\ne\alpha}^b\le \hat\Lambda_i^b=  \frac {2N(1-\overline  X_\alpha^{n_\alpha})} {n_i}\exp\left(- \varphi(\overline X_\alpha^{n_\alpha}\hspace{-0.5em} - \overline X_i^{n_i})^2 n_i\right)\nonumber
+  \Lambda&_{i|i\ne\alpha}^b\le \hat\Lambda_i^b=  \frac {2N(1-\overline  X_\alpha^{n_\alpha})} {n_i}\exp\left(- \varphi(\overline X_\alpha^{n_\alpha} - \overline X_i^{n_i})^2 n_i\right)\\
+  \Lambda&_\alpha^b \le \hat\Lambda_\alpha^b=\frac {2N\overline X_\beta^{n_\beta}} {n_\alpha}\exp\left(- \varphi(\overline X_\alpha^{n_\alpha} - \overline X_\beta^{n_\beta})^2 n_\alpha\right)\nonumber
 \end{align}
 \label{crl:bound-blnk-hoeffding}
 \end{crl}
-\vspace{-2em}
 
 More refined bounds can be obtained through tighter estimates on the
 probabilities in Equation~(\ref{eqn:thm-be}), for example, based on the empirical Bernstein
 inequality~\cite{MaurerPontil.benrstein}, or through a more careful
-application of the Hoeffding inequality, resulting in:
+application of the Hoeffding inequality, resulting in Theorem~\ref{thm:better-bound-blnk-hoeffding}:
+\begin{thm}
 \begin{align}
-\Lambda_i^b&\le\frac {N\sqrt \pi} {n_i \sqrt {\varphi n_i}}
-  \left[\mathrm{erf}\left((1-\overline X_i)\sqrt {\varphi n_i}\right)
-      -\mathrm{erf}\left((\overline X_\alpha - \overline X_i)\sqrt{\varphi n_i}\right)\right]\nonumber\\
-\Lambda_\alpha^b&\le\frac {N\sqrt \pi} {n_\alpha \sqrt {\varphi n_\alpha}}
-  \left[\mathrm{erf}\left(\overline X_\alpha\sqrt {\varphi n_\alpha}\right)
-      -\mathrm{erf}\left((\overline X_\alpha - \overline X_\beta)\sqrt{\varphi n_\alpha}\right)\right]
+\Lambda_{i|i\ne \alpha}^b&\le\frac {\sqrt \pi} {\sqrt {\varphi n_i}}
+  \left[\mathrm{erf}\left(\left(\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})-\overline X_i^{n_i}\right)\sqrt {\varphi n_i}\right)
+      -\mathrm{erf}\left((\overline X_\alpha - \overline X_i^{n_i})\sqrt{\varphi n_i}\right)\right]\nonumber\\
+\Lambda_\alpha^b&\le\frac {\sqrt \pi} {\sqrt {\varphi n_\alpha}}
+  \left[\mathrm{erf}\left(\left(\overline X_\alpha^{n_\alpha}-\overline X_\beta^{n_\beta}+\frac N {N+n_\alpha} \overline X_\beta^{n_\beta}\right)\sqrt {\varphi n_\alpha}\right)
+      -\mathrm{erf}\left((\overline X_\alpha^{n_\alpha} - \overline X_\beta^{n_\beta})\sqrt{\varphi n_\alpha}\right)\right]
 \label{eqn:erf-blinkered}
 \end{align}
+\label{thm:better-bound-blnk-hoeffding}
+\end{thm}
 
 \begin{proof}
 
 \begin{align}
 \Lambda_i^p&=\int\limits_{\overline X_\alpha}^1\Pr[\overline X_i'=x]dx\nonumber\\
 &\le \int\limits_{\overline X_\alpha}^1e^{-2(x-\overline X_i)^2n_i}dx
-=\hspace{-1em}\int\limits_{(\overline X_\alpha - \overline X_i)\sqrt{2n_i}}^{(1- \overline X_i)\sqrt{2n_i}}\hspace{-2em}e^{-u^2}du\nonumber\\
+=\int\limits_{(\overline X_\alpha - \overline X_i)\sqrt{2n_i}}^{(1- \overline X_i)\sqrt{2n_i}}e^{-u^2}du\nonumber\\
 &=\frac {\sqrt \pi} {2 \sqrt {2n_i}}
   \left[\mathrm{erf}\left((1-\overline X_i)\sqrt {2n_i}\right)
       -\mathrm{erf}\left((\overline X_\alpha - \overline X_i)\sqrt{2n_i}\right)\right]\nonumber\\

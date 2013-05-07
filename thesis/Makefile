@@ -4,7 +4,8 @@ all: thesis.pdf
 	dot -Tpdf $< > $@
 
 thesis.tex: \
-	intro.tex related.tex ratimeta.tex search.tex ramesrch.tex \
+	defs.tex \
+    intro.tex related.tex ratimeta.tex search.tex ramesrch.tex \
 	raticomp.tex \
 	cs-csp.tex cs-mcts.tex cs-rla.tex \
 	summary.tex \

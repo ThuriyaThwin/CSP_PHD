@@ -101,10 +101,11 @@ When a node $n$ is generated we only compute $h_1(n)$ and $n$ is added to
 When $n$ is first removed from \OPEN~(Lines 7 -- 10), we compute $h_2(n)$ and
 reinsert it into \OPEN, this time with $f_{max}(n)$.%(h_1,h_2)$.
 
-It is easy to see that \lazyastar~is as informative as \astarmax, as they both
-generate and expand and the same set of nodes (up to differences caused by
-tie-breaking). The reason is that a node $n$ is expanded by both \astarmax~and
-by \lazyastar~when $f_{max}(n)$ is the best $f$-value in \OPEN.
+It is easy to see that \lazyastar~is as informative as \astarmax, in
+the sense that both \astarmax~and \lazyastar expand a node $n$ only
+if $f_{max}(n)$ is the best $f$-value in \OPEN.  Therefore,
+\lazyastar~and \astarmax~generate and expand and the same set of
+nodes, up to differences caused by tie-breaking.
 
 In its general form \astar~generates many nodes that it does not expand. These
 nodes, called {\em surplus} nodes~\cite{Felner2012}, are in \OPEN~when we
@@ -298,7 +299,7 @@ from leaves were propagated to $n$.
 \begin{tabular}{|c|| r r || r r r r || r r r r r | } \hline
 &\multicolumn{2}{|c||}{\astar}&\multicolumn{4}{c||}{\lazyastar}&\multicolumn{5}{c|}{\rationallazyastar}\\
 \hline
-lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Good1   & Good2  & $h_2$     & time \\ \hline
+lookahead & generated & time & generated & Good1 & $N_2$ & time & generated & Good1   & Good2  & $N_2$     & time \\ \hline
          6 & 889,930  & {\bf 0.601}  & 889,930  & 257,598 & 632,332 & 0.462   & 944,750 &  299,479 & 239,320 &  405,951   & 0.446  \\ \hline
          8 & 740513  & 0.700  & 740,513  & 197,107 & 543,406 & {\bf 0.431}   & 892,216 &  233,370 & 303,655 &  260,823   & 0.402  \\ \hline
          10 & 612010 & 0.929  & 612,010  & 145,687 & 466,327 & 0.474   & 859,220 &  278,431 & 445,846 &  134,943   & {\bf 0.378}  \\ \hline
@@ -325,7 +326,7 @@ the computation time it saved by expanding fewer nodes.
 The next 4 columns show the results for \lazyastar~ with WMD as $h_1$,
 lookahead as $h_2$, for different lookahead depths.  The {\em Good1}
 column presents the number of nodes where \lazyastar saved the computation
-of $h_2$ while the $h_2$ column presents the number of nodes where $h_2$
+of $h_2$ while the $N_2$ column presents the number of nodes where $h_2$
 was computed. $\approx 28\%$ of nodes were {\em Good1} and since $t_2$
 was the most dominant time cost, most of this saving is reflected in
 the timing results.  The best results are achieved for lookahead 8,
@@ -344,36 +345,41 @@ the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
 performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
 
-In other domains, such as planning, the computation times $t_1$,
-$t_2$ of evaluating $h_1$ and $h_2$ are significantly larger than the
-times $t_o$ of open list operations. \cite{needed} presents results for applying the
-\rationallazyastar that uses Rule~(\ref{eqn:rla-planning-rules) to
+\cite{needed} presents results for applying the
+\rationallazyastar that uses Rule~(\ref{eqn:rla-planning-rule}) to
 several planning domains. [TODO - summary of the results]
 
-However, the case of both $t_1$ and $t_2$ significantly larger than
-$t_o$  can be modeled using the 15-puzzle domain by considering 
-only the time spent evaluating the
-heuristics. Table~\ref{tbl:rla-amax-la-rla-times} presents the results
-of solving the Weighted 15-puzzle obtained on the the set of 100 15-puzzle instances
-by~\cite{BFID85}, using the combination of weighted Manhattan distance
-and weigthed linear conflict \cite{needed} heuristics.
+The case of both $t_1$ and $t_2$ being significantly larger than $t_o$
+and $t_c$ can also be modeled using the 15-puzzle domain by considering only the
+time spent evaluating the heuristics. Table~\ref{tbl:rla-amax-la-rla-times}
+presents the results of solving the Weighted 15-puzzle obtained on
+the the set of 100 15-puzzle instances by~\cite{BFID85}, using the
+combination of weighted Manhattan distance and weigthed linear
+conflict \cite{needed} heuristics. Rows $N_1$ and $N_2$ present the
+average numbers of evaluations of $h_1$ and $h_2$, rows $T_1$ and
+$T_2$ the average total times (per instance) spent evaluating each
+of the heuristics.
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{|l | c | c | c | } \hline
   &\astarmax&\lazyastar&\rationallazyastar\\ \hline 
-$h_1$ & 1,482,271 & 1,482,271 & 1,521,163 \\ \hline
-$t_1, sec$ & 0.979     & 0.979     & 1.026 \\ \hline
-$h_2$ & 1,482,271 & 1,117,826 & 868,182 \\ \hline
-$t_2, sec$ & 4.122     & 2.425     & 1.938 \\ \hline
-$t_1+t_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
+$N_1$ & 1,482,271 & 1,482,271 & 1,521,163 \\ \hline
+$T_1, sec$ & 0.979     & 0.979     & 1.026 \\ \hline
+$N_2$ & 1,482,271 & 1,117,826 & 868,182 \\ \hline
+$T_2, sec$ & 4.122     & 2.425     & 1.938 \\ \hline
+$T_1+T_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
 \end{tabular}
 \end{center}
 \caption{Weighted 15 puzzle: comparison of heuristic computation times in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
 \label{tbl:rla-amax-la-rla-times}
 \end{table}
-\astarmax evaluates both $h_1$ and $h_2$ on both nodes is, obviously
-the slowest.
-
+\astarmax~evaluates both $h_1$ and $h_2$ on both nodes and is obviously
+the slowest. \lazyastar~evaluates $h_2$ selectively, spending 40\%
+less time evaluating $h_2$ and 33\% less time
+overall. \rationallazyastar, using Rule~(\ref{eqn:rla-planning-rule}),
+spends 20\% less time than \lazyastar~evaluating $h_2$ \emph{at the
+  expense} of spending 4\% more time evaluating $h_1$, and takes
+12\% less time than \lazyastar~and 40\% less time than \astarmax~overall.
 
 \subsection{Conclusion}
 

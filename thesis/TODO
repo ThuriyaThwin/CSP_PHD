@@ -3,6 +3,9 @@ Sun May  5 21:44:19 IDT 2013
  
   Todo: descrition of heur time only results
         references to published papers
+        From the final paper:
+            Definition of WMD heuristic
+            Proof for LA* equivalence to A*
 
 Tue Feb 19 22:53:17 IST 2013
   Todo: erf margins for MCTS

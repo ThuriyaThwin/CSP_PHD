@@ -81,7 +81,7 @@ than $t_1 + t_o$. \lazyastar~thus mainly aims to reduce computations of $h_2$.
 			\State {\bf continue} \Comment next node in OPEN
         \EndIf
         \ForAll{child $c$ of $n$}
-            \State Apply $h_1$ to $c$.
+            \State Apply $h_1$ to $c$
             \State Insert $c$ into \OPEN
         \EndFor
         \State Insert $n$ into \CLOSED
@@ -276,6 +276,21 @@ b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
 
 \subsection{Empirical results}
 
+In the uniform-cost 15 puzzle, the open list contains only a few different
+f-costs, and is frequently implemented using buckets, violating the
+assumption of logarithmic time for which RLA* is beneficial. In order
+to better evaluate the latter, we therefore use the weighted 15-puzzle
+variant~\cite{thayer:bss}, where the cost of moving each tile is equal
+to the number on the tile.  For consistency of comparison, we used a
+subset of 36 problem instances out of the set of 100 15-puzzle instances
+by~\cite{BFID85}, keeping the problems which could be solved with 2Gb
+of RAM and 15 minutes timeout using the Weighted Manhattan heuristic
+(WMD) for $h_1$. As the second, expensive and informative, $h_2$
+heuristic for \lazyastar~and \rationallazyastar, we a heuristic based on
+lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound $d$ we applied
+a bounded depth-first search from a node $n$ and backtracked when we
+reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values
+from leaves were propagated to $n$.
 
 \begin{table}
 \parindent -1in
@@ -293,24 +308,6 @@ lookahead & generated & time & generated & Good1 & $h_2$ & time & generated & Go
 \caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
 \label{tbl:rla-rational-lazy-a-star}
 \end{table}
-
-In the uniform-cost 15 puzzle, the open list contains only a few different
-f-costs, and is frequently implemented using buckets, violating the
-assumption of logarithmic time for which RLA* is beneficial. In order
-to better evaluate the latter, we therefore use the weighted 15-puzzle
-variant~\cite{thayer:bss}, where the cost of moving each tile is equal
-to the number on the tile.  For consistency of comparison, we used a
-subset of 36 problem instances out of the set of 100 15-puzzle instances
-by~\cite{BFID85}, keeping the problems which could be solved with 2Gb
-of RAM and 15 minutes timeout using the Weighted Manhattan heuristic
-(WMD) for $h_1$. As the second, expensive and informative, $h_2$
-heuristic for \lazyastar~and \rationallazyastar, we a heuristic based on
-lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound $d$ we applied
-a bounded depth-first search from a node $n$ and backtracked when we
-reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values
-from leaves were propagated to $n$.
-
-
 Table~\ref{tbl:rla-rational-lazy-a-star} presents the results averaged
 on all instances solved. The running times are reported relative
 to the time of \astar with WMD (with no lookahead), which generated
@@ -347,7 +344,19 @@ the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
 performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
 
+In other domains, such as planning, the computation times $t_1$,
+$t_2$ of evaluating $h_1$ and $h_2$ are significantly larger than the
+times $t_o$ of open list operations. \cite{needed} presents results for applying the
+\rationallazyastar that uses Rule~(\ref{eqn:rla-planning-rules) to
+several planning domains. [TODO - summary of the results]
 
+However, the case of both $t_1$ and $t_2$ significantly larger than
+$t_o$  can be modeled using the 15-puzzle domain by considering 
+only the time spent evaluating the
+heuristics. Table~\ref{tbl:rla-amax-la-rla-times} presents the results
+of solving the Weighted 15-puzzle obtained on the the set of 100 15-puzzle instances
+by~\cite{BFID85}, using the combination of weighted Manhattan distance
+and weigthed linear conflict \cite{needed} heuristics.
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{|l | c | c | c | } \hline
@@ -362,6 +371,8 @@ $t_1+t_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
 \caption{Weighted 15 puzzle: comparison of heuristic computation times in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
 \label{tbl:rla-amax-la-rla-times}
 \end{table}
+\astarmax evaluates both $h_1$ and $h_2$ on both nodes is, obviously
+the slowest.
 
 
 \subsection{Conclusion}

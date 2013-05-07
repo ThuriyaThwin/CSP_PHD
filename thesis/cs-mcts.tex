@@ -147,11 +147,10 @@ where $\varphi=\min \left(2(\frac {1+n/N} {1+\sqrt {n/N}})^2\right)=8(\sqrt 2 - 
 
 
 \begin{proof}
-	Equation~(\ref{eqn:mcts-probound-blnk-hoeffding}) follows from the
-	observation that if $i\ne\alpha$, $\overline X_i^{n_i+N}>A$
-	if and only if the mean $\overline X_i^N$ of $N$ samples from $n_i+1$
-	to $n_i+N$ is at least $A+(A-\overline
-	X_i^{n_i})\frac {n_i} N$.
+	Equation~(\ref{eqn:mcts-probound-blnk-hoeffding}) follows from
+        the observation that $\overline X_i^{n_i+N}>A$ if and only if
+        the mean $\overline X_i^N$ of $N$ samples from $n_i+1$ to
+        $n_i+N$ is at least $A+(A-\overline X_i^{n_i})\frac {n_i} N$.
 
 	For any $\delta$, the probability that $\overline X_i^{n_i+N}$ is greater
 	than $A$ is less than the probability that
@@ -230,7 +229,7 @@ Integrating by parts, obtain
 \end{align}
 Substituting the bound on $\Pr\left(\overline X_i^{n_i+N}\ge x\right)$ from Theorem~\ref{thm:mcts-hoeffding-prob-bounds} into (\ref{eqn:mcts-better-bound-by-parts}), finally obtain:
 \begin{align}
-\Lambda_i^b\le&\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}2\exp\left(-\varphi(x-\overline X_i^{n_i})n_i\right)dx\nonumber\\
+\Lambda_i^b\le&\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}2\exp\left(-\varphi(x-\overline X_i^{n_i})^2n_i\right)dx\nonumber\\
  =&\frac {\sqrt \pi} {\sqrt {\varphi n_i}}
   \left[\mathrm{erf}\left(\left(\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})-\overline X_i^{n_i}\right)\sqrt {\varphi n_i}\right)-\mathrm{erf}\left((\overline X_\alpha - \overline X_i^{n_i})\sqrt{\varphi n_i}\right)\right]
 \end{align}

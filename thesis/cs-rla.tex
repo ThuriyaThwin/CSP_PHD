@@ -345,9 +345,16 @@ the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
 performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
 
-\cite{needed} presents results for applying the
-\rationallazyastar that uses Rule~(\ref{eqn:rla-planning-rule}) to
-several planning domains. [TODO - summary of the results]
+\cite{TolpinEtAl.rla} presents results for comparing \rationallazyastar and
+other algorithms on 42 planning domains. In these domains, time spent evaluating
+heuristics constitutes approximately 90\% of the total search time,
+hence applying rule~(\ref{eqn:rla-planning-rule}) is justified. 
+\rationallazyastar~was compared to \lazyastar~and to \astar~using
+each of the heuristics individually, as well as to the max-based
+combination of the heuristics, and to the combination using selective-max
+(Sel-MAX)~\cite{domshlak-et-al:jair-2012}. In the evaluation,
+\rationallazyastar~solved most problem instances in the shortest
+total search time.
 
 The case of both $t_1$ and $t_2$ being significantly larger than $t_o$
 and $t_c$ can also be modeled using the 15-puzzle domain by considering only the

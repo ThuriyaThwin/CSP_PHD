@@ -14,7 +14,6 @@ computational resources can be saved by controlling the resources used
 for estimating the VOI. This tradeoff is examined via a case
 study of measurement selection. 
 
-\sloppy
 In general, computing the VOI, even under the commonly used
 simplifying myopic assumption, involves multidimensional integration
 of a general function \cite{Russell.right}. For some problems, the
@@ -25,20 +24,17 @@ significant \cite{Heckerman.nonmyopic} \cite{BilgicGetoor.voila} and
 the computation time cost must be taken into account.  This study
 presents and analyzes an extension of the known greedy algorithm. The
 extension decides when to recompute the VOI of each of the
-measurements based on the principles of limited rationality
-\cite{Russell.right}.
+measurements based on the principles of limited rationality (Section~\ref{sec:ratimeta}).
 
-\sloppy
 Although it may be possible to use this idea in more general settings,
-here the content is on-line most informative measurement
-selection \cite{Guestrin.submodular} \cite{BilgicGetoor.voila}, an
-approach which is commonly used to solve problems of optimization
-under uncertainty \cite{Rish.efficient} \cite{Krause.water}. Since this
+here the content is on-line most informative measurement selection
+\cite{Guestrin.submodular} \cite{BilgicGetoor.voila}, an approach
+which is commonly used to solve problems of optimization under
+uncertainty \cite{Rish.efficient} \cite{Krause.water}. Since this
 approach assumes that the computation time required to select the most
 informative measurement is negligible compared to the measurement
-time \cite{Russell.right}, it is important in this setting to ascertain
-that VOI estimation indeed does not consume excessive computational
-resources.
+time, it is important in this setting to ascertain that VOI estimation
+indeed does not consume excessive computational resources.
 
 \section{The Measurement Selection Problem}
 \label{sec:raticomp-greedy}

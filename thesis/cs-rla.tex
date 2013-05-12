@@ -2,12 +2,10 @@
 
 
 The \astar~algorithm \cite{ASTR68} is a best-first heuristic search
-algorithm guided by the cost function $f(n)=g(n)+h(n)$. %\astar~is
-often described as being `optimal', in that it %{\em expands} the
-minimum number of unique nodes.  If the heuristic $h(n)$ is admissible (never
-overestimates the real cost to the goal) then the set of nodes expanded
-by \astar~is both necessary and sufficient to find the optimal path
-to the goal~\cite{ASTR85}.
+algorithm guided by the cost function $f(n)=g(n)+h(n)$.  If the
+heuristic $h(n)$ is admissible (never overestimates the real cost to
+the goal) then the set of nodes expanded by \astar~is both necessary
+and sufficient to find the optimal path to the goal~\cite{ASTR85}.
 
 This study examines the case where we have several available admissible
 heuristics. Clearly, we can evaluate all these heuristics, and use their {\em
@@ -28,8 +26,7 @@ search time, as we will not need to compute $h_2$ for many nodes.
 However, as noted by \cite{domshlak-et-al:jair-2012},  if the goal is reducing
 search time, it is sometimes better to compute a fast heuristic on
 several nodes, rather than to compute a slow but informative heuristic on only one
-node.
-Based on this idea, they formulated {\em selective max} (Sel-MAX), an online
+node. Based on this idea, they formulated {\em selective max} (Sel-MAX), an online
 learning scheme which chooses one heuristic to compute at each
 state. Sel-MAX chooses to compute the more expensive heuristic $h_2$ for
 node $n$ when its classifier predicts that $h_2(n) - h_1(n)$ is greater than
@@ -39,7 +36,7 @@ branching factor.
 We combine the ideas of lazy heuristic evaluation and of trading off more node expansions
 for less heuristic computation time, into a {\em new} variant of \lazyastar~called
 {\em rational lazy} \astar~(\rationallazyastar).
-\rationallazyastar~is based on rational meta-reasoning, and uses a myopic {\em
+\rationallazyastar~is based on rational metareasoning, and uses a myopic {\em
 value-of-information} criterion to decide whether to compute $h_2(n)$ or to
 bypass the computation of $h_2$ and expand $n$ immediately when $n$ re-emerges
 from \OPEN. \rationallazyastar~aims to reduce search time, even at the expense of
@@ -58,7 +55,6 @@ We say that $h_2$ {\em dominates} $h_1$, if such counter cases do not
 exist and $h_2(n) \geq h_1(n)$ for {\em all} nodes $n$.
 We use $f_1(n)$ to denote $g(n)+h_1(n)$. Likewise, $f_2(n)$
 denotes $g(n)+h_2(n)$, and $f_{max}(n)$ denotes $g(n) + \max(h_1(n),h_2(n))$.
-%We use the notation $h(n)=\{x,y\}$ to mean that $h_1(n)=x$ and that $h_2(x)=y$.
 We denote the cost of the optimal solution by $\optcost$. Additionally, we
 denote the computation time of $h_1$ and of $h_2$ by $t_1$ and $t_2$,
 respectively and denote the overhead of an {\em insert/pop} operation in
@@ -100,7 +96,7 @@ In fact, without lines 7 -- 10, \lazyastar~would be identical to
 When a node $n$ is generated we only compute $h_1(n)$ and $n$ is added to
 \OPEN ~(Lines 11 -- 13), without computing $h_2(n)$ yet.
 When $n$ is first removed from \OPEN~(Lines 7 -- 10), we compute $h_2(n)$ and
-reinsert it into \OPEN, this time with $f_{max}(n)$.%(h_1,h_2)$.
+reinsert it into \OPEN, this time with $f_{max}(n)$.
 
 It is easy to see that \lazyastar~is as informative as \astarmax, in
 the sense that both \astarmax~and \lazyastar expand a node $n$ only
@@ -127,12 +123,12 @@ those with $f_1(n) < \optcost$ (and some with $f_1(n) = \optcost$) are called
 
 \subsection{Rational Lazy A*}
 
-Using the principles of rational meta-reasoning \cite{Russell.right},
+Using the principles of rational metareasoning (Section~\ref{sec:ratimeta}),
 theoretically every computational operator (heuristic function evaluation, node
 expansion, open list operation) should be treated as an action in a sequential
 decision-making meta-level problem, and actions should be chosen so as to
 achieve the minimal expected search time. However, the appropriate
-general meta-reasoning problem is extremely hard to define precisely, and even harder
+general metareasoning problem is extremely hard to define precisely, and even harder
 to solve optimally.
 
 Therefore, we focus here on just one decision type, to be
@@ -164,9 +160,13 @@ for when to evaluate $h_2$, under the myopic assumption that the algorithm
 continues to behave like \lazyastar~afterwards (i.e., it will never again
 consider bypassing the computation of $h_2$).
 
-The time wasted by being sub-optimal in deciding whether to evaluate $h_2$ is
-called the {\em regret} of the decision. If $h_2(n)$ is not helpful and we decide to compute it, the effort for evaluating $h_2(n)$ turns out to be wasted. On the other hand, if $h_2(n)$ is helpful but we decide to bypass it, we needlessly expand $n$. Due to the myopic assumption, \rationallazyastar~would evaluate both $h_1$ and $h_2$ for all successors of
-$n$.
+The time wasted by being sub-optimal in deciding whether to evaluate
+$h_2$ is called the {\em regret} of the decision. If $h_2(n)$ is not
+helpful and we decide to compute it, the effort for evaluating
+$h_2(n)$ turns out to be wasted. On the other hand, if $h_2(n)$ is
+helpful but we decide to bypass it, we needlessly expand $n$. Due to
+the myopic assumption, \rationallazyastar~would evaluate both $h_1$
+and $h_2$ for all successors of $n$.
 
 \begin{table}[h!]
 \begin{center}
@@ -210,11 +210,12 @@ or equivalently:
 \end{equation}
 
 If $p_h b(n) \ge 1$, then the expected regret is minimized by always
-evaluating $h_2$, regardless of the values of $t_d$ and $t_e$.
-In these cases, RLA* cannot be expected to do better than \lazyastar.
-For example, in the 15-puzzle and its variants, the
-effective branching factor is $\approx 2$. Therefore, if $h_2$ is expected to be helpful for more than half of the nodes $n$
-on which \lazyastar~evaluates $h_2(n)$, then one should simple use \lazyastar.
+evaluating $h_2$, regardless of the values of $t_d$ and $t_e$.  In
+these cases, RLA* cannot be expected to do better than \lazyastar.
+For example, in the 15-puzzle and its variants, the effective
+branching factor is $\approx 2$. Therefore, if $h_2$ is expected to be
+helpful for more than half of the nodes $n$ on which
+\lazyastar~evaluates $h_2(n)$, then one should simple use \lazyastar.
 
 For $p_h b(n) < 1$,  the decision of whether to evaluate $h_2$
 depends on the values of $t_d$ and $t_e$:
@@ -223,8 +224,6 @@ depends on the values of $t_d$ and $t_e$:
 \label{eqn:rla-criterion-general}
 \end{equation}
 Let us analyze $t_d$ and $t_e$. Denote by
-%$t_o$  the time
-%to insert a single node into (or remove it from) \OPEN,
 $t_c$ the time to generate the children of $n$. Then we have:
 \begin{align}
 t_d&=t_2+t_o\nonumber\\
@@ -275,33 +274,33 @@ b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
 
 \subsection{Empirical Evaluation}
 
-In the uniform-cost 15 puzzle, the open list contains only a few different
-f-costs, and is frequently implemented using buckets, violating the
-assumption of logarithmic time for which RLA* is beneficial. In order
-to better evaluate the latter, we therefore use the weighted 15-puzzle
-variant~\cite{thayer:bss}, where the cost of moving each tile is equal
-to the number on the tile.  For consistency of comparison, we used a
-subset of 36 problem instances out of the set of 100 15-puzzle instances
-by~\cite{BFID85}, keeping the problems which could be solved with 2Gb
-of RAM and 15 minutes timeout using the Weighted Manhattan heuristic
-(WMD) for $h_1$. As the second, expensive and informative, $h_2$
-heuristic for \lazyastar~and \rationallazyastar, we a heuristic based on
-lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound $d$ we applied
-a bounded depth-first search from a node $n$ and backtracked when we
-reached leaf nodes $l$ for which $g(l)+WMD(l)> g(n)+WMD(n)+d$. $f$-values
-from leaves were propagated to $n$.
+In the uniform-cost 15 puzzle, the open list contains only a few
+different f-costs, and is frequently implemented using buckets,
+violating the assumption of logarithmic time for which RLA* is
+beneficial. In order to better evaluate the latter, we therefore use
+the weighted 15-puzzle variant, where the cost of moving each tile is
+equal to the number on the tile.  For consistency of comparison, we
+used a subset of 36 problem instances out of the set of 100 15-puzzle
+instances by~\cite{BFID85}, keeping the problems which could be solved
+with 2Gb of RAM and 15 minutes timeout using the Weighted Manhattan
+heuristic (WMD) for $h_1$. As the second, expensive and informative,
+$h_2$ heuristic for \lazyastar~and \rationallazyastar, we a heuristic
+based on lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound
+$d$ we applied a bounded depth-first search from a node $n$ and
+backtracked when we reached leaf nodes $l$ for which $g(l)+WMD(l)>
+g(n)+WMD(n)+d$. $f$-values from leaves were propagated to $n$.
 
 \begin{table}
-\parindent -1in
+\parindent -0.5in
 \begin{small}
-\begin{tabular}{|c|| r r || r r r r || r r r r r | } \hline
-&\multicolumn{2}{|c||}{\astar}&\multicolumn{4}{c||}{\lazyastar}&\multicolumn{5}{c|}{\rationallazyastar}\\
+\begin{tabular}{|c|| r r || r r r || r r r r r | } \hline
+&\multicolumn{2}{|c||}{\astar}&\multicolumn{3}{c||}{\lazyastar}&\multicolumn{5}{c|}{\rationallazyastar}\\
 \hline
-lookahead & generated & time & generated & Good1 & $N_2$ & time & generated & Good1   & Good2  & $N_2$     & time \\ \hline
-         6 & 889,930  & {\bf 0.601}  & 889,930  & 257,598 & 632,332 & 0.462   & 944,750 &  299,479 & 239,320 &  405,951   & 0.446  \\ \hline
-         8 & 740513  & 0.700  & 740,513  & 197,107 & 543,406 & {\bf 0.431}   & 892,216 &  233,370 & 303,655 &  260,823   & 0.402  \\ \hline
-         10 & 612010 & 0.929  & 612,010  & 145,687 & 466,327 & 0.474   & 859,220 &  278,431 & 445,846 &  134,943   & {\bf 0.378}  \\ \hline
-         12 & 454171 & 1.128  & 454,171  & 95,118  & 359,053 & 0.621   & 807,846 &  277,783 & 428,686 &  101,377   & 0.465  \\ \hline
+lookahead & generated & time &  Good1 & $N_2$ & time & generated & Good1   & Good2  & $N_2$     & time \\ \hline
+         6 & 889,930  & {\bf 0.601}  & 257,598 & 632,332 & 0.462   & 944,750 &  299,479 & 239,320 &  405,951   & 0.446  \\ \hline
+         8 & 740,513  & 0.700  & 197,107 & 543,406 & {\bf 0.431}   & 892,216 &  233,370 & 303,655 &  260,823   & 0.402  \\ \hline
+         10 & 612,010 & 0.929  & 145,687 & 466,327 & 0.474   & 859,220 &  278,431 & 445,846 &  134,943   & {\bf 0.378}  \\ \hline
+         12 & 454,171 & 1.128  & 95,118  & 359,053 & 0.621   & 807,846 &  277,783 & 428,686 &  101,377   & 0.465  \\ \hline
 \end{tabular}
 \end{small}
 \caption{Weighted 15 puzzle: comparison of $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
@@ -321,14 +320,16 @@ the increasing overheads of computing the heuristic eventually outweights
 the computation time it saved by expanding fewer nodes.
 
 
-The next 4 columns show the results for \lazyastar~ with WMD as $h_1$,
-lookahead as $h_2$, for different lookahead depths.  The {\em Good1}
-column presents the number of nodes where \lazyastar saved the computation
-of $h_2$ while the $N_2$ column presents the number of nodes where $h_2$
-was computed. $\approx 28\%$ of nodes were {\em Good1} and since $t_2$
-was the most dominant time cost, most of this saving is reflected in
-the timing results.  The best results are achieved for lookahead 8,
-with a runtime of 0.431 compared to \astar~ with WMD.
+The next 3 columns show the results for \lazyastar~ with WMD as $h_1$,
+lookahead as $h_2$, for different lookahead depths
+(\lazyastar~generates the same number of nodes as \astar).  The {\em
+  Good1} column presents the number of nodes where \lazyastar saved
+the computation of $h_2$ while the $N_2$ column presents the number of
+nodes where $h_2$ was computed. $\approx 28\%$ of nodes were {\em
+  Good1} and since $t_2$ was the most dominant time cost, most of this
+saving is reflected in the timing results.  The best results are
+achieved for lookahead 8, with a runtime of 0.431 compared to \astar~
+with WMD.
 
 The final columns show the results of RLA* with different lookaheads for
 empirically best values of $\tau$. The {\em Good2} column counts the
@@ -388,13 +389,15 @@ spends 20\% less time than \lazyastar~evaluating $h_2$ \emph{at the
 
 \subsection{Conclusion and Further Research}
 
-We discussed two schemes for decreasing heuristic evaluation times. \lazyastar~is very simple to implement
-and is as informative as \astarmax. \lazyastar~can significantly speed up the search, especially if $t_2$ dominates
-the other time costs, as seen in weighted 15 puzzle and planning domains.
-Rational \lazyastar~allows additional cuts in $h_2$ evaluations, at the expense
-of being less informed than \astarmax. However, due to a rational tradeoff, this
-allows for an additional speedup, and Rational \lazyastar~achieves the best
-overall performance in our domains.
+We discussed two schemes for decreasing heuristic evaluation
+times. \lazyastar~is very simple to implement and is as informative as
+\astarmax. \lazyastar~can significantly speed up the search,
+especially if $t_2$ dominates the other time costs, as seen in
+weighted 15 puzzle and planning domains.  Rational \lazyastar~allows
+additional cuts in $h_2$ evaluations, at the expense of being less
+informed than \astarmax. However, due to a rational tradeoff, this
+allows for an additional speedup, and Rational \lazyastar~achieves the
+best overall performance in our domains.
 
 In particular, \rationallazyastar~is simpler to implement than its direct
 competitor, selective max, but its decision can be more informed.  When
@@ -405,14 +408,8 @@ chooses which heuristic to compute when $n$ is first generated, and does
 not know whether $h_1$ will be informative enough to prune $n$. Rational
 \lazyastar~outperforms selective max in our planning experiments.
 
-Rational \lazyastar~and its analysis can be seen as an instance of the
-rational meta-reasoning framework~\cite{Russell.right}. While
-this framework is very general, it is extremely hard to
-apply in practice. Recent work exists on meta-reasoning in DFS
-algorithms for CSP) \cite{TolpinShimony.csp} and in Monte-Carlo tree
-search~\cite{HayRussellTolpinShimony.selecting}. This study applies these
-methods successfully to a variant of~\astar.  There are numerous other
-ways to use rational meta-reasoning to improve~\astar, starting from
-generalizing \rationallazyastar~to handle more than two heuristics, to
-using the meta-level to control decisions in other variants of \astar. All
-these potential extensions provide fruitful ground for further research.
+There are numerous other ways to use rational metareasoning to
+improve~\astar, starting from generalizing \rationallazyastar~to
+handle more than two heuristics, to using the meta-level to control
+decisions in other variants of \astar. All these potential extensions
+provide fruitful ground for further research.

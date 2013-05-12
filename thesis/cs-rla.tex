@@ -9,7 +9,7 @@ overestimates the real cost to the goal) then the set of nodes expanded
 by \astar~is both necessary and sufficient to find the optimal path
 to the goal~\cite{ASTR85}.
 
-This paper examines the case where we have several available admissible
+This study examines the case where we have several available admissible
 heuristics. Clearly, we can evaluate all these heuristics, and use their {\em
 maximum} as an admissible heuristic, a scheme we call \astarmax.
 The problem with naive maximization is that all the heuristics are
@@ -47,7 +47,8 @@ more node expansions than \astarmax.
 
 \subsection{Lazy \astar}
 
-Throughout this paper we assume for clarity that we have two available admissible heuristics, $h_1$ and $h_2$.
+Throughout this study we assume for clarity that we have two available
+admissible heuristics, $h_1$ and $h_2$.
 Extension to multiple heuristics is straightforward, at least for \lazyastar.
 Unless stated otherwise, we assume that $h_1$ is faster to compute than $h_2$
 but that $h_2$ is {\em weakly more informed}, i.e., $h_1(n) \leq h_2(n)$ for
@@ -150,9 +151,6 @@ Suppose that we choose to compute $h_2$ --- this results in one of the
 following outcomes:
 \begin{enumerate}
 \item $n$ is eventually expanded.
-% EK: removed unnecessary detail
-% : either immediately because $n$ still has the smallest $f$-cost,
-% or it now has a higher $f$-cost, is re-inserted into \OPEN, but is still expanded later on.
 \item $n$ is re-inserted into \OPEN, and the goal is found without ever expanding $n$.
 \end{enumerate}
 
@@ -275,7 +273,7 @@ b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
 \label{eqn:rla-planning-rule}
 \end{equation}
 
-\subsection{Empirical results}
+\subsection{Empirical Evaluation}
 
 In the uniform-cost 15 puzzle, the open list contains only a few different
 f-costs, and is frequently implemented using buckets, violating the
@@ -388,7 +386,7 @@ spends 20\% less time than \lazyastar~evaluating $h_2$ \emph{at the
   expense} of spending 4\% more time evaluating $h_1$, and takes
 12\% less time than \lazyastar~and 40\% less time than \astarmax~overall.
 
-\subsection{Conclusion}
+\subsection{Conclusion and Further Research}
 
 We discussed two schemes for decreasing heuristic evaluation times. \lazyastar~is very simple to implement
 and is as informative as \astarmax. \lazyastar~can significantly speed up the search, especially if $t_2$ dominates
@@ -412,9 +410,9 @@ rational meta-reasoning framework~\cite{Russell.right}. While
 this framework is very general, it is extremely hard to
 apply in practice. Recent work exists on meta-reasoning in DFS
 algorithms for CSP) \cite{TolpinShimony.csp} and in Monte-Carlo tree
-search~\cite{HayRussellTolpinShimony.selecting}. This paper applies these
+search~\cite{HayRussellTolpinShimony.selecting}. This study applies these
 methods successfully to a variant of~\astar.  There are numerous other
 ways to use rational meta-reasoning to improve~\astar, starting from
 generalizing \rationallazyastar~to handle more than two heuristics, to
 using the meta-level to control decisions in other variants of \astar. All
-these potential extensions provide fruitful ground for future work.
+these potential extensions provide fruitful ground for further research.

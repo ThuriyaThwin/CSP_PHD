@@ -3,52 +3,54 @@
 
 \subsection{Introduction}
 
-Large search spaces are common in artificial intelligence, heuristics being
-of major importance in limiting search efforts.
-The role of a heuristic, depending on type of search algorithm,
-is to decrease the number of nodes expanded (e.g. in A* search),
-the number of candidate actions considered (planning), or
-the number of backtracks in constraint satisfaction problem (CSP) solvers.
-Nevertheless, some sophisticated heuristics have considerable
-computational overhead, significantly decreasing their overall effect
-\cite{HorschHavens.pac,Kask.solcount},
-even causing {\em increased} total runtime in pathological cases.
-It has been recognized that control of this overhead can be essential
-to improve search performance; e.g. by selecting which heuristics to evaluate
-in a manner dependent on the state of the search \cite{Wallace.macheur,Domshlak.maxornot}.
+Large search spaces are common in artificial intelligence, heuristics
+being of major importance in limiting search efforts.  The role of a
+heuristic, depending on type of search algorithm, is to decrease the
+number of nodes expanded (e.g. in A* search), the number of candidate
+actions considered (planning), or the number of backtracks in
+constraint satisfaction problem (CSP) solvers.  Nevertheless, some
+sophisticated heuristics have considerable computational overhead,
+significantly decreasing their overall effect
+\cite{HorschHavens.pac,Kask.solcount}, even causing {\em increased}
+total runtime in pathological cases.  It has been recognized that
+control of this overhead can be essential to improve search
+performance; e.g. by selecting which heuristics to evaluate in a
+manner dependent on the state of the search
+\cite{Wallace.macheur,Domshlak.maxornot}.
 
-We propose a rational metareasoning approach \cite{Russell.right} to decide
-when and how to deploy heuristics, using CSP backtracking search as a case study.
-The heuristics examined are various {\em solution count estimate} heuristics for
-value ordering \cite{Meisels.solcount,HorschHavens.pac}, which
-are expensive to compute, but can significantly decrease the number of
-backtracks. These heuristics make a good case study, as their overall utility, taking computational
-overhead into account, is sometimes detrimental; and yet,
-by employing these heuristics adaptively, it may still be possible to achieve an
-overall runtime improvement, even in these pathological cases.
-Following the metareasoning approach, the value of information (VOI) of
-a heuristic is defined in terms of total search time saved, and the
-heuristic is computed such that the expected net VOI is positive.
+We propose a rational metareasoning approach to
+decide when and how to deploy heuristics, using CSP backtracking
+search as a case study.  The heuristics examined are various {\em
+  solution count estimate} heuristics for value ordering
+\cite{Meisels.solcount,HorschHavens.pac}, which are expensive to
+compute, but can significantly decrease the number of
+backtracks. These heuristics make a good case study, as their overall
+utility, taking computational overhead into account, is sometimes
+detrimental; and yet, by employing these heuristics adaptively, it may
+still be possible to achieve an overall runtime improvement, even in
+these pathological cases.  Following the metareasoning approach, the
+value of information (VOI) of a heuristic is defined in terms of total
+search time saved, and the heuristic is computed such that the
+expected net VOI is positive.
 
-We begin with background on metareasoning and CSP (Section~\ref{sec:csp-background}), 
-followed by a re-statement of value ordering in terms
-of rational metareasoning (Section~\ref{sec:csp-generic}), allowing a definition of VOI
-of a value-ordering heuristics --- a contribution of this paper.
-This scheme is then instantiated to handle
-our case-study of backtracking search in CSP (Section~\ref{sec:csp-csp-rational}),
-with parameters specific to value-ordering
-heuristics based on solution-count estimates, the main contribution of this paper.
-Empirical results (Section~\ref{sec:csp-empirical})
-show that the proposed mechanism successfully balances the tradeoff
-between decreasing backtracking and
-heuristic computational overhead, resulting in a significant overall search time reduction.
-Other aspects of such tradeoffs are also analyzed empirically.
-Finally, related work is examined (Section~\ref{sec:csp-discussion}), and
+We begin with background and related work on CSP
+(Section~\ref{sec:csp-background}), followed by a re-statement of
+value ordering in terms of rational metareasoning
+(Section~\ref{sec:ratimeta}), allowing a definition of VOI of a
+value-ordering heuristic.  This scheme is then instantiated to handle
+our case-study of backtracking search in CSP
+(Section~\ref{sec:csp-csp-rational}), with parameters specific to
+value-ordering heuristics based on solution-count estimates.
+Empirical results (Section~\ref{sec:csp-empirical}) show that the
+proposed mechanism successfully balances the tradeoff between
+decreasing backtracking and heuristic computational overhead,
+resulting in a significant overall search time reduction.  Other
+aspects of such tradeoffs are also analyzed empirically.  Finally,
 possible future extensions of the proposed mechanism are discussed
 (Section~\ref{sec:csp-summary}).
 
-
-\subsection{Constraint Satisfaction}
+\subsection{Background and Related Work}
+\label{sec:csp-background}
 
 A constraint satisfaction problem (CSP) is defined by a set
 of variables $\mathcal{X}=\{X_1, X_2, ...\}$, and a set of
@@ -58,20 +60,14 @@ of the variables---the scope of the constraint--- and specifies the
 allowable combinations of values for that subset. An assignment that
 does not violate any constraints is called {\em consistent} (or {\em a solution}).
 There are numerous variants of CSP settings and algorithmic paradigms. This
-paper focuses on binary CSPs over discrete-values variables,
+study focuses on binary CSPs over discrete-values variables,
 and backtracking search algorithms \cite{Tsang.csp}.
 
-%A constraint satisfaction problem instance may or may not have a consistent
-%assignment. 
-%CSP search algorithm performance is
-%determined by the computation time required to either find a
-%solution or to prove that no solution exists.
-A basic method used in numerous CSP search algorithm is
+A basic method used in numerous CSP search algorithms is
 that of maintaining arc consistency (MAC)
 \cite{Sabin.mac}. There are several versions of MAC; all
 share the common notion of {\em
 arc consistency}.
-%, defined for CSP problems with binary constraints. 
 A variable $X_i$ is arc-consistent with $X_j$ if for every value $a$ of
 $X_i$ from the domain $D_i$ there is a value $b$ of $X_j$ from the
 domain $D_j$ satisfying the constraint between $X_i$ and $X_j$. MAC
@@ -79,19 +75,18 @@ maintains arc consistency for all pairs of variables, and
 speeds up backtracking search by pruning many inconsistent
 branches.
 
-CSP backtracking search algorithms typically employ
-both variable-ordering \cite{Tsang.csp} and value-ordering heuristics.
-The latter type include \emph{minimum conflicts} \cite{Tsang.csp}, which
-orders values by the number of conflicts they cause
-with unassigned variables, \emph{Geelen's promise}
-\cite{Geelen.promise} --- by the product of domain sizes,
-and \emph{minimum impact}
-\cite{Refalo.impact} orders values by relative impact of the value
-assignment on the product of the domain sizes.
+CSP backtracking search algorithms typically employ both
+variable-ordering \cite{Tsang.csp} and value-ordering heuristics.  The
+latter type include \emph{minimum conflicts} \cite{Tsang.csp}, which
+orders values by the number of conflicts they cause with unassigned
+variables, \emph{Geelen's promise} \cite{Geelen.promise} --- by the
+product of domain sizes, and \emph{minimum impact}
+\cite{Refalo.impact}, which orders values by relative impact of the
+value assignment on the product of the domain sizes.
 
 Some value-ordering heuristics are based on solution count estimates
-\cite{Meisels.solcount,HorschHavens.pac,Kask.solcount}: solution
-counts for each value assignment of the current variable are
+\cite{Dechter.cspheur,Meisels.solcount,HorschHavens.pac,Kask.solcount}:
+solution counts for each value assignment of the current variable are
 estimated, and assignments (branches) with the greatest solution count
 are searched first.  The heuristics are based on the assumption that
 the estimates are correlated with the true number of solutions, and
@@ -105,11 +100,15 @@ from the constraint graph; \cite{HorschHavens.pac} propose the
 iterative belief propagation for a better accuracy of relative
 solution count estimates; \cite{Kask.solcount} adapt Iterative
 Join-Graph Propagation to solution counting, allowing a tradeoff
-between accuracy and complexity. These methods vary by computation
-time and precision, although all are rather computationally
-heavy. Principles of rational metareasoning can be applied
-independently of the choice of implementation, to decide when
-to deploy these heuristics.
+between accuracy and complexity.
+
+These methods vary by computation time and precision, although all are
+rather computationally heavy. As a means to improve the performance of
+search algorithms based on computationally expensive heuristics,
+runtime selection of heuristics has lately become of interest, e.g.
+deploying heuristics for planning \cite{Domshlak.maxornot}. The
+approach taken is usually that of {\em learning} which heuristics to
+deploy based on features of the search state.
 
 \subsection{Rational Value-Ordering}
 \label{sec:csp-generic}
@@ -161,7 +160,7 @@ Since both $T^H$ (the ``time cost'' of $H$ in metareasoning terms)
 and $T^{s|\omega_H}$ contribute to $T$, even a heuristic that
 improves the estimates and ordering may not be useful.  It may be better not
 to deploy $H$ at all, or to update $T_i, p_i$ only for some of the assignments.
-According to the rational metareasoning approach (Section~\ref{sec:csp-ratimeta}),
+According to the rational metareasoning approach (Section~\ref{sec:ratimeta}),
 the intrinsic VOI $\Lambda_i$ of estimating $T_i, p_i$ for the $i$th assignment
 is the expected decrease in the expected search time:
 \begin{equation}
@@ -225,8 +224,8 @@ estimate (\ref{eq:gain-estimate}) for $G(T_i, p_i)$ is obtained:
 \begin{eqnarray}
 \label{eq:gain-estimate}
 G(T_i, p_i)&\approx&T_1-T_i+(\frac {T_1} {T_1^{all}}-\frac {T_i} {T_i^{all}})T_\mathrm{def}\frac{1-p_\mathrm{def}^{(|D_k|-1)}}{1-p_\mathrm{def}}\nonumber\\
-%           &\approx&T_1-T_i+(\frac {T_1} {T_\mathrm{def}}-\frac {T_i} {T_\mathrm{def}})T_\mathrm{def}\frac{1-p_\mathrm{def}^{(|D_k|-1)}}{1-p_\mathrm{def}}\nonumber\\
-%           &\approx&T_1-T_i+(T_1-T_i)(|D_k|-1)\nonumber\\
+           &\approx&T_1-T_i+(\frac {T_1} {T_\mathrm{def}}-\frac {T_i} {T_\mathrm{def}})T_\mathrm{def}\frac{1-p_\mathrm{def}^{(|D_k|-1)}}{1-p_\mathrm{def}}\nonumber\\
+           &\approx&T_1-T_i+(T_1-T_i)(|D_k|-1)\nonumber\\
            &\approx&(T_1-T_i)|D_k|
 \end{eqnarray}
 Finally, since (\ref{eq:backtracking-probability-estimate}), (\ref{eq:p-approx-one-estimate}) imply that $T_i<T_1 \Leftrightarrow \frac {T_i} {1-p_i} < \frac {T_1} {1-p_1}$, 
@@ -368,15 +367,15 @@ the value-ordering heuristics.
 The AC-3 version of MAC was used for the experiments, with some
 modifications \cite{Sabin.mac}. Variables were ordered using the
 maximum degree variable ordering heuristic.\footnote{A dynamic
-variable ordering heuristic, such as dom/deg, may result in shorter
-search times in general, but gave no significant improvement in our
-experiments; on the other hand, static variable ordering simplifies
-the analysis.} The value-ordering heuristic was based on a version
+  variable ordering heuristic, such as dom/deg, may result in shorter
+  search times in general, but gave no significant improvement in our
+  experiments; on the other hand, static variable ordering simplifies
+  the analysis.} The value-ordering heuristic was based on a version
 of the solution count estimate proposed in \cite{Meisels.solcount}.
-The version used in this paper was optimized for better computation
-time for overconstrained problem instances. As a result,
-Equation~(\ref{eq:csp-gamma}) is a reasonable
-approximation for this implementation. The source code is available from
+The version used here was optimized for better computation time for
+overconstrained problem instances. As a result,
+Equation~(\ref{eq:csp-gamma}) is a reasonable approximation for this
+implementation. The source code is available from
 \url{http://ftp.davidashen.net/vsc.tar.gz}.
 
 \subsubsection{Benchmarks}
@@ -497,10 +496,6 @@ instances \cite{Ansotegui.sudoku}, since this domain is highly
 structured, and thus a better source of realistic problems with a controlled
 measure of hardness.
 
-%and relative performance of various heuristics on these
-%instances can be significantly different compared to unstructured
-%random instances.
-
 The search was run on two sets of 100 Generalized Sudoku instances,
 with 4x3 tiles and 90 holes and with 7x4 tiles and 357 holes, with
 holes punched using the doubly balanced method
@@ -562,81 +557,26 @@ random         & 31.421                  & 42.085                    & 20.038
 \label{tbl:voirnd}
 \end{table}
 
-\subsection{Discussion and Related Work}
-\label{sec:csp-discussion}
-
-The principles of bounded rationality appear in
-\cite{Horvitz.reasoningabout}. \cite{Russell.right}
-provided a formal description of rational metareasoning and case
-studies of applications in several problem domains.
-A typical use of rational metareasoning in search is in finding which node
-to expand, or in a CSP context determining a variable or value assignment.
-The approach taken in this paper adapts these methods to
-whether to spend the time to compute a heuristic.
-
-Runtime selection of heuristics has lately been of interest, e.g.
-deploying heuristics for planning \cite{Domshlak.maxornot}. The approach
-taken is usually that of {\em learning} which heuristics to deploy based on
-features of the search state. Although our approach can also benefit from learning,
-since we have a parameter that needs to be
-tuned, its value is mostly algorithm dependent,
-rather than problem-instance dependent. This simplifies learning 
-considerably, as opposed to having to learn a classifier from scratch.
-Comparing metareasoning techniques to learning techniques (or possibly a combination
-of both, e.g. by learning more precise distribution models) is an interesting issue for future research.
-
-Although rational metareasoning is applicable 
-to other types of heuristics, solution-count estimation heuristics are
-natural candidates for the type of optimization suggested in this paper.
-\cite{Dechter.cspheur} first suggested solution
-count estimates as a value-ordering heuristic (using propagation on trees)
-for constraint satisfaction problems, refined in \cite{Meisels.solcount} to multi-path propagation.
-
-\cite{HorschHavens.pac} used a value-ordering heuristic that estimated
-relative solution counts to solve constraint satisfaction problems and
-demonstrated efficiency of their algorithm (called pAC, probabilistic
-Arc Consistency). However, the computational overhead of the heuristic was large,
-and the relative solution counts were
-computed offline. \cite{Kask.solcount} introduced a CSP algorithm
-with a solution counting heuristic based on the Iterative Join-Graph Propagation
-(IJGP-SC), and empirically showed performance advances over MAC in most cases.
-In several cases IJGP-SC was still slower than MAC due to the computational
-overhead. \cite{Kask.solcount} also used the IJGP-SC heuristic as the
-value ordering heuristic for MAC.
-
-Impact-based value ordering
-\cite{Refalo.impact} is another heavy informative heuristic.  
-One way to decrease its overhead, suggested in
-\cite{Refalo.impact}, is to learn the impact of an assignment by averaging the impact of
-earlier assignments of the same value to the same
-variable. Rational deployment of this heuristic by estimating the probability 
-of backtracking based on the impact may be possible, an issue for future research.
-\cite{Gomes.solcount} propose a technique that adds random generalized XOR
-constraints and counts solutions with high precision, but at present requires {\em solving} CSPs,
-thus seems not to be immediately applicable as a search heuristic.
-
-The work presented in this paper differs from the above related
-schemes in that it does not attempt to introduce new heuristics
-or solution-count estimates. Rather, an ``off the shelf''
-heuristic is deployed selectively based on value of information,
-thereby significantly reducing the heuristic's ``effective''
-computational overhead, with an improvement in 
-performance for problems of different size and hardness.
-
-\subsection{Summary and Future Research}
+\subsection{Conclusion and Further Research}
 \label{sec:csp-summary}
 
-This paper suggests a model for adaptive deployment of value ordering
-heuristics in algorithms for constraint satisfaction problems. As a
-case study, the model was applied to a value-ordering heuristic based
-on solution count estimates, and a steady improvement in the overall
-algorithm performance was achieved compared to {\em always} computing
-the estimates, as well as to other simple deployment tactics.  The
+This study suggests a model for adaptive deployment of value ordering
+heuristics in algorithms for constraint satisfaction problems. The
+approach presented here does not attempt to introduce new
+heuristics or solution-count estimates; rather, an ``off the shelf''
+heuristic is deployed selectively based on value of information,
+thereby significantly reducing the heuristic's ``effective''
+computational overhead, with an improvement in performance for
+problems of different size and hardness. As a case study, the model
+was applied to a value-ordering heuristic based on solution count
+estimates, and a steady improvement in the overall algorithm
+performance was achieved compared to {\em always} computing the
+estimates, as well as to other simple deployment tactics.  The
 experiments showed that for many problem instances the optimum
 performance is achieved when solution counts are estimated only in a
 relatively small number of search states.
 
-The methods introduced in this paper can be extended in numerous
+The methods introduced in this study can be extended in numerous
 ways. First, generalization of the VOI to deploy different types of
 heuristics for CSP, such as variable ordering heuristics, as well as
 reasoning about deployment of more than one heuristic at a time, are
@@ -645,9 +585,8 @@ quality of the distribution model is an interesting issue, coupled
 with a better candidate model of the distribution.  Such distribution
 models can also employ more disciplined statistical learning methods
 in tandem, as suggested above. Finally, applying the methods suggested
-in this paper to search in other domains can be attempted, especially
+here to search in other domains can be attempted, especially
 to heuristics for planning.  In particular, examining whether
 the meta-reasoning scheme can improve reasoning over deployment of
-heuristics based solely on learning methods is an interesting future
+heuristics based solely on learning methods is an interesting
 research issue.
-

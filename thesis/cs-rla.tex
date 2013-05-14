@@ -1,5 +1,35 @@
 \subsection{Introduction}
 
+This study examines improvements to the \astar~algorithm when we have
+several available admissible heuristics. Clearly, we can evaluate all
+these heuristics, and use their {\em maximum} as an admissible
+heuristic, a scheme we call \astarmax.  The problem with naive
+maximization is that all the heuristics are computed for all the
+generated nodes.  In order to reduce the time spent on heuristic
+computations, Lazy $\astar$ (or \lazyastar, for short) evaluates the
+heuristics one at a time, lazily.  When a node $n$ is generated,
+\lazyastar~only computes one heuristic, $h_1(n)$, and adds $n$ to
+\OPEN.  Only when $n$ re-emerges as the top of \OPEN~is another
+heuristic, $h_2(n)$, evaluated; if this results in an increased
+heuristic estimate, $n$ is re-inserted into \OPEN.  \lazyastar~is as
+informative as \astarmax, but can significantly reduce search time, as
+we will not need to compute $h_2$ for many nodes.
+
+\lazyastar~reduces the search time, while maintaining the informativeness of \astarmax.
+However, if the goal is reducing search time, it is sometimes better
+to compute a fast heuristic on several nodes, rather than to compute a
+slow but informative heuristic on only one node. We combine the ideas
+of lazy heuristic evaluation and of trading off more node expansions
+for less heuristic computation time, into a {\em new} variant of
+\lazyastar~called {\em rational lazy} \astar~(\rationallazyastar).
+\rationallazyastar~is based on rational metareasoning, and uses a
+myopic {\em value-of-information} criterion to decide whether to
+compute $h_2(n)$ or to bypass the computation of $h_2$ and expand $n$
+immediately when $n$ re-emerges from \OPEN. \rationallazyastar~aims to
+reduce search time, even at the expense of more node expansions than
+\astarmax.
+
+\subsection{Background and Related Work}
 
 The \astar~algorithm \cite{ASTR68} is a best-first heuristic search
 algorithm guided by the cost function $f(n)=g(n)+h(n)$.  If the
@@ -7,40 +37,22 @@ heuristic $h(n)$ is admissible (never overestimates the real cost to
 the goal) then the set of nodes expanded by \astar~is both necessary
 and sufficient to find the optimal path to the goal~\cite{ASTR85}.
 
-This study examines the case where we have several available admissible
-heuristics. Clearly, we can evaluate all these heuristics, and use their {\em
-maximum} as an admissible heuristic, a scheme we call \astarmax.
-The problem with naive maximization is that all the heuristics are
-computed for all the generated nodes.
-In order to reduce the time spent on heuristic computations, Lazy $\astar$ (or
-\lazyastar, for short) evaluates the heuristics one at a time, lazily. When a node $n$ is
-generated, \lazyastar~only computes one heuristic, $h_1(n)$, and adds $n$ to
-\OPEN.  Only when $n$ re-emerges as the top of \OPEN~is another heuristic, $h_2(n)$,
-evaluated; if this results in an increased heuristic estimate, $n$ is
-re-inserted into \OPEN.  This idea was briefly mentioned by~\cite{zhang-bacchus:aaai-2012} in the
-context of the MAXSAT heuristic for planning domains.
-\lazyastar~is as informative as \astarmax, but can significantly reduce
-search time, as we will not need to compute $h_2$ for many nodes.
+The idea behind the \lazyastar~algorithm was briefly mentioned
+by~\cite{zhang-bacchus:aaai-2012} in the context of the MAXSAT
+heuristic for planning domains. \cite{Helmert.fdps} described
+\emph{deferred evaluation} of heuristics in the context of
+the Fast Downward Planning System. The technique can be considered a
+special case of \lazyastar~where the first heuristic is identically
+zero. 
 
-\lazyastar~reduces the search time, while maintaining the informativeness of \astarmax.
-However, as noted by \cite{domshlak-et-al:jair-2012},  if the goal is reducing
-search time, it is sometimes better to compute a fast heuristic on
-several nodes, rather than to compute a slow but informative heuristic on only one
-node. Based on this idea, they formulated {\em selective max} (Sel-MAX), an online
-learning scheme which chooses one heuristic to compute at each
-state. Sel-MAX chooses to compute the more expensive heuristic $h_2$ for
-node $n$ when its classifier predicts that $h_2(n) - h_1(n)$ is greater than
-some threshold, which is a function of heuristic computation times and the average
-branching factor.
-
-We combine the ideas of lazy heuristic evaluation and of trading off more node expansions
-for less heuristic computation time, into a {\em new} variant of \lazyastar~called
-{\em rational lazy} \astar~(\rationallazyastar).
-\rationallazyastar~is based on rational metareasoning, and uses a myopic {\em
-value-of-information} criterion to decide whether to compute $h_2(n)$ or to
-bypass the computation of $h_2$ and expand $n$ immediately when $n$ re-emerges
-from \OPEN. \rationallazyastar~aims to reduce search time, even at the expense of
-more node expansions than \astarmax.
+Based on the idea of of trading off more node expansions for less
+heuristic computation time, \cite{domshlak-et-al:jair-2012} formulated
+{\em selective max} (Sel-MAX), an online learning scheme which chooses
+one heuristic to compute at each state. Sel-MAX chooses to compute the
+more expensive heuristic $h_2$ for node $n$ when its classifier
+predicts that $h_2(n) - h_1(n)$ is greater than some threshold, which
+is a function of heuristic computation times and the average branching
+factor.
 
 \subsection{Lazy \astar}
 

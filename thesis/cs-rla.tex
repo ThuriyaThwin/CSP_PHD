@@ -40,10 +40,12 @@ and sufficient to find the optimal path to the goal~\cite{ASTR85}.
 The idea behind the \lazyastar~algorithm was briefly mentioned
 by~\cite{zhang-bacchus:aaai-2012} in the context of the MAXSAT
 heuristic for planning domains. \cite{Helmert.fdps} described
-\emph{deferred evaluation} of heuristics in the context of
-the Fast Downward Planning System. The technique can be considered a
-special case of \lazyastar~where the first heuristic is identically
-zero. 
+\emph{deferred evaluation} of heuristics in the context of the Fast
+Downward Planning System. In deferred evaluation, the successors of
+node $n$ are placed in the open list with the heuristic estimate of
+$n$ and heuristically evaluated only when expanded.  The technique can
+be considered a special case of \lazyastar~where the first heuristic
+always returns 0.
 
 Based on the idea of of trading off more node expansions for less
 heuristic computation time, \cite{domshlak-et-al:jair-2012} formulated

@@ -5,9 +5,9 @@ all: thesis.pdf
 
 thesis.tex: \
 	defs.tex \
-    intro.tex related.tex ratimeta.tex search.tex ramesrch.tex \
+	intro.tex related.tex ratimeta.tex search.tex ramesrch.tex \
 	raticomp.tex \
-	cs-csp.tex cs-mcts.tex cs-rla.tex \
+	cs-intro.tex cs-csp.tex cs-mcts.tex cs-rla.tex \
 	summary.tex \
 	refs.bib
 	touch thesis.tex

@@ -1,14 +1,34 @@
 In this chapter three case studies of applications of rational
-metareasoning are presented.
+metareasoning are presented. The studies explore rational
+metareasoning in the context of satisfaction problems
+(Section~\ref{sec:cs-csp}), as well as of approximating
+(Section~\ref{sec:cs-mcts}) and optimal (Section~\ref{sec:cs-mcts})
+search in optimization problems. In addition to providing a
+metareasoning-based solution to a particular problem, the studies
+outline both techniques which are common to different problem types
+(identifying base-level and computational actions, 
+defining the utility and the value of information, etc.)
+and those which exploit features present only in some of the problems,
+such as estimating the VOI based on distribution-independent bounds
+(Section~\ref{sec:cs-mcts}). 
 
-[three kinds of search problems]
-
-[violation of assumptions]
-Each of the case studies deals with
-a problem in which straightforward application of rational
-metareasoning faces difficulties because some of the assumptions
-of the approach do not hold. 
+A straightforward application of rational metareasoning often faces
+difficulties because some of the assumptions of the approach do not
+hold. For example, estimating the value of information depends on
+belief distribution of action outcomes; however, a reasonable choice
+of the distribution is not always possible. Section~\ref{sec:cs-csp}
+derives the distribution model from the properties of the search
+algorithm rather than from the set of problem instances. Another
+example is the myopic assumtion \cite{Russell.right} which suggests
+that an action can be chosen based on its anticipated immediate
+effect. In some search algorithms, the information is obtained through
+\emph{sampling}---recurring actions with probabilistic outcomes---and
+the myopic VOI of a single sample is often
+zero. Section~\ref{sec:cs-mcts} addresses such a case in the context
+of Monte Carlo Tree Search and suggests a semi-myopic VOI estimate.
 
 [algorithm rather than problem set specific learning]
+
+[VOI in optimal search]
 
 

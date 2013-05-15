@@ -15,7 +15,7 @@ such as estimating the VOI based on distribution-independent bounds
 A straightforward application of rational metareasoning often faces
 difficulties because some of the assumptions of the approach do not
 hold. For example, estimating the value of information depends on
-belief distribution of action outcomes; however, a reasonable choice
+the belief distribution of action outcomes; however, a reasonable choice
 of the distribution is not always possible. Section~\ref{sec:cs-csp}
 derives the distribution model from the properties of the search
 algorithm rather than from the set of problem instances. Another
@@ -27,8 +27,25 @@ the myopic VOI of a single sample is often
 zero. Section~\ref{sec:cs-mcts} addresses such a case in the context
 of Monte Carlo Tree Search and suggests a semi-myopic VOI estimate.
 
-[algorithm rather than problem set specific learning]
+Advanced search algorithms are often parameterized and require tuning
+to achieve the best performance. Building an algorithm upon the
+principles of rational metareasoning allows to keep the number of
+tunable parameters to a minimum---a single parameter needs to be tuned
+in Sections~\ref{sec:cs-csp},~\ref{sec:cs-rla}. In addition, as
+Section~\ref{sec:cs-csp} demonstrates, parameters
+of a metareasoning-based algorithm are likely to reflect
+implementation details of the algorithm and the heuristics rather
+than features of a particular set of problem instances.
 
-[VOI in optimal search]
+Finally, rational metareasoning is commonly applied to approximating
+search where decision quality is traded for computation time. Optimal
+search algorithms aim at finding the optimal solution in the shortest
+possible time, and seemingly little can be achieved through
+application of rational metareasoning.  Section~\ref{sec:cs-rla}
+presents metareasoning-based improvements to a variant of
+the~\astar~algorithm which result in finding the optimal solution in a
+shorter time using the same heuristic functions; the employed
+technique is general enough and can be extended to other optimal
+search algorithms.
 
 

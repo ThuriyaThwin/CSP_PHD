@@ -5,6 +5,7 @@ all: thesis.pdf
 
 thesis.tex: \
 	defs.tex \
+    abstract.tex \
 	intro.tex related.tex ratimeta.tex search.tex ramesrch.tex \
 	raticomp.tex \
 	cs-intro.tex cs-csp.tex cs-mcts.tex cs-rla.tex \

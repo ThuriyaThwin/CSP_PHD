@@ -1,0 +1,66 @@
+In this section, we summarize our experience of applying rational
+metareasoning to search problems. The recommendations provided here
+should be treated as general guidelines to improving search algorithms
+rather than as strict instructions. Designing better algorithms is 
+an art, even if base on the solid foundation of rational
+metareasoning.
+
+\subsection{Assessing Applicability of Rational Metareasoning}
+
+The first question raised by a metareasoning researcher facing a new
+problem is whether a solution \emph{would benefit at all} from
+applying rational metareasoning. In most cases, an existing algorithm
+involving heuristic evaluation of search states justifies the attempt
+to perform the heuristic computations selectively, based on the value
+of information. However, there are two important exceptions:
+\begin{itemize}
+\item On the one hand, if \textbf{the heuristic relies on pre-computed
+  data}, and online evaluation is cheap at the expense of intensive
+  offline computation performed ahead of time and usable with a wide
+  range of problem instances, computing the heuristic selectively is
+  unlikely to save the total search time. For example, pattern
+  databases \cite{pattern} proved to be an efficient approach for
+  building informative and fast heuristics. 15-puzzle is one of
+  domains in which pattern databases are particularly powerful
+  \cite{Felner.apdb}; at the same time evaluating a state is just a
+  small number of table lookups, so it never makes sense to try and
+  compute the heuristic selectively.
+\item On the other hand, in the case of an \textbf{informative but
+  very expensive heuristic} evaluation of a state may
+  actually make the search algorithm slower in most cases, and the
+  algorithm should rely on domain-specific knowledge to
+  identify the states in which computing the heuristic is benefitial. 
+  Such fine domain-specific knowledge is usually hard to derive from
+  a general notion of value of information. One example is
+  high-accuracy solution counting algorithms, mentioned in
+  Section~\ref{sec:cs-csp}, which are too time-consuming to be used
+  in a value-ordering heuristic, unless a fine tuned higher-level
+  heuristic is involved.
+\end{itemize}
+As a rule of thumb, rational metareasoning is beneficial for
+optimizing heuristic evaluation in algorithms where:
+\begin{enumerate}
+\item Ubiquitous heuristic evaluation of the search space decreases the total search
+  time.
+\item The heuristic computation time constitutes a significant part of
+  the total search time. 
+\end{enumerate}
+Of course, this criterion does not cover all possible situations where
+rational metareasoning is helpful, but provides a good starting point
+for assessing applicability of metareasoning approach to a given
+problem domain.
+
+\subsection{Identifying the Metareasoning Decision}
+
+
+\subsection{Formulating an Utility and Information Model}
+
+Selecting a simple model with the base non-metareasoning case.
+Belief updating vs. frequentist approach.
+
+\subsection{Analysing the Results of Empirical Evaluations}
+
+Empirical evaluation is sensitive to correct emulation of real
+algorithm conditions like relative times and heuristic performance
+on test domains.
+

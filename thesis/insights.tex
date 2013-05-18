@@ -1,8 +1,8 @@
 In this section, we summarize our experience of applying rational
-metareasoning to search problems. The recommendations provided here
-should be treated as general guidelines to improving search algorithms
-rather than as strict instructions. Designing better algorithms is 
-an art, even if base on the solid foundation of rational
+metareasoning to search problems. One should treat the recommendations
+provided here as general guidelines to improving search algorithms
+rather than as strict instructions. Designing better algorithms is an
+art, even when based on the solid foundation of rational
 metareasoning.
 
 \subsection{Assessing Applicability of Rational Metareasoning}
@@ -10,13 +10,13 @@ metareasoning.
 The first question raised by a metareasoning researcher facing a new
 problem is whether a solution \emph{would benefit at all} from
 applying rational metareasoning. In most cases, an existing algorithm
-involving heuristic evaluation of search states justifies the attempt
+involving heuristic evaluation of search states justifies an attempt
 to perform the heuristic computations selectively, based on the value
 of information. However, there are two important exceptions:
 \begin{itemize}
 \item On the one hand, if \textbf{the heuristic relies on pre-computed
   data}, and online evaluation is cheap at the expense of intensive
-  offline computation performed ahead of time and usable with a wide
+  offline computation performed ahead of time for a wide
   range of problem instances, computing the heuristic selectively is
   unlikely to save the total search time. For example, pattern
   databases \cite{pattern} proved to be an efficient approach for
@@ -29,7 +29,7 @@ of information. However, there are two important exceptions:
   very expensive heuristic} evaluation of a state may
   actually make the search algorithm slower in most cases, and the
   algorithm should rely on domain-specific knowledge to
-  identify the states in which computing the heuristic is benefitial. 
+  identify the states in which computing the heuristic is beneficial. 
   Such fine domain-specific knowledge is usually hard to derive from
   a general notion of value of information. One example is
   high-accuracy solution counting algorithms, mentioned in
@@ -40,9 +40,9 @@ of information. However, there are two important exceptions:
 As a rule of thumb, rational metareasoning is beneficial for
 optimizing heuristic evaluation in algorithms where:
 \begin{enumerate}
-\item Ubiquitous heuristic evaluation of the search space decreases the total search
+\item Ubiquitous heuristic evaluation of the search space \emph{decreases} the total search
   time.
-\item The heuristic computation time constitutes a significant part of
+\item The heuristic computation time constitutes \emph{a significant part} of
   the total search time. 
 \end{enumerate}
 Of course, this criterion does not cover all possible situations where
@@ -52,15 +52,114 @@ problem domain.
 
 \subsection{Identifying the Metareasoning Decision}
 
+For a successful realization of the rational metareasoning layer it is
+important to identify the metareasoning decision. Determining the
+choices available at the decision points, and benefits and costs
+associated with each of the choices is not always simple. For example,
+in Section~\ref{sec:cs-mcts}, ``VOI-aware MCTS'', the originally
+considered decision was whether to continue sampling or to commit to a
+move. This model facilitated derivation of VOI estimates for simple
+regret in Multi-armed bandits
+(Section~\ref{sec:mcts-approx-nonbayesian-section}). However, we could
+improve the Go agent only after realizing that for sampling in trees
+the alternative is to either continue sampling or to commit to a move
+\emph{and possibly spend the unused samples at the selected child} of
+the current state (Section~\ref{sec:mcts-control-redistribution}).
+
+Similarly, in \rationallazyastar~(Section~\ref{sec:cs-rla}) the
+decision is whether to compute the expensive heuristic $h_2$ in the current
+node $n$ or to bypass the evaluation \emph{and compute $h_2$ in all
+  children of $n$}, as though the algorithm resorts to plain \lazyastar.
+Earlier attempts to derive a metareasoning rule that compares the
+benefit of pruning the subtree due to computing $h_2$ 
+with the cost of traversing the subtree did not result in a faster
+algorithm. 
+
+One way to ensure robustness of an algorithm ${\mathcal A}^{\textrm MR}$ with the
+metareasoning level is to start with an efficient non-metareasoning
+algorithm ${\mathcal A}$ and implement metareasoning decisions in ${\mathcal
+A}^{\textrm MR}$ as choices
+between either behaving provably better than ${\mathcal A}$ or
+resorting to ${\mathcal A}$.
+\rationallazyastar~in Section~\ref{sec:cs-rla} which is based on
+\lazyastar, and MAC with VOI-driven solution-counting value-ordering
+heuristic~in Section~\ref{sec:cs-csp} which improves on MAC with
+ubiquitous solution counting are examples of this technique.
 
 \subsection{Formulating an Utility and Information Model}
 
-Selecting a simple model with the base non-metareasoning case.
-Belief updating vs. frequentist approach.
+Decision-making of the rational metareasoning approach is based on the
+notions of state utility and value of information of computational and
+base-level actions. A more complicated utility function does not necessarily
+bring additional  benefits:
+\begin{itemize}
+\item A complicated function is more expensive to compute, and
+  metareasoning computations tend to increase the total search
+  time.  Chapter~\ref{ch:raticomp}, ``Rational Computation of Value of
+  Information'' suggests some ways to leverage the costs of
+  computations at the metareasoning level when an expensive utility
+  function is absolutely necessary, but, as the case studies in
+  Sections~\ref{sec:cs-csp}--~\ref{sec:cs-rla} show, even simple utility
+  functions result in considerable improvements.
+\item A utility model is often overly complicated because the
+  algorithm designer tried to squeeze into the model domain-specific
+  heuristic knowledge. However, metareasoning decisions
+  that implicitly depend on heuristic knowledge impair the idea of
+  rational metareasoning as an abstraction and hinder reasoning about
+  the algorithm.
+\end{itemize}
 
-\subsection{Analysing the Results of Empirical Evaluations}
+Estimating the value of information of actions involves maintaining
+beliefs about probabilities of action outcomes. In some cases, such as
+applying \rationallazyastar~to planning problems
+\cite{TolpinEtAl.rla}, guessing prior beliefs and updating them based
+on obtained evidence is possible and even necessary. In other cases,
+such as the MAC algorithm for constraint satisfaction problems
+(Section~\label{sec:cs-csp}), the beliefs can be constructed from the
+analysis of the algorithm under assumptions about the structure of the
+search space. Yet in other applications, such as the selection problem
+(Section~\ref{sec:cs-mcts}), prior beliefs are not easily obtainable. An
+alternative to maintaining beliefs is estimating the value of
+information based on distribution-independent bounds derived from on
+concentration inequalities;
+Section~\ref{sec:mcts-approx-nonbayesian-section} serves as an example  
+of this approach. An additional benefit of bound-based VOI estimates 
+is robustness of metareasoning decisions which would be otherwise
+by inadequate prior beliefs. 
 
-Empirical evaluation is sensitive to correct emulation of real
-algorithm conditions like relative times and heuristic performance
-on test domains.
+\subsection{Analyzing the Results of Empirical Evaluation}
 
+Empirical evaluation is an indispensable part of developing an
+application of the rational metareasoning approach to a given
+problem. Analysis of the empirical performance of the algorithm
+facilitates verifying and improving the metareasoning model.  Still,
+misleading results are frequent in the assessment of efficiency of the
+rational metareasoning approach. Such assessment involves comparing
+real search times which are influenced by inevitable noise of the
+computer facilities, but even more by features of a particular problem
+domain or test set. 
+
+For example, a useful comparison of VOI-aware MCTS
+to UCT in the context of Computer Go (Section~\ref{sec:mcts-emp-go})
+required configuring restricted versions of both players which are
+strictly based on Monte Carlo sampling with minimum use of
+position-dependent rules. Otherwise, the evaluation would compare
+compatibility of the rules with the sampling scheme in each of the
+agents rather than the advantage of one sampling scheme over the
+other. Developing a Go agent which is both based on VOI-aware sampling
+and wins over other state-of-the-art Go agents is an ambitious
+objective. However, this objective is only loosely related to
+verification of the rational metareasoning approach to Monte Carlo
+tree search. 
+
+Another example is the analysis of
+\rationallazyastar~(Section~\ref{sec:rla-empirical}. Applying
+\rationallazyastar to 15-puzzle and to planning problems commands
+different decision rules, because in 15-puzzle the time required to
+compute $h_1$ is negligible compared to the open list manipulation,
+while in planning both heuristics are expensive to compute. 15-puzzle
+could also be used, in addition to evaluation on established planning
+problem sets, to analyze efficiency of the approach  in the
+planning domain using the appropriate decision rule, but in the latter
+case the empirical results had to be processed accordingly,
+by extracting just the heuristic computation times. 

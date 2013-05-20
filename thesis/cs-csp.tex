@@ -1,8 +1,6 @@
 % $Id: thesis.tex,v 1.60 2010/04/13 11:12:30 dvd Exp $
 
 
-\subsection{Introduction}
-
 Large search spaces are common in artificial intelligence, heuristics
 being of major importance in limiting search efforts.  The role of a
 heuristic, depending on type of search algorithm, is to decrease the
@@ -49,7 +47,7 @@ aspects of such tradeoffs are also analyzed empirically.  Finally,
 possible future extensions of the proposed mechanism are discussed
 (Section~\ref{sec:csp-summary}).
 
-\subsection{Background and Related Work}
+\section{Background and Related Work}
 \label{sec:csp-background}
 
 A constraint satisfaction problem (CSP) is defined by a set
@@ -110,7 +108,7 @@ deploying heuristics for planning \cite{Domshlak.maxornot}. The
 approach taken is usually that of {\em learning} which heuristics to
 deploy based on features of the search state.
 
-\subsection{Rational Value-Ordering}
+\section{Rational Value-Ordering}
 \label{sec:csp-generic}
 
 The role of (dynamic) value ordering is to determine the order of
@@ -234,7 +232,7 @@ Finally, since (\ref{eq:backtracking-probability-estimate}), (\ref{eq:p-approx-o
 \Lambda_i\approx\IE\left[(T_1-T_i)|D_k|\,\Big|\; T_i<T_1 \right]
 \end{eqnarray}
 
-\subsection{VOI of Solution Count Estimates}
+\section{VOI of Solution Count Estimates}
 \label{sec:csp-rational}
 
 The estimated solution count for an assignment may be used to estimate
@@ -338,7 +336,7 @@ estimates of value assignments, is returned
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Empirical Evaluation}
+\section{Empirical Evaluation}
 \label{sec:csp-empirical}
 
 Specifying the algorithm parameter $\gamma$ is the first issue.
@@ -374,7 +372,7 @@ Equation~(\ref{eq:csp-gamma}) is a reasonable approximation for this
 implementation. The source code is available from
 \url{http://ftp.davidashen.net/vsc.tar.gz}.
 
-\subsubsection{Benchmarks}
+\subsection{Benchmarks}
 
 \begin{figure}[h]
 \centering
@@ -439,7 +437,7 @@ occasions} selected using rational metareasoning.
 \label{fig:random-problems}
 \end{figure}
 
-\subsubsection{Random instances}
+\subsection{Random instances}
 
 Based on the results on benchmarks, we chose $\gamma=10^{-3}$, and
 applied it to two sets of 100 problem instances. 
@@ -480,7 +478,7 @@ Thus, the value of $\gamma$ chosen based on a small set of hard instances
 gives good results on a set of instances with different parameters and
 of varying hardness.
 
-\subsubsection{Generalized Sudoku}
+\subsection{Generalized Sudoku}
 
 Randomly generated problem instances have played a key role in the
 design and study of heuristics for CSP. However, one might argue that the
@@ -519,7 +517,7 @@ performance on Model RB.
 \label{tbl:sudoku}
 \end{table}
 
-\subsubsection{Deployment patterns}
+\subsection{Deployment patterns}
 
 One might ask whether trivial methods for selective deployment would
 work, such as estimating solution counts for a certain number of
@@ -553,7 +551,7 @@ random         & 31.421                  & 42.085                    & 20.038
 \label{tbl:voirnd}
 \end{table}
 
-\subsection{Conclusion and Further Research}
+\section{Conclusion and Further Research}
 \label{sec:csp-summary}
 
 This study suggests a model for adaptive deployment of value ordering

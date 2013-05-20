@@ -70,6 +70,55 @@ metareasoning extensions for several search algorithms, and
 theoretically and empirically analyses the gain in performance due to
 the extensions.
 
+The presented case studies explore rational
+metareasoning in the context of satisfaction problems
+(Chapter~\ref{ch:cs-csp}), as well as of approximating
+(Chapter~\ref{ch:cs-mcts}) and optimal (Chapter~\ref{ch:cs-rla})
+search in optimization problems. In addition to providing a
+metareasoning-based solution to a particular problem, the studies
+outline both techniques which are common to different problem types
+(identifying base-level and computational actions, 
+defining the utility and the value of information, etc.)
+and those which exploit features present only in some of the problems,
+such as estimating the VOI based on distribution-independent bounds
+(Chapter~\ref{ch:cs-mcts}). 
+
+A straightforward application of rational metareasoning often faces
+difficulties because some of the assumptions of the approach do not
+hold. For example, estimating the value of information depends on
+the belief distribution of action outcomes; however, a reasonable choice
+of the distribution is not always possible. Chapter~\ref{ch:cs-csp}
+derives the distribution model from the properties of the search
+algorithm rather than from the set of problem instances. Another
+example is the myopic assumption \cite{Russell.right} which suggests
+that an action can be chosen based on its anticipated immediate
+effect. In some search algorithms, the information is obtained through
+\emph{sampling}---recurring actions with probabilistic outcomes---and
+the myopic VOI of a single sample is often
+zero. Chapter~\ref{ch:cs-mcts} addresses such a case in the context
+of Monte-Carlo tree search and suggests a semi-myopic VOI estimate.
+
+Advanced search algorithms are often parameterized and require tuning
+to achieve the best performance. Building an algorithm upon the
+principles of rational metareasoning allows to keep the number of
+tunable parameters to a minimum---a single parameter needs to be tuned
+in Chapters~\ref{ch:cs-csp},~\ref{ch:cs-rla}. In addition, as
+Chapter~\ref{ch:cs-csp} demonstrates, parameters
+of a metareasoning-based algorithm are likely to reflect
+implementation details of the algorithm and the heuristics rather
+than features of a particular set of problem instances.
+
+Finally, rational metareasoning is commonly applied to approximating
+search where decision quality is traded for computation time. Optimal
+search algorithms aim at finding the optimal solution in the shortest
+possible time, and seemingly little can be achieved through
+application of rational metareasoning.  Chapter~\ref{ch:cs-rla}
+presents metareasoning-based improvements to a variant of
+the~\astar~algorithm which result in finding the optimal solution in a
+shorter time using the same heuristic functions; the employed
+technique is general enough to extend to other optimal
+search algorithms.
+
 The rest of the thesis is organized as follows. Chapter~\ref{ch:bg}
 provides the necessary background information about the rational
 metareasoning approach as well as about search problems and
@@ -81,9 +130,10 @@ on \cite{TolpinShimony.raticomp}, introduces rational computation of
 value of information---an important issue in design of efficient
 search algorithms based on rational metareasoning. Case studies of the
 rational metareasoning approach in several search problems are
-presented and evaluated in Chapter~\ref{ch:case-studies} (based
+presented and evaluated in Chapters~\ref{ch:cs-csp}--\ref{ch:cs-rla} (based
 on~\cite{TolpinShimony.csp,TolpinShimony.mcts,HayRussellTolpinShimony.selecting,TolpinEtAl.rla}).
-Section~\ref{sec:insights} summarizes the experience of applying 
+Chapter~\ref{ch:insights} summarizes the experience of applying 
 the rational metareasoning approach to different search problems, and
 Chapter~\ref{ch:summary} concludes this thesis with a discussion of
 achieved results and further research directions.
+

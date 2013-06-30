@@ -1,4 +1,3 @@
-\subsection{Introduction}
 
 MCTS, and especially UCT \cite{Kocsis.uct} appears in numerous search
 applications, such as \cite{Eyerich.ctp}. Although these methods are
@@ -26,7 +25,7 @@ the performance of the proposed sampling policy is evaluated on sets
 of Bernoulli arms and on Computer GO, showing the improved
 performance.
 
-\subsection{Background and Related Work}
+\section{Background and Related Work}
 \label{sec:mcts-related-work}
 
 Monte-Carlo tree search was initially suggested as a scheme for
@@ -68,7 +67,7 @@ maintains a current best action $\alpha$, and finds the expected gain
 from finding another action $\beta $ to be better than the current
 best.
 
-\subsection{Upper bounds on Value of Information}
+\section{Upper bounds on Value of Information}
 \label{sec:mcts-approx-nonbayesian-section}
 
 In many practical applications of the selection problem, such as search in
@@ -274,7 +273,7 @@ UCB1 is always considerably worse than the VOI-aware sampling policies.
 
 
 
-\subsection{Sampling in trees}
+\section{Sampling in trees}
 \label{sec:mcts-empirical-evaluation}
 
 The previous section addressed the selection problem in the flat case.
@@ -305,7 +304,7 @@ exhibit performance comparable to the performance of some
 state-of-the-art heuristic algorithms.
 
 
-\subsubsection{Stopping criterion}
+\subsection{Stopping criterion}
 \label{sec:mcts-control-stopping-criterion}
 
 When a sample has a known cost commensurable with the value of
@@ -334,7 +333,7 @@ influence of the sample cost $c$ on the performance of
 the sampling policy. When the sample cost $c$ is unknown, one can perform initial calibration experiments
 to determine a reasonable value, as done in the following.
 
-\subsubsection{Sample redistribution in trees}
+\subsection{Sample redistribution in trees}
 \label{sec:mcts-control-redistribution}
 
 The above hybrid approach assumes
@@ -369,7 +368,7 @@ fixed cost  substantially improve the performance of the VOI-based
 sampling policy in game tree search.
 
 
-\subsubsection{Playing Go against UCT}
+\subsection{Playing Go against UCT}
 \label{sec:mcts-emp-go}
 
 The hybrid policies were compared on the game Go, a search domain
@@ -437,7 +436,7 @@ win rate is even higher than shown in Figure~\ref{fig:voi-wins}. This is as expe
 as this setting (which is somewhat unfair to Pachi) is closer to
 meeting the assumptions underlying the selection MDP.
 
-\subsection{Conclusion and Further Research}
+\section{Conclusion and Further Research}
 
 This work suggested a Monte-Carlo sampling policy in which sample
 selection is based on upper bounds on the value of

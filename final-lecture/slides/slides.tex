@@ -1,0 +1,520 @@
+\documentclass{beamer}
+\usepackage[latin1]{inputenc}
+
+%\usepackage[noend]{algpseudocode}
+%\usepackage[ruled]{algorithm}
+\usepackage{url}
+\usepackage{framed}
+\usepackage{amsfonts,amsmath,amsthm}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{color}
+
+\usepackage[english]{babel}
+
+% font definitions, try \usepackage{ae} instead of the following
+% three lines if you don't like this look
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage{mathptmx}
+\usepackage{pgf}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes,patterns,positioning,shapes.misc}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+\title{Rational Metareasoning in Problem-Solving Search}
+\author{David Tolpin}
+\institute{Ben-Gurion University of the Negev\\Beer Sheva, Israel}
+\date{July 30, 2013}
+
+\input{macros}
+
+
+\newcommand{\OPEN} {{\textsc{Open}}}
+\newcommand{\CLOSED} {{\textsc{Closed}}}
+\newcommand{\lazyastar} {\ensuremath{LA^\ast}}
+\newcommand{\rationallazyastar} {\ensuremath{RLA^\ast}}
+\newcommand{\astarmax}{\ensuremath{\astar_{MAX}}}
+
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+\section{Rational Metareasoning}
+
+\begin{frame}{Rational Metareasoning}
+\begin{itemize}
+\item A problem-solving agent can perform {\it base-level} actions from a known
+          set $\{A_i\}$.
+\item Before committing to an action, the agent may perform a sequence of
+          {\it meta-level} deliberation actions from a set $\{S_j\}$.
+\item At any given time there is a base-level action $A_\alpha$ that maximizes
+          the agent's {\it expected utility.}
+\end{itemize}
+
+          The {\bf net VOI $V(S_j)$} of action $S_j$ is the {\bf intrinsic VOI} $\Lambda_j$ less the cost of $S_j$:
+          \[V(S_j)=\Lambda(S_j)-C(S_j)\]
+           \[\Lambda(S_j)=\mathbb{E}\left(\mathbb{E}(U(A_\alpha^j))-\mathbb{E}(U(A_\alpha))\right)\]
+
+\begin{itemize} 
+\item  $S_{j_{\max}}$ that maximizes the net VOI  is performed: $j_{\max} = \arg\max_jV(S_j)$, if $V(S_{j_{\max}})>0$.
+\item Otherwise, $A_\alpha$ is performed.
+\end{itemize}
+\end{frame}
+
+
+\section{Rational Deployment of Heuristics in CSP}
+
+\begin{frame}{Constraint Satisfaction}
+\begin{itemize}
+\item CSP backtracking search algorithms typically employ
+  variable-ordering and value-ordering heuristics.
+\item Many value ordering heuristics are computationally
+  heavy, e.g. heuristics {\it based on solution count
+          estimates.}
+\item Principles of rational metareasoning can be applied
+          to decide when to deploy the heuristics.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Constraint Satisfaction}
+A constraint satisfaction problem (CSP) is defined by:
+\begin{itemize}
+\item[] {\bf variables} $\mathcal{X}=\{X_1, X_2, ...\}$, 
+\item[] {\bf constraints} $\mathcal{C}=\{C_1, C_2, ...\}$. 
+\end{itemize}
+\begin{itemize}
+ \item Each {\it variable} $X_i$ has a non-empty domain
+          $D_i$ of possible values. 
+\item Each {\it constraint} $C_i$ involves some subset
+          of the variables---the {\it scope} of the constraint---and specifies the
+          allowable combinations of values for that subset. 
+\item An {\it assignment} that does not violate any constraints is called
+          {\it consistent} (or solution).
+ \end{itemize}
+ \end{frame}
+
+\begin{frame}{Value Ordering Model}
+Value ordering heuristics provide information about:
+\begin{itemize}
+ \item $T_i$---the expected time to find a solution containing
+          an assignment  $X_k=y_{ki};$
+\item $p_i$---the probability that there is no solution
+  consistent with $X_k=y_{ki}$.
+\end{itemize}
+The expected remaining search time in the subtree under $X_k$ for
+ordering $\omega$ is $T^{s|\omega}=T_{\omega(1)}+\sum_{i=2}^{|D_k|}T_{\omega(i)}\prod_{j=1}^{i-1}p_{\omega(j)}$
+\begin{itemize}
+\item The current optimal base-level action is picking the $\omega $ which optimizes $T^{s|\omega}$.  $T^{s|\omega}$ is minimal if the values are sorted  by increasing order of $\frac {T_i} {1-p_i}$.
+\item The intrinsic VOI $\Lambda_i$ of estimating $T_i, p_i$ for the $i$th assignment is the expected decrease in the expected search time:
+          $\Lambda_i=\mathbb{E}\left[T^{s|\omega_-}-T^{s|\omega_{+i}}\right]$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Results}
+
+{\large{\bf Rational Value Ordering}}
+
+The intrinsic VOI $\Lambda_i$ of invoking the heuristic can be approximated as:
+\[\Lambda_i\approx \mathbb{E}\left[(T_1-T_i)|D_k|\,\Big|\; T_i < T_1 \right]\]
+
+{\large{\bf VOI of Solution Count Estimates}}
+
+The net VOI $V$ of estimating a solution count can be approximated as:
+\[V \propto |D_k|e^{-\nu}\sum_{n=n_\mathrm{max}}^\infty \! \! \left( \frac 1 {n_\mathrm{max}} - \frac 1 n\right) \frac {\nu^n} {n!}-\gamma\]
+where the constant $\gamma$ \textcolor{blue}{depends on the search algorithm and the heuristic, rather than on the CSP instance,} and can be learned offline. 
+\end{frame}
+
+\begin{frame}{Benchmarks}
+\vspace{-24pt}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.6]{benchmarks.pdf}
+
+14 CSP Solver Competion 2005 Benchmarks\\
+solved for $\gamma \in \{0, 10^{-7},$ $10^{-6},$ $...,$ $1\}$
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Random Instances}
+\begin{figure}[h] 
+\centering
+\includegraphics[scale=0.6]{random-problems-arrows+legend.pdf}
+
+100 Model RB Random Instances
+\end{figure}
+\end{frame}
+
+\begin{frame}{Generalized Sudoku}
+\begin{itemize}
+\item Real-world problem instances often have much more structure
+  than random instances generated according to Model RB.
+\item We repeated the
+  experiments on randomly generated Generalized Sudoku instances---
+  a highly structured domain.
+\item Relative performance on Generalized Sudoku was similar to
+  Model~RB.
+\end{itemize}
+\end{frame}
+
+\section{VOI-aware Monte Carlo Tree Search}
+
+\begin{frame}{MCTS}
+
+{\bf M}onte {\bf C}arlo {\bf T}ree {\bf S}earch helps in large search spaces.At each node:
+\begin{itemize}
+\item Repeats:
+  \begin{enumerate}
+    \item \textbf{Selection:} select an action to explore.
+    \item \textbf{Simulation:} simulates a rollout until a goal is reached.
+    \item \textbf{Backpropagation:} updates the action value.
+  \end{enumerate}
+\item Selects the best action.
+\end{itemize}
+\vspace{1em}
+\textbf{Adaptive} Generally, MCTS samples `good' moves more frequently,\\
+but sometimes {\bf explores} new directions.
+\end{frame}
+
+\begin{frame}{Multi-armed Bandit Problem and UCB}
+Multi-armed Bandit Problem:
+\begin{itemize}
+\item We are given a set of $K$ arms.
+\item Each arm can be pulled multiple times.
+\item The reward is drawn from an {\bf unknown} (but normally {\it
+    stationary} and {\it bounded}) distribution.
+\item The {\bf total reward} must be maximized.
+\end{itemize}
+
+{\bf UCB} is near-optimal for MAB --- solves
+{\it exploration/exploitation} tradeoff.
+\begin{itemize}
+\item pulls an arm that maximizes {\bf U}pper {\bf C}onfidence {\bf
+    B}ound: $b_i=\overline X_i+\sqrt {\frac {c \log (n)} {n_i}}$
+\item the cumulative regret is $O(\log n)$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{UCT}
+UCT ({\bf U}pper {\bf C}onfidence Bounds applied to {\bf T}rees) is 
+based on UCB.
+\begin{itemize}
+\item Adaptive MCTS.
+\item Applies the UCB selection scheme at each step of the rollout.
+\item Demonstrated good performance in Computer Go (MoGo, CrazyStone, Fuego,
+  Pachi, ...) as well as in other domains.
+\end{itemize}
+However, the first step of a rollout is different:
+\begin{itemize}
+\item The purpose of MCTS is to choose an action with the greatest utility.
+\item Therefore, the {\bf simple regret} must be minimized.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Upper Bounds on Value of Information}
+Assuming that:
+\begin{enumerate}
+\item Samples are i.i.d. given the value of the arm.
+\item The expectation of a selection in a belief state is equal to the sample mean.
+\end{enumerate}
+Upper bounds on intrinsic VOI $\Lambda^b_i$ of testing the $i$th arm N
+times are (based on Hoeffding inequality):
+\begin{align*}
+  \Lambda&_\alpha^b < \frac {N\overline X_\beta^{n_\beta}}
+  {n_\alpha+1}\cdot 2\exp\left(- 1.37(\overline X_\alpha^{n_\alpha}\hspace{-0.5em} - \overline X_\beta^{n_\beta})^2 n_\alpha\right)\\
+  \Lambda&_{i|i\ne\alpha}^b <  \frac {N(1-\overline
+    X_\alpha^{n_\alpha})} {n_i+1}\cdot 2\exp\left(- 1.37(\overline X_\alpha^{n_\alpha}\hspace{-0.5em} - \overline X_i^{n_i})^2 n_i\right)
+\end{align*}
+Tighter bounds can be obtained (see the paper).
+\end{frame}
+
+\begin{frame}{VOI-based Sampling in Bernoulli Selection Problem}
+25 arms, 10000 trials:
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.65]{flat.pdf}
+\end{figure}
+UCB1 is always worse than VOI-aware policies (VOI, VOI+).
+\end{frame}
+
+\begin{frame}{Sampling in Trees}
+\begin{itemize}
+\item Hybrid sampling scheme:
+\begin{enumerate}
+\item At the {\it root node}: sample based on the VOI estimate.
+\item At {\it non-root nodes}: sample using UCT.
+\end{enumerate}
+\item Stopping criterion: Assuming sample cost $c$ is known,\\
+\hspace{1em}stop sampling when intrinsic VOI is less than $C=cN$:
+\begin{align*}
+\frac 1 N \Lambda_\alpha^b \le&\frac {\overline X_\beta^{n_\beta}}
+  {n_\alpha+1}\Pr(\overline X_\alpha^{n_\alpha+N}\le\overline
+  X_\beta^{n_\alpha})\le c\\
+\frac 1 N \max_i\Lambda_i^b\le &\max_i\frac {(1-\overline X_\alpha^{n_\alpha})} {n_i+1}\Pr(\overline
+  X_i^{n_i+N}\ge\overline X_\alpha^{n_\alpha})\le c\\
+    &\forall i: i\ne\alpha
+\end{align*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sample Redistribution}
+\begin{itemize}
+\item The VOI estimate assumes that the information is {\bf discarded}
+  between states.
+\item MCTS {\bf re-uses rollouts} generated at earlier search states.
+\vspace{\baselineskip}
+\item Either incorporate `future' influence into the VOI estimate
+  ({\it non-trivial!}).
+\item Or behave myopically w.r.t. search tree depth:
+\begin{enumerate}
+\item Estimate VOI as though the information is discarded.
+\item Stop early if the VOI is below a certain threshold.
+\item Save the unused sample budget for search in future states.
+\end{enumerate}
+\item The cost $c$ of a sample  is\\\hspace{1em} the VOI of increasing a
+  future budget by one sample.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Playing Go Against UCT:\\\hspace{2em}Tuning the Sample Cost}
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.65]{uctvoi.pdf}
+\end{figure}
+Best results for sample cost $c\approx 10^{-6}$:\\\hspace{2em}winning rate of {\bf
+  64\%} for 10000 samples per ply.
+\end{frame}
+
+\begin{frame}{Playing Go Against UCT:
+    \\\hspace{1em} Winning Rate vs. Number of Samples per Ply}
+
+Sample cost $c$ fixed at $10^{-6}$:
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.65]{voi-wins.pdf}
+\end{figure}
+Best results for {\it intermediate} $N_{samples}$:
+\begin{itemize}
+\item When $N_{samples}$ is too low, poor moves are selected.
+\item When $N_{samples}$ is too high, the VOI of further sampling
+  is low.
+\end{itemize}
+\end{frame}
+
+\section{Towards Rational Deployment of Multiple Heuristics in A*}
+
+
+\begin{frame}
+\frametitle{\visible<3->{Rational }\visible<2->{Lazy} $\astar$}
+
+ %   Order the heuristics according to their simplcity\\
+    Apply all heuristics to initial state $\init$\\
+    Insert $\init$ into \OPEN \\
+    \While{\OPEN~not empty}{
+        $n$ $\gets$ best node from \OPEN \\
+        \If{Goal(n)}{
+            \Return trace(n)\\
+        }
+        \visible<2->{
+        \If{$h_2$ was not applied to $n$ \visible<3->{ and $h_2$ is likely to pay off }}{
+            Apply $h_2$ to $n$\\
+            re-insert $n$ into \OPEN\\
+            {\bf continue} ~~~~~~ //next node in OPEN\\
+        }
+        }
+        \ForEach{child $c$ of $n$}{
+            Apply $h_1$ to $c$\\
+            insert $c$ into \OPEN\\
+        }
+        Insert $n$ into \CLOSED\\
+    }
+    \Return FAILURE
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Rational Decision}
+\begin{itemize}
+  \item When does computing $h_2$ pay off?
+  \item Suppose $h_2$ was computed for state $s$. Then either:
+  \begin{enumerate}
+    \item $s$ will be expanded later on anyway
+    \item an optimal goal is found before $s$ is expanded
+  \end{enumerate}
+  \item Computing $h_2$ pays off only in outcome 2 --- call this
+  ``$h_2$ is helpful''
+\end{itemize}
+
+\begin{block}{}
+\begin{quote}
+``It is difficult to make predictions, especially about the future''
+\vskip5mm
+  \hspace*\fill{--- Yogi Berra / Neils Bohr}
+\end{quote}
+\end{block}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Towards a Rational Decision}
+\begin{itemize}
+  \item Myopic assumption: this is the {\em last}
+        meta-level decision to be made, and henceforth the algorithm
+        will act like lazy $\astar$.
+\item When a node re-emerges from the open list,
+      compare the regret of computing $h_2$ as in lazy $\astar$, vs.
+      just expanding the node.
+\item Note: if rational lazy $\astar$ is indeed better than lazy
+  $\astar$, the myopic assumption results in an upper bound
+  on the regret.
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+               & Compute $h_2$ & Bypass $h_2$\\
+\hline
+$h_2$ helpful &   0            & $\sim b(s) t_1 + (b(s) - 1)t_2$\\
+\hline
+$h_2$ not helpful & $\sim t_2$      & 0 \\
+\hline
+\end{tabular}\\
+\vspace{3mm}
+$b(s)$ denotes the number of successors of $s$\\
+\vspace{3mm}
+{\em Disclaimer: for the exact analysis, see the paper}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{From Regret to Rational Decision}
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+               & Compute $h_2$ & Bypass $h_2$\\
+\hline
+$h_2$ helpful &   0            & $\sim b(s) t_1 + (b(s) - 1)t_2$\\
+\hline
+$h_2$ not helpful & $\sim t_2$      & 0 \\
+\hline
+\end{tabular}\\
+\end{center}
+
+\begin{itemize}
+  \item Suppose that the probability of $h_2$ being helpful is $p_h$
+  \item Then the rational decision is to compute $h_2$ iff:
+  $$\frac{t_2}{t_1} < \frac {p_h b(s)} {1-p_h b(s)}$$  
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Approximating $p_h$}
+
+$$\frac{t_2}{t_1} < \frac {p_h b(s)} {1-p_h b(s)}$$
+
+\begin{itemize}
+  \item We can directly measure $t_1, t_2$ and $b(s)$, but need to approximate $p_h$
+  \item If $s$ is a state at which $h_2$ was helpful, then we computed
+  $h_2$ for $s$, but did not expand $s$. Denote the number of such states by
+  $B$.
+  \item Denote by $A$ the number of states for which we computed $h_2$.
+  \item We can use $\frac{A}{B}$ as an estimate for $p_h$
+  \item To get an estimate which is more stable, we use a weighted average with
+  $k$ fictitious examples giving an estimate of $p_{init}$: 
+  $$\frac{(A + p_{init} \cdot k)}{B + k}$$
+  \item We use $p_{init} = 0.5$ and $k = 1000$
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Empirical Evaluation: Weighted 15 Puzzle}
+
+\begin{itemize}
+  \item $h_1$ --- weighted manhattan distance
+  \item $h_2$ --- lookahead to depth $l$ with $h_1$
+\end{itemize}
+
+\begin{tabular}{|l|r|r|r||r|r|r|}
+\hline
+    & \multicolumn{3}{|c|}{Generated } & \multicolumn{3}{|c|}{Time }\\
+$l$ &	 $\astar$ & \lazyastar & \rationallazyastar &	 $\astar$ & \lazyastar
+& \rationallazyastar\\
+\hline
+2 	& 1,206,535 & 	 1,206,535 &	 1,309,574 &	 0.707 & 	 0.820& 	 0.842 \\ 
+\hline
+4 	& 1,066,851 & 	 1,066,851 &	 1,169,020 &	 0.634 &	 0.667& 	 0.650 \\ 
+\hline
+6 	& 889,847 &	 889,847 &	 944,750 &	 {\bf 0.588} &	 0.533 &	 0.464 \\ 
+\hline
+8 	& 740,464 &	 740,464 &	 793,126 &	 0.648 &	 {\bf 0.527} &	 0.377 \\ 
+\hline
+10 	& 611,975 &	 611,975 &	 889,220 &	 0.843 &	 0.671 	& {\bf 0.371} \\ 
+\hline
+12 	& {\bf 454,130} &	 {\bf 454,130} &	 807,846 &	 0.927 &	 0.769 &	 0.429 \\
+\hline
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Empirical Evaluation: Planning Domains}
+
+\begin{itemize}
+  \item $h_{LA}$ --- admissible landmarks
+  \item $\lmcut$ --- landmark cut
+\end{itemize}
+
+\begin{tabular}{|l|r||r|r|r|}
+\hline
+    &         & \multicolumn{3}{|c|}{623 Commonly Solved}\\
+Alg &  Solved & Time (GM) &  Expanded & Generated\\
+\hline
+$h_{LA}$ & 	 698 &	 1.18 & 183,320,267 & 1,184,443,684\\
+ $\lmcut$ &	 697 &	 0.98 & 23,797,219 & 114,315,382\\
+ max &	 722 &	 0.98 & \textbf{22,774,804} & \textbf{108,132,460}\\ 
+ selmax &	 747 & 	 0.89 & 54,557,689 & 193,980,693\\
+\hline 
+ \lazyastar	& 747 &	 0.79 & \textbf{22,790,804} & \textbf{108,201,244}\\
+ \rationallazyastar &	 \textbf{750} &	 \textbf{0.77} & 25,742,262 &
+ 110,935,698\\
+\hline 
+\end{tabular}
+
+\begin{itemize}
+  \item \rationallazyastar~solves the most problems, and is fastest on average
+\end{itemize}
+\end{frame}
+
+
+\section{Insights into the Methodology}
+
+\section{Summary and Future Work}
+
+\begin{frame}
+\begin{center}
+\begin{huge}
+Thank You
+\end{huge}
+\end{center}
+
+\end{document}

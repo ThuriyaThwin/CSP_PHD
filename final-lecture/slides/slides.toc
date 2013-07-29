@@ -1,0 +1,8 @@
+\beamer@endinputifotherversion {3.10pt}
+\select@language {english}
+\beamer@sectionintoc {1}{Rational Metareasoning}{3}{0}{1}
+\beamer@sectionintoc {2}{Rational Deployment of Heuristics in CSP}{5}{0}{2}
+\beamer@sectionintoc {3}{VOI-aware Monte Carlo Tree Search}{13}{0}{3}
+\beamer@sectionintoc {4}{Towards Rational Deployment of Multiple Heuristics in A*}{23}{0}{4}
+\beamer@sectionintoc {5}{Insights into the Methodology}{33}{0}{5}
+\beamer@sectionintoc {6}{Summary and Future Work}{34}{0}{6}

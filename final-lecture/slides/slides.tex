@@ -23,8 +23,8 @@
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
 
 \title{Rational Metareasoning in Problem-Solving Search}
-\author{David Tolpin}
-\institute{Ben-Gurion University of the Negev\\Beer Sheva, Israel}
+%\author{David Tolpin}
+%\institute{Ben-Gurion University of the Negev\\Beer Sheva, Israel}
 \date{July 30, 2013}
 
 \input{macros}
@@ -507,8 +507,48 @@ $h_{LA}$ & 	 698 &	 1.18 & 183,320,267 & 1,184,443,684\\
 
 
 \section{Insights into the Methodology}
+\begin{frame}
+\frametitle{Insights into the Methodology}
+\begin{itemize}
+\item Rational metareasoning works best when:
+\begin{enumerate}
+\item Ubiquitous heuristic evaluation of the search space \emph{decreases} the total search
+  time.
+\item The heuristic computation time constitutes \emph{a significant part} of
+  the total search time. 
+\end{enumerate}
+\item It is important to identify the right metareasoning decision.
+\item Simple utility and information model serve well.
+\item Tunable parameters should reflect algorithm implementation
+  rather than problem set.
+\end{itemize}
+\end{frame}
 
 \section{Summary and Future Work}
+\begin{frame}
+\frametitle{Summary and Future Work}
+
+Novel techniques:
+\begin{itemize}
+\item ``Rational Deployment of heuristics in CSP'' demonstrated
+  derivation of the belief model from the algorithm rather than
+  problem set.
+\item ``VOI-aware Monte-Carlo tree search''
+provided distribution-independent upper bounds for semi-myopic VOI
+estimates in Monte-Carlo sampling.
+\item ``Towards rational deployment of Multiple
+Heuristics in A*'', introduced a novel area of application of rational
+metareasoning---optimal search in optimization problems.
+\end{itemize}
+
+Future research:
+\begin{itemize}
+\item Whether a dramatic breakthrough in performance is possible.
+\item Rational metareasoning when action costs and state utilities are
+  not commensurable.
+\end{itemize}
+
+\end{frame}
 
 \begin{frame}
 \begin{center}
@@ -516,5 +556,6 @@ $h_{LA}$ & 	 698 &	 1.18 & 183,320,267 & 1,184,443,684\\
 Thank You
 \end{huge}
 \end{center}
+\end{frame}
 
 \end{document}

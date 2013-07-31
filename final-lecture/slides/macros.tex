@@ -1,0 +1,427 @@
+%%%----------------------------
+\def\defemb#1#2{\expandafter\def\csname #1\endcsname
+                              {\relax\ifmmode #2\else\hbox{$#2$}\fi}}
+\defemb{cA}{{\cal A}}
+\defemb{cB}{{\cal B}}
+\defemb{cC}{{\cal C}}
+\defemb{cc}{{\cal c}}
+\defemb{cD}{{\cal D}}
+\defemb{cE}{{\cal E}}
+\defemb{cF}{{\cal F}}
+\defemb{cf}{{\cal f}}
+\defemb{cv}{{\cal v}}
+\defemb{cx}{{\cal x}}
+
+\defemb{cG}{{\cal G}}
+\defemb{GG}{{\cal G}}
+
+\defemb{cI}{{\cal I}}
+\defemb{cK}{{\cal K}}
+\defemb{cP}{{\cal P}}
+\defemb{cL}{{\cal L}}
+\defemb{cN}{{\cal N}}
+\defemb{cM}{{\cal M}}
+\defemb{cR}{{\cal R}}
+
+\defemb{cS}{{\cal S}}
+\defemb{SS}{{\cal S}}
+
+\defemb{cT}{{\cal T}}
+\defemb{cV}{{\cal V}}
+\defemb{cU}{{\cal U}}
+\defemb{cO}{{\cal O}}
+\defemb{cH}{{\cal H}}
+\defemb{cX}{{\cal X}}
+\defemb{cY}{{\cal Y}}
+\defemb{cZ}{{\cal Z}}
+
+\defemb{sP}{{\sf P}}
+\defemb{sG}{{\sf G}}
+\defemb{sU}{{\sf U}}
+\defemb{sE}{{\sf E}}
+\defemb{sI}{{\sf I}}
+\defemb{su}{{\sf u}}
+\defemb{se}{{\sf e}}
+\defemb{ss}{{\sf s}}
+\defemb{st}{{\sf t}}
+\defemb{sp}{{\sf p}}
+\defemb{si}{{\sf i}}
+\defemb{sb}{{\sf b}}
+\defemb{sw}{{\sf w}}
+\defemb{sA}{{\sf A}}
+\defemb{sB}{{\sf B}}
+\defemb{sa}{{\sf a}}
+\defemb{sb}{{\sf b}}
+\defemb{scc}{{\sf c}}
+\defemb{sd}{{\sf d}}
+
+
+
+\defemb{tta}{{\tt a}}
+\defemb{ttb}{{\tt b}}
+\defemb{ttc}{{\tt c}}
+\defemb{ttd}{{\tt d}}
+\defemb{tte}{{\tt e}}
+\defemb{ttf}{{\tt f}}
+
+\defemb{bara}{{\bar{a}}}
+\defemb{barb}{{\bar{b}}}
+\defemb{barc}{{\bar{c}}}
+\defemb{barf}{{\bar{f}}}
+\defemb{barv}{{\bar{v}}}
+
+
+\newcommand{\argmax}{\operatornamewithlimits{argmax}}
+\newcommand{\argmin}{\operatornamewithlimits{argmin}}
+
+
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{notation}{Notation}
+
+
+\newcommand{\domainname}[1]{{\footnotesize{\textsc{#1}}}}
+\newcommand{\domainnamess}[1]{{\scriptsize{\textsc{#1}}}}
+
+\def\reals{{\mathbb R}}
+\def\nat{{\mathbb N}}
+\def\natplus{{\mathbb N^{+}}}
+\newcommand{\nnreals}{\reals^{0+}}
+\newcommand{\eqbydef}{\stackrel{{\mathsf{def}}}{=}}
+
+\newcommand{\strips}{\textsc{strips}}
+\newcommand{\nstrips}{\textsc{ub}}
+\newcommand{\sas}{\textsc{sas}${}^{+}$}
+%\newcommand{\prj}[2]{#1|_{#2}}
+\newcommand{\prj}[2]{#1\ptrnabst{#2}}
+
+
+\newcommand{\pdomain}{\cD}
+\newcommand{\nindex}[1]{_{#1}}
+\newcommand{\alphafactor}[2]{\alpha(#1,#2)}
+%\newcommand{\alphafactor}[2]{\alpha_{(#1,#2)}}
+\newcommand{\cconst}[2]{\alphafactor{#1}{#2}}
+
+\newcommand{\indegree}{\mathsf{In}}
+\newcommand{\outdegree}{\mathsf{Out}}
+\newcommand{\treeclass}{{\mathbf{T}}}
+\newcommand{\itreeclass}{{\mathbf{I}}}
+\newcommand{\ptreeclass}{{\mathbf{P}}}
+\newcommand{\singlyclass}{{\mathbf{S}}}
+\newcommand{\climit}{b}
+\newcommand{\ilimit}{_{\climit}}
+\newcommand{\olimit}{^{\climit}}
+\newcommand{\edge}{e}
+\newcommand{\elabel}[2]{\|#1,#2\|}
+\newcommand{\descendants}{{\mathsf{Desc}}}
+\newcommand{\deplimit}[1]{\mbox{\sl db}_{#1}}
+
+
+\newcommand{\fdecomposition}{$\EuScript{F}$-decomposition}
+\newcommand{\idecomposition}{$\EuScript{I}$-decomposition}
+\newcommand{\fidecomposition}{$\EuScript{FI}$-decomposition}
+
+\newcommand{\leftq}{\llbracket}
+\newcommand{\rightq}{\rrbracket}
+
+\newcommand{\bound}{b}
+
+\newcommand{\statemodel}{\cS}
+\newcommand{\state}{s}
+\newcommand{\states}{S}
+\newcommand{\initstate}{\state_{0}}
+\newcommand{\goalstates}{\states_{\goal}}
+\newcommand{\transfunc}{f}
+\newcommand{\appactions}[1]{\actions(#1)}
+\newcommand{\actionSeq}{\plan}
+\newcommand{\actionSeqs}{A^{\ast}}
+\newcommand{\tind}[1]{_{#1}}
+
+%\newcommand{\costfunc}{{\sl cost}}
+\newcommand{\costfunc}{\cC}
+\newcommand{\liftcostfunc}{C}
+\newcommand{\optcost}{C^\ast}
+\newcommand{\treecost}{\sigma}
+\newcommand{\intercost}{M}
+\newcommand{\localcost}{L}
+\newcommand{\result}{Result}
+\newcommand{\vchanges}[2]{{\mathrm{vc}}(#1,#2)}
+\newcommand{\eff}{{\mathsf{eff}}}
+\newcommand{\prv}{{\mathsf{prv}}}
+\newcommand{\pre}{{\mathsf{pre}}}
+\newcommand{\post}{{\mathsf{post}}}
+\newcommand{\actions}{A}
+\newcommand{\cost}{Cost}
+\newcommand{\totalcost}{\textbf{Cost}}
+\newcommand{\costs}{C}
+\newcommand{\parent}{Pa}
+\newcommand{\children}{Ch}
+\newcommand{\before}[2]{{#1}_{#2}}
+\newcommand{\domain}{dom}
+
+\newcommand{\copprob}{{\sf COP}}
+\newcommand{\copvars}{\cX}
+\newcommand{\copvarsvars}{\cX^{\vars}}
+\newcommand{\copvarsedges}{\cX^{\cE}}
+\newcommand{\copvar}{x}
+\newcommand{\copfuncs}{\cF}
+\newcommand{\copscope}{Q}
+\newcommand{\copf}{\varphi}
+
+\newcommand{\prefixes}[1]{\unrhd[#1]}
+\newcommand{\vprefixes}[1]{\unrhd^{\ast}[#1]}
+\newcommand{\postfixes}[1]{\unlhd[#1]}
+
+\newcommand{\actionone}[1]{\action_{#1}}
+\newcommand{\actiontwo}[2]{\action_{#1|#2}}
+\newcommand{\costone}[1]{C_{#1}}
+\newcommand{\costtwo}[2]{C_{#1|#2}}
+
+\newcommand{\treewidth}{w}
+%\newcommand{\causalG}[1]{\mbox{\sl CG}_{#1}}
+\newcommand{\cgedges}{E}
+\newcommand{\causalG}[1]{\mbox{\sl CG}({#1})}
+\newcommand{\cgsp}{\cG}
+\newcommand{\cgspset}{{\mathbf{G}}}
+\newcommand{\dtG}[2]{\mbox{\sl DTG}(#1,#2)}
+%\newcommand{\ucausalG}[1]{\overline{\mbox{\sl CG}}_{#1}}
+\newcommand{\ucausalG}[1]{\mbox{\sl G}_{CG}}
+%\newcommand{\darc}[2]{(\overrightarrow{#1, #2})}
+\newcommand{\darc}[2]{(#1, #2)}
+\newcommand{\uarc}[2]{(#1, #2)}
+
+%\newcommand{\init}{I}
+\newcommand{\init}{\initstate}
+\newcommand{\goal}{G}
+\newcommand{\troot}{r}
+\newcommand{\tree}{T}
+\newcommand{\vars}{V}
+\newcommand{\varsset}{\cV}
+\newcommand{\probset}{{\mathbf{\Pi}}}
+\newcommand{\laction}[3]{\action_{#1}^{#3|#2}}
+\newcommand{\ilaction}[4]{A_{#2|#1}^{#4|#3}}
+\newcommand{\lcost}[3]{\costs_{#1}^{#3|#2}}
+\newcommand{\ilcost}[4]{\costs_{#2|#1}^{#4|#3}}
+\newcommand{\dummyroot}{\hat{\troot}}
+\newcommand{\plan}{\rho}
+\newcommand{\oplan}{\overline{\plan}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% from jair 2003 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Planning
+%% --------
+
+\newenvironment{atheorem}[1]{{\vspace{0.4cm}\noindent\bf Theorem~\ref{#1}}~~}
+                            {\\}
+\newenvironment{alemma}[1]{{\vspace{0.4cm}\noindent\bf Lemma~\ref{#1}}~~}
+                            {\\}
+
+
+\newcommand{\sset}[1]{
+  \left\{ \begin{array}{l}#1\end{array} \right.}
+
+
+%\newcommand{\scite}{\citeyear}
+\newcommand{\proofsout}[1]{}
+\newcommand{\commentout}[1]{}
+\newcommand{\journal}[1]{}
+\newcommand{\conference}[1]{#1}
+
+\newcommand{\parents}{{\mathsf{pred}}}
+\newcommand{\sons}{{\mathsf{succ}}}
+\newcommand{\lparents}{pred}
+\newcommand{\lsons}{succ}
+\newcommand{\plans}{{\mathbf\Pi}}
+\newcommand{\allsons}{AllSucc}
+
+\newcommand{\Can}{{\mathsf{MaxPoss}}}
+\newcommand{\newCan}{{\mathsf{newMaxPoss}}}
+\newcommand{\FeasibleMust}{{\mathsf{FMaxReq}}}
+\newcommand{\Must}{{\mathsf{MaxReq}}}
+\newcommand{\LocalMust}{{\mathsf{Req}}}
+\newcommand{\newMust}{{\mathsf{newMaxReq}}}
+\newcommand{\minplan}{{\mathsf{MinPlanSize}}}
+\newcommand{\maxplan}{{\mathsf{MaxPlanSize}}}
+
+%\newcommand{\fdec}{{\EuScript{F}}}
+%\newcommand{\idec}{{\EuScript{I}}}
+%\newcommand{\fidec}{{\EuScript{F\!I}}}
+%\newcommand{\ifdec}{\idec}
+\newcommand{\fdec}{^{\mathsf{f}}}
+\newcommand{\idec}{^{\mathsf{i}}}
+\newcommand{\fidec}{^{\mathsf{fi}}}
+\newcommand{\ifdec}{\idec}
+
+\newcommand{\Fdec}{{\EuScript{F}}}
+\newcommand{\Idec}{{\EuScript{I}}}
+\newcommand{\FIdec}{{\EuScript{F\!I}}}
+
+
+
+\newcommand{\truecost}{h^{\ast}}
+\newcommand{\hplus}{h^{+}}
+\newcommand{\hK}{h^{k}}
+\newcommand{\hpdb}{h^{\text{PDB}}}
+\newcommand{\hapdb}{h^{\text{PDB}}_{\text{add}}}
+
+
+
+%\newcommand{\ahfork}{h_{{}_{\merge}}}
+\newcommand{\ahfi}{h^{\FIdec}}
+\newcommand{\ahf}{h^{\Fdec}}
+\newcommand{\ahi}{h^{\Idec}}
+\newcommand{\ahfork}{\ahfi}
+
+
+\newcommand{\hff}{h_{\mathrm{FF}}}
+\newcommand{\hffgen}{h_{\mathrm{ff}}}
+\newcommand{\hplusone}{h^{+s}}
+\newcommand{\hadd}{h_{{\mathrm{add}}}}
+\newcommand{\ahmax}{h_{{\mathrm{max}}}}
+\newcommand{\ahm}[1]{h^{#1}}
+\newcommand{\ahsum}[1]{h^{#1}_{{}_{\sum}}}
+
+
+\newcommand{\ptrnabst}[1]{^{[ #1 ]}}
+\newcommand{\pattern}{\vars'}
+\newcommand{\ahsp}{h_{{\mathrm{sp}}}}
+\newcommand{\actsequence}{\varrho}
+\newcommand{\odplans}{\cP^{\textrm{c}}}
+
+\newcommand{\sequence}{\sigma}
+
+\newcommand{\condsubplan}[4]{\hat{#4}_{#1_{#2}}^{#3}}
+\newcommand{\condsubplanl}[3]{\hat{l}_{#1_{#2}}^{#3}}
+\newcommand{\condsubplanp}[3]{\hat{p}_{#1_{#2}}^{#3}}
+%boolean for uniform-cost
+\newcommand{\condsubplanb}[3]{\hat{\delta}_{#1_{#2}}^{#3}}
+\newcommand{\condsubplansigma}[2]{\hat{n}_{#1}^{#2}}
+
+
+\newcommand{\Ocondsubplan}[3]{\plan_{#1_{#2}}^{#3}}
+\newcommand{\Ocondsubplanl}[3]{l_{#1_{#2}}^{#3}}
+\newcommand{\Ocondsubplanp}[3]{p_{#1_{#2}}^{#3}}
+%boolean for uniform-cost
+\newcommand{\Ocondsubplanb}[3]{\delta_{#1_{#2}}^{#3}}
+\newcommand{\Ocondsubplansigma}[2]{n_{#1}^{#2}}
+
+\newcommand{\COPcondsubplan}[3]{\Ocondsubplan{#1}{#2}{#3}}
+\newcommand{\COPcondsubplanl}[3]{\Ocondsubplanl{#1}{#2}{#3}}
+\newcommand{\COPcondsubplanp}[3]{\Ocondsubplanp{#1}{#2}{#3}}
+%boolean for uniform-cost
+\newcommand{\COPcondsubplanb}[3]{\Ocondsubplanb{#1}{#2}{#3}}
+\newcommand{\COPcondsubplansigma}[2]{n_{#1}^{#2}}
+
+
+\newcommand{\val}{\vartheta}
+%\newcommand{\val}{d}
+\newcommand{\POP}{{\sc pop-pcg}}
+
+\def\nat{{\mathbb N}}
+\def\natzero{{\mathbb N}^{0}}
+%\newcommand{\var}{\upsilon}
+\newcommand{\var}{v}
+
+\newcommand{\proj}[2]{#1\!\!\!\downarrow_{#2}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%555
+
+\newcommand{\removed}[1]{}
+
+\newcommand{\carmel}[1]{
+  {\footnotesize
+  \begin{center}
+  \fbox{
+    \begin{minipage}{3in}
+      carmel: #1
+    \end{minipage}
+    }
+  \end{center}
+  }
+}
+
+
+
+
+
+%%% Landmarks
+
+\newcommand{\LMordering}[2]{#1\rightarrow#2}
+\newcommand{\LMlocal}{\text{LM}^{\text{local}}}
+\newcommand{\LAMA}{\text{LAMA}}
+\newcommand{\astarstar}{\text{\it A}^{\ast\ast}}
+\newcommand{\astar}{\text{\it A}^{\ast}}
+\newcommand{\bfstar}{\text{\it BF}^{\ast}}
+\newcommand{\facts}{F}
+\newcommand{\varfact}{\psi}
+%\newcommand{\LMbfstar}{\text{\it LM-BF}^{\ast}}
+\newcommand{\applied}[1]{\leftq #1 \rightq}
+
+%\newcommand{\LMstruct}[1]{\langle \LMs^{#1}, \Nords^{#1}, \NEords^{#1}, \GNEords^{#1} \rangle}
+\newcommand{\LMs}{L}
+\newcommand{\Nords}{Na}
+\newcommand{\NEords}{N}
+\newcommand{\GNEords}{GN}
+\newcommand{\Reached}[2]{\mathsf{Accepted}(#1,#2)}
+\newcommand{\Needed}[2]{\mathsf{ReqAgain}(#1,#2)}
+
+%%% EREZ
+\newcommand{\pdastar}{\text{\it PD-A}^{\ast}}
+\newcommand{\mpdastar}{\text{\it LM-A}^{\ast}}
+%\newcommand{\mpdastar}{\text{\it MPD-A}^{\ast}}
+\newcommand{\slist}[1]{\text{\it #1}}
+\newcommand{\openlist}{\slist{OPEN}}
+\newcommand{\closedlist}{\slist{CLOSED}}
+\newcommand{\node}[1]{\begin{it}#1\end{it}}
+\newcommand{\f}{f}
+\newcommand{\g}{g}
+\newcommand{\h}{h}
+\newcommand{\fof}[1]{\f(#1)}
+\newcommand{\gof}[1]{\g(#1)}
+\newcommand{\hof}[1]{\h(#1)}
+\newcommand{\lmcost}{cost}
+\newcommand{\lmsetcost}{cost}
+\newcommand{\almcost}{cost}
+\newcommand{\lm}{\fact}
+\newcommand{\achievers}{\mathsf{ach}}
+\newcommand{\firstachievers}{\mathsf{first-ach}}
+\newcommand{\possibleachievers}{\mathsf{possible-ach}}
+\newcommand{\hl}{h_L}
+\newcommand{\hla}{h_{LA}}
+\newcommand{\planproof}{P}
+\newcommand{\planproofu}{\planproof_U}
+\newcommand{\lmof}{lm}
+\newcommand{\LMof}[2]{\LMs(#1|#2)}
+\newcommand{\atom}{p}
+\newcommand{\varatom}{q}
+\newcommand{\UALM}{U}
+\newcommand{\LMU}{\LMs_U}
+\newcommand{\multipaths}{\mathcal{P}}
+%\newcommand{\hhh}{LFPA}
+\newcommand{\hhh}{\textit{FA}}
+\newcommand{\maxh}{max}
+\newcommand{\timeshort}{{\it time}}
+\newcommand{\expandedshort}{{\it nodes}}
+
+
+\newcommand{\fd}{Fast Downward}
+\newcommand{\LMstruct}[1]{\langle \LMs^{#1}, \LMords^{#1} \rangle}
+\newcommand{\LMords}{Ord}
+
+\newcommand{\PDDL}{\textsc{pddl}}
+\newcommand{\pspacehard}{P-SPACE Hard}
+\newcommand{\pspacecomplete}{P-SPACE Complete}
+\newcommand{\nphard}{NP Hard}
+\newcommand{\npcomplete}{NP Complete}
+\newcommand{\lmcut}{\h_{\text{LM-CUT}}}
+\newcommand{\smaxi}{$\mathrm{sel}_{h}$}
+\newcommand{\smaxu}{$\mathrm{sel}_{h}^{U}$}
+\newcommand{\randmax}{$\mathrm{rnd}_{h}$}
+\newcommand{\smaxzero}{$\mathrm{sel}_{h}^{0}$}
+\newcommand{\regmax}{$\max_{h}$}
+\newcommand{\best}{$\mathrm{best}$}
+%\newcommand{\smaxi}{S-MAX-I}
+%\newcommand{\smaxu}{S-MAX-U}
+%\newcommand{\randmax}{R-MAX}
+%\newcommand{\regmax}{MAX}
+\newcommand{\goaldepth}{c^\ast}

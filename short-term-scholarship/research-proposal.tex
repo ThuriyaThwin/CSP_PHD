@@ -12,30 +12,88 @@
 \author {David Tolpin,
 Department of Computer Science, \\
 Ben-Gurion University of the Negev, Beer Sheva, Israel \\
-\tolpin@cs.bgu.ac.il}
+tolpin@cs.bgu.ac.il}
 
 \begin{document}
+
+\maketitle
+
+During the period of the PhD research, a number of articles have
+been published in journals and proceedings of leading
+conferences on Artificial Intelligence. The research considered
+several search problems and improved some 
+well-known algorithms for solving the problems using the rational
+metareasoning approach:
+\begin {itemize}
+\item Semimyopic measurement selection for optimization under
+  uncertainty~\cite{TolpinShimony.blinkered};
+\item Rational value of information estimation for measurement
+		  selection~\cite{TolpinShimony.raticomp};
+\item Adaptive deployment of value-ordering heuristics in constraint
+  satisfaction problems~\cite{TolpinShimony.csp};
+\item Monte Carlo tree search based on simple regret~\cite{TolpinShimony.mcts,HayRussellTolpinShimony.selecting};
+\item Decreasing heuristic evaluation time in a variant of A*~\cite{TolpinEtAl.rla}. 
+\end {itemize}
+In addition to the algorithm improvements, the studies demonstrated a
+number of common rational metareasoning techniques which can be 
+extended to other problem types. In particular,
+\begin{itemize}
+\item \cite{TolpinShimony.blinkered}, a journal paper published inthe
+  highly ranked IEEE-SMC-B, includes definition and heuristic 
+  solution of the selection problem, as well as introduces a less
+  restricting and more powerful value of information estime --- the
+  blinkered estimate --- used in later publications as well as employed by other
+  researchers.
+\item \cite{TolpinShimony.raticomp}, another journal paper, describes a novel and
+  efficient value of information estimation scheme for optimization problems. 
+\item \cite{HayRussellTolpinShimony.selecting} provides
+  distribution-independent upper bounds for semi-myopic VOI estimates in Monte-Carlo sampling.
+\item \cite{TolpinEtAl.rla} introduces a novel area of application of rational
+metareasoning---optimal search in optimization problems.
+\end{itemize}
 
 Aspects of methodology of rational metareasoning initially
 presented in the conference
 publications~\cite{TolpinShimony.mcts,HayRussellTolpinShimony.selecting}
-on VOI-aware Monte Carlo Tree Search and~\cite{tolpinetal.rla}
+on VOI-aware Monte Carlo Tree Search and~\cite{TolpinEtAl.rla}
 on rational deployment of heuristics in A* are, despite
 significant theoretical and empirical results, just the first
 steps in the exploration of the corresponding research fields.
-Some important results had to be omitted due to inherent space
-limitations of conference publications.  Additional work which
+Some important results had to be omitted due to inevitable space
+limitations of conference proceedings.  Additional work which
 has been and being done in the above-mentioned research directions
 justifies publication of extended journal versions of the papers
 with new theoretical results and expanded empirical evaluations.  
 
-In particular, the advances in the Monte Carlo Tree Search are based
-on distribution-independent VOI bounds. The improved sampling
-scheme was empirically evaluated on the domain of Computer Go.
-Another domain where MCTS recently proved to be efficient is
-online planning in Markov Decision Processes. Some
-results for MCTS in MDP were obtained, but not yet published,
-during the initial research. 
+In particular, the advances in Monte Carlo Tree Search are based on
+distribution-independent VOI bounds. In the publication~\cite{HayRussellTolpinShimony.selecting}, the improved
+sampling scheme had been empirically evaluated on the domain of
+Computer Go.  Another domain where MCTS recently proved to be
+efficient is online planning in Markov Decision Processes. Some
+results for MCTS in MDP were obtained, but not yet published.
+The results address both a different family of distributions
+appearing in the planning problems, and empirical evaluation
+of the scheme on additional domains. Recent work of other authors
+on sampling-based planning~\cite{FeldmanDomshlak.onlinemdp,DomshlakFeldman.uctornot}
+provides additional insights and should be referenced in the
+analysis. 
+
+The published work on A*~\cite{TolpinEtAl.rla} reports
+results on rational lazy deployment
+of two heuristics in Lazy A*, a variant of A*. Only some results
+of the theoretical analysis were published. In addition, the same
+novel approach can be applied to A* when only a single heuristic
+available, and to another variant of A*, IDA*, in the presence of
+multiple heuristics. Work on new theoretical results, analyzing 
+rational selection of the order of heuristic, and of the most
+appropriate deployment scheme, is underway. Empirical evaluation
+of the heuristic deployment scheme on additional domain families
+and combination of heuristic was done and can be further usefully
+extended, but has not yet been published.
+
+Journal papers including the already obtained results and work
+underway are planned for submittion to publications in [...] during
+the coming year.
 
 \maketitle
 \bibliographystyle{plain}

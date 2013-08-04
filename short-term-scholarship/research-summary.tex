@@ -8,7 +8,7 @@
 
 \geometry{margin=1.2in}
 
-\title{Post-Doctorate Research Proposal}
+\title{Research Summary}
 \author {David Tolpin,
 Department of Computer Science, \\
 Ben-Gurion University of the Negev, Beer Sheva, Israel \\
@@ -18,12 +18,37 @@ tolpin@cs.bgu.ac.il}
 
 \maketitle
 
-During the period of the PhD research, a number of articles have
-been published in journals and proceedings of leading
-conferences on Artificial Intelligence. The research considered
-several search problems and improved some 
-well-known algorithms for solving the problems using the rational
-metareasoning approach:
+An important field of Artificial Intelligence is
+problem-solving search. In problem-solving search, a single agent acts
+in a neutral environment to reach the goal. Many problems, such as
+routing and path-finding problems, finite-domain constraint
+satisfaction, function optimization, fit within the problem-solving
+search abstraction. General search algorithms capable of solving large
+sets of search problems are well known. Algorithm performance can be
+significantly improved by tuning the algorithm to a particular problem
+domain; however, such fine-tuned algorithms exhibit good performance
+only on small sets of search problems, and the effort invested in the
+algorithm design cannot be reused in other problem domains.
+
+Specialized versions of general search algorithms are often created by
+combination and selective application of search  heuristics.
+A human expert decides which heuristics to use with the
+problem domain, and specifies how the search algorithm should apply
+the heuristics to solve a particular problem instance. A search
+algorithm that rationally selects and applies heuristics would decrease
+the need for the costly human expertise. Principles of rational
+metareasoning can be used to design rational search agents.
+
+Some rational search algorithms were designed and shown to compare to
+or even outperform manually tuned algorithms. However, wide adoption of
+rational metareasoning algorithms for problem solving search is hindered
+both by theoretical difficulties and by lack of problem domain specific
+case studies. This research aimed at lifting some of the theoretical
+difficulties in application of the rational methodology, as well as
+at devising rational metareasoning versions of
+algorithms for applications of problem-solving search.
+The research topics were presented in a number of publications in 
+refereed journals and proceedings of leading conferences on Artificial Intelligence:
 \begin {itemize}
 \item Semimyopic measurement selection for optimization under
   uncertainty~\cite{TolpinShimony.blinkered};
@@ -90,10 +115,6 @@ appropriate deployment scheme, is underway. Empirical evaluation
 of the heuristic deployment scheme on additional domain families
 and combination of heuristic was done and can be further usefully
 extended, but has not yet been published.
-
-Journal papers including the already obtained results and work
-underway are planned for submittion to publications in [...] during
-the coming year.
 
 \maketitle
 \bibliographystyle{plain}

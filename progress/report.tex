@@ -3,7 +3,7 @@
 
 \geometry{bindingoffset=0.4in,margin=1.2in}
 
-\title{Progress Report Towards PhD Degree, Year Two\\
+\title{Progress Report Towards PhD Degree, Year Three\\
   Research Topic: Rational Metareasoning in Problem Solving Search}
 \author{David Tolpin\\
         Department of Computer Science\\
@@ -11,9 +11,6 @@
         \\
         Under the supervision of Professor Solomon Eyal Shimony\\
         \\
-        Author's Signature: \rule{10em}{1pt}\\
-        Advisor's Signature: \rule{10em}{1pt}\\
-        Chairman's Signature: \rule{10em}{1pt}\\
       \\}
 
 \doublespacing
@@ -24,76 +21,41 @@
 
 \section{Research Progress}
 
-During the second year of my Ph.D. studies I worked on rational
-deployment of search heuristics (Section~\ref{sec:raticsp}), as well
-as on improvements to Monte Carlo sampling algorithms for tree search
-(Section~\ref{sec:doingbetter}). I also prepared revisions of two
-journal papers  \cite{TolpinShimony.semimyopic},
-\cite{TolpinShimony.raticomp} for publication later in 2001.
+During the third year of my Ph.D. studies I worked on Monte Carlo Tree
+Search, in particular on VOI-aware MCTS for simple regret.
 
-\subsection{Rational Deployment of CSP Heuristics}
-\label{sec:raticsp}
+MCTS, and especially UCT \cite{Kocsis.uct} appears in numerous search
+applications, such as \cite{Eyerich.ctp}. Although these methods are
+shown to be successful empirically, most authors appear to be using
+UCT ``because it has been shown to be successful in the past'', and
+``because it does a good job of trading off exploration and
+exploitation''. While the latter statement may be correct for the
+Multi-armed Bandit problem and for the UCB1 algorithm \cite{Auer.ucb},
+we argue that a simple reconsideration from basic principles can
+result in schemes that outperform UCT.
 
-We proposed a rational metareasoning approach to decide when and how to
-deploy heuristics, using CSP backtracking search as a case study.  The
-heuristics examined are various {\em solution count estimate}
-heuristics for value ordering, which are expensive to compute, but can
-significantly decrease the number of backtracks. These heuristics make
-a good case study, as their overall utility, taking computational
-overhead into account, is sometimes detrimental; and yet, by employing
-these heuristics adaptively, it may still be possible to achieve an
-overall runtime improvement, even in these pathological cases.
-Following the metareasoning approach, the value of information (VOI)
-of a heuristic is defined in terms of total search time saved, and the
-heuristic is computed such that the expected net VOI is positive.
+The core issue is that in MCTS for adversarial search and search in
+``games against nature'' the goal is typically to find the best
+first action of a good (or even optimal) policy, which is closer to
+minimizing the simple regret, rather than the cumulative regret
+minimized by UCB1.  However, the simple and the cumulative regret
+cannot be minimized simultaneously; moreover, \cite{Bubeck.pure} shows
+that in many cases the smaller the cumulative regret, the greater the
+simple regret.
 
-As a result of the research \cite{TolpinShimony.raticsp}, we suggested
-a model for adaptive deployment of value ordering heuristics in
-algorithms for constraint satisfaction problems. As a case study, the
-model was applied to a value-ordering heuristic based on solution
-count estimates, and a steady improvement in the overall algorithm
-performance was achieved compared to {\em always} computing the
-estimates, as well as to other simple deployment tactics.  The
-experiments showed that for many problem instances the optimum
-performance is achieved when solution counts are estimated only in a
-relatively small number of search states.
+In a series of
+papers~\cite{TolpinShimony.mcts,HayRussellTolpinShimony.selecting,TolpinShimony.voiaware},
+we proposed a new MCTS sampling scheme, SR+CR, which is based on
+optimizing the simple regret of sampling, and outperforms UCT
+empirically. Further on, we derived theoretical
+distribution-independent bounds for the blinkered VOI estimate, and
+improved the sampling scheme through the use of the bound-based VOI
+estimate. The new sampling scheme was emprically evaluated on a number
+of domains, including POMDP and Computer Go, and outperformed other
+known sampling schemes.
 
-The methods introduced in this paper can be extended in numerous
-ways. First, generalization of the VOI to deploy different types of
-heuristics for CSP, such as variable ordering heuristics, as well as
-reasoning about deployment of more than one heuristic at a time, are
-natural non-trivial extensions. Second, an explicit evaluation of the
-quality of the distribution model is an interesting issue, coupled
-with a better candidate model of the distribution.  Such distribution
-models can also employ more disciplined statistical learning methods
-in tandem, as suggested above. Finally, applying the methods suggested
-in this paper to search in other domains can be attempted, especially
-to heuristics for planning.  In particular, examining whether
-the meta-reasoning scheme can improve reasoning over deployment of
-heuristics based solely on learning methods is an interesting future
-research issue.
-
-The paper was presented at the 11th International Joint Conference on
-Artificial Intelligence, Barcelona, Spain.
-
-\subsection{Rational Monte Carlo Search}
-\label{sec:doingbetter}
-
-UCT, a state-of-the art algorithm for Monte Carlo tree sampling
-(MCTS), is based on UCB, a sampling policy for the Multi-armed Bandit
-Problem (MAB) that minimizes the accumulated regret. However, MCTS
-differs from MAB in that only the final choice, rather than all arm
-pulls, brings a reward, that is, the simple regret, as opposite to the
-cumulative regret, must be minimized. This ongoing work
-\cite{TolpinShimony.doingbetter} aims at applying meta-reasoning
-techniques to MCTS, which is non-trivial.  We introduced policies for
-multi-armed bandits with lower simple regret than UCB, and an
-algorithm for MCTS which combines cumulative and simple regret
-minimization and outperforms UCT. We also developed a sampling scheme
-loosely based on a myopic version of perfect value of
-information. Finite-time and asymptotic analysis of the policies was
-provided, and the algorithms were compared empirically.
-\cite{TolpinShimony.doingbetter}
+The research was presented at the leading conferences in the field
+of Artificial Intelligence: AAAI-2012, UAI-2012, ECAI-2012.
 
 \section{Publications}
 

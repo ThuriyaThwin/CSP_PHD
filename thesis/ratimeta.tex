@@ -36,11 +36,9 @@ our expectation of the potential (belief) state of the search after
 (and if) the heuristic is computed at a search node.
 
 The rewards $R$ are defined by the costs of the computational
-operators, in terms of time, memory, etc. and by the costs or the rewards of the
+operators, in terms of time, memory, etc. and by the utilities of the
 base-level actions corresponding to the meta-level states.
-For example, when the task is to find a path to the goal, the cost
-of the base-level action is the weight of the edge that connects to
-the neighbor node. At each step of the search algorithm the algorithm selects a
+At each step of the search algorithm the algorithm selects a
 `best' base-level action $A_\alpha$ by solving the meta-level MDP.
 The goal of meta-level actions is to refine the choice of $A_\alpha$.
 

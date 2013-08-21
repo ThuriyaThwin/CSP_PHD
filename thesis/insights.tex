@@ -12,7 +12,19 @@ problem is whether a solution \emph{would benefit at all} from
 applying rational metareasoning. In most cases, an existing algorithm
 involving heuristic evaluation of search states justifies an attempt
 to perform the heuristic computations selectively, based on the value
-of information. However, there are two important exceptions:
+of information. As a rule of thumb, rational metareasoning is beneficial for
+optimizing heuristic evaluation in algorithms where:
+\begin{enumerate}
+\item Ubiquitous heuristic evaluation of the search space \emph{decreases} the total search
+  time.
+\item The heuristic computation time constitutes \emph{a significant part} of
+  the total search time. 
+\end{enumerate}
+
+Conversely, there are two important cases where rational metareasoning
+is unlikely to result in an improvement, according to our current state
+of knowledge about the method: 
+
 \begin{itemize}
 \item On the one hand, if \textbf{the heuristic relies on pre-computed
   data}, and online evaluation is cheap at the expense of intensive
@@ -26,25 +38,18 @@ of information. However, there are two important exceptions:
   small number of table lookups, so it never makes sense to try and
   compute the heuristic selectively.
 \item On the other hand, in the case of an \textbf{informative but
-  very expensive heuristic} evaluation of a state may
-  actually make the search algorithm slower in most cases, and the
+  very expensive heuristic} evaluating the heuristic is likely 
+  to make the search algorithm slower in most cases, and the
   algorithm should rely on domain-specific knowledge to
   identify the states in which computing the heuristic is beneficial. 
   Such fine domain-specific knowledge is usually hard to derive from
   a general notion of value of information. One example is
   high-accuracy solution counting algorithms, mentioned in
   Chapter~\ref{ch:cs-csp}, which are too time-consuming to be used
-  in a value-ordering heuristic, unless a fine tuned higher-level
-  heuristic is involved.
+  in a value-ordering heuristic, unless a fine-tuned domain-specific
+  decision rule is used.
 \end{itemize}
-As a rule of thumb, rational metareasoning is beneficial for
-optimizing heuristic evaluation in algorithms where:
-\begin{enumerate}
-\item Ubiquitous heuristic evaluation of the search space \emph{decreases} the total search
-  time.
-\item The heuristic computation time constitutes \emph{a significant part} of
-  the total search time. 
-\end{enumerate}
+
 Of course, this criterion does not cover all possible situations where
 rational metareasoning is helpful, but provides a good starting point
 for assessing applicability of metareasoning approach to a given
@@ -129,7 +134,13 @@ by inadequate prior beliefs.
 
 \section{Parameter Tuning}
 
-TODO: Measuring vs. learning.
+Most algorithms with the meta-reasoning level developed in the course
+of the case studies depend on a few parameters. These parameters
+affect the algorithm performance and must be properly tuned for
+satisfactory results. Seemingly, the need to adjust the algorithm
+parameters contradicts the idea of rational metareasoning as a
+systematic approach based on essential features of the search problem
+rather on ad hoc adaptions. However, there is 
 
 \section{Analyzing the Results of Empirical Evaluation}
 
@@ -143,18 +154,14 @@ real search times which are influenced by inevitable noise of the
 computer facilities, but even more by features of a particular problem
 domain or test set. 
 
-For example, a useful comparison of VOI-aware MCTS
+For example, the empirical comparison of VOI-aware MCTS
 to UCT in the context of Computer Go (Section~\ref{sec:mcts-emp-go})
-required configuring restricted versions of both players which are
-strictly based on Monte Carlo sampling with minimum use of
-position-dependent rules. Otherwise, the evaluation would compare
-compatibility of the rules with the sampling scheme in each of the
-agents rather than the advantage of one sampling scheme over the
-other. Developing a Go agent which is both based on VOI-aware sampling
-and wins over other state-of-the-art Go agents is an ambitious
-objective. However, this objective is only loosely related to
-verification of the rational metareasoning approach to Monte Carlo
-tree search. 
+was initially in favor of UCT, in contradiction with earlier results
+on randomly generated trees, where VOI-aware MCTS was considerably
+better. This contradiction helped us realize the influence of sample
+reuse (Section~\ref{sec:mcts-control-redistribution}) and
+introduce VOI-based stopping and sample redistribution into the
+algorithm.
 
 Another example is the analysis of
 \rationallazyastar~(Section~\ref{sec:rla-empirical}). Applying
@@ -166,4 +173,6 @@ could also be used, in addition to evaluation on established planning
 problem sets, to analyze efficiency of the approach  in the
 planning domain using the appropriate decision rule, but in the latter
 case the empirical results had to be processed accordingly,
-by extracting just the heuristic computation times. 
+by extracting just the heuristic computation times. Different
+domain-specific algorithm implementations and heuristics commanded
+different meta-reasoning decision rules.

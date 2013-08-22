@@ -10,43 +10,55 @@ value of information} and {\em time cost}.
 
 \subsection{Meta-level Actions}
 
-The agent performs a sequence of base-level actions drawn from a known
-set $\{A_i\}$. Before committing to each action, the agent
-deliberates, and the deliberation can be represented as a sequence of
-meta-level actions from a set $\{S_j\}$. At any given time there is a
-base-level action, $A_\alpha$, that appears best to the agent. The
-goal of subsequent meta-level actions is to refine the choice of
-$A_\alpha$ before performing the base-level action.
+The rational meta-reasoning framework by \emph{R\&W} aims at optimal
+decision-making w.r.t. which computational operator should be applied
+at every point in the search. In rational meta-reasoning, one can
+define a meta-level decision problem over states of the search space
+with computational operators as meta-level actions, as a problem of
+sequential decision-making under uncertainty. This meta-level problem
+can be formalized as a (belief state) meta-level Markov decision
+process (MDP) defined by a tuple $(Q, S, \pi, R)$ as follows. Each
+state $Q_i \in Q$ of this MDP includes all current knowledge about the
+search graph. For example, in a single-agent search problem, a state
+is comprised of the known part of the search graph. including all
+available heuristic estimates of nodes of this graph. For every
+meta-level state $Q_i$ there is a corresponding base-level action
+$A_i \in A$, such as transition to a neighbor node in the search graph, which
+appears to be the best action given $Q_i$. The
+meta-level actions $S_j \in S$ are all the potential computational
+operators that are applicable to a state $Q_i$, such as calculating an
+heuristic for a given node. The transition probabilities $\pi$ are
+defined by the distributions over new knowledge that may be revealed
+by applying each of the potential computational operators.  For
+example, if we have a known distribution over heuristic values that we
+expect a heuristic to yield, we can use the distribution to describe
+our expectation of the potential (belief) state of the search after
+(and if) the heuristic is computed at a search node.
 
-The agent selects $\alpha$ by numericaly estimating the {\em
-  utilities} of action outcomes; according to decision theory, an
-optimal action $A_\alpha$ is one which maximizes the agent's expected
-utility:
-\begin{eqnarray}
-\label{eq:bg-limited-eu}
-\IE[U(A_i)]&=&\sum_k P(W_k) U(A_i,W_k)\\
-\alpha&=&\arg \max_i \IE[U(A_i)]
-\end{eqnarray}
-where $\{W_k\}$ is the set of possible world states, and $P(W_k)$ is
-the belief probability that the world is currently in state $W_k$.
+The rewards $R$ are defined by the costs of the computational
+operators, in terms of time, memory, etc. and by the utilities of the
+base-level actions corresponding to the meta-level states.
+At each step of the search algorithm the algorithm selects a
+`best' base-level action $A_\alpha$ by solving the meta-level MDP.
+The goal of meta-level actions is to refine the choice of $A_\alpha$.
 
 \subsection{Value of Information}
 \label{sec:ratimeta-voi}
 
 A meta-level action affects the choice of the base-level action
-$A_\alpha$ by changing the belief distribution over the world
-states. The {\em value} of a meta-level action is measured by the
+$A_\alpha$ by changing the meta-level state.
+The {\em value} of a meta-level action is measured by the
 resulting increase in the utility of $A_\alpha$. Since neither the
 outcomes of meta-level actions nor the true utility of $A_\alpha$ are
 known in advance, a meta-level action is selected according to its
 expected influence on the expected utility of $A_\alpha$.
 
-$S_j$ affects the internal state of the agent and the effect of
+$S_j$ affects the meta-level state and the effect of
 a possible further meta-level action sequence $\mathbf{T}$. Thus, the expected utility of
 $S_j$ is:
 \begin{equation}
 \label{eq:bg-limited-su}
-\IE[U(S_j)]=\sum_{\mathbf{T}}P(\mathbf{T})\IE[U(A_{\alpha}^\mathbf{T},S_j\cdot\mathbf{T})]
+\IE(U(S_j))=\sum_{\mathbf{T}}\Pr(\mathbf{T})\IE(U(A_{\alpha}^\mathbf{T},S_j\cdot\mathbf{T}))
 \end{equation}
 where $S_j\cdot\mathbf{T}$ denotes the meta-level action $S_j$
 followed by possible further meta-level action sequence $\mathbf{T}$.

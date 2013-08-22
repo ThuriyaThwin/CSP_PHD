@@ -58,17 +58,17 @@ running time and the solution quality.
  of the set of all permutations of the cities with the shortest sum of
  distances between the consequent cities must be chosen.
 
-\item[Multi-armed bandit] is the problem for a gambler
- to decide which arms of a K-slot machine to pull to maximize his
- total reward in a series of trials of a given
- length \cite{Vermorel.bandits}. When pulled, each lever provides a
- reward drawn from a distribution associated to that specific
+\item[Multi-armed bandit:] the levers of a K-slot gambling machine must be
+ pulled a given number of times in such a way that the total reward 
+ is maximized \cite{Vermorel.bandits}. When pulled, each lever provides a
+ reward drawn from a distribution associated with that specific
  lever. Initially, the gambler has no knowledge about the levers, but
  through repeated trials, can focus on the most rewarding levers. This
  is an optimization problem with trade-off between {\em exploration}
- and {\em exploitation}: the gambler both attempts to pull the most
- rewarding lever so far and tries different levers to discover a
- better lever.
+ and {\em exploitation}: while searching for a series of pulls that maximizes
+ the expected reward, the gambler both attempts to pull apparently the most
+ rewarding lever and tries different levers to discover
+ a better lever.
 \end{description}
 
 \subsection{Search Algorithms}

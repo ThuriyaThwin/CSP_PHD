@@ -1,3 +1,21 @@
+Sun Aug 25 14:23:19 IDT 2013
+
+RLA: Todo - assumptions
+
+\begin{itemize}
+  \item Myopic assumption: this is the {\em last}
+        meta-level decision to be made, and henceforth the algorithm
+        will act like lazy $\astar$.
+\item When a node re-emerges from the open list,
+      compare the regret of computing $h_2$ as in lazy $\astar$, vs.
+      just expanding the node.
+\item Note: if rational lazy $\astar$ is indeed better than lazy
+  $\astar$, the myopic assumption results in an upper bound
+  on the regret.
+\end{itemize}
+
+
+
 Mon May 20 07:52:51 IDT 2013
   Done: restructured the chapters
   Todo:

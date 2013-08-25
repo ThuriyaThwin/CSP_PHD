@@ -97,7 +97,7 @@ The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}.
             \State Insert $c$ into \OPEN
         \EndFor
         \State Insert $n$ into \CLOSED
-    \EndWhile
+    \EndWhile  \\
     \Return FAILURE
 \EndProcedure
 \end{algorithmic}
@@ -149,9 +149,9 @@ made in the context of \lazyastar, when $n$ re-emerges from \OPEN~(Line 8).
 We have two options: {\bf (1)}  Evaluate the second heuristic $h_2(n)$ and add
 the node back to \OPEN~(Lines 8-10) like \lazyastar, or {\bf 2} bypass the
 computation of $h_2(n)$ and expand $n$ right way (Lines 11 -13), thereby
-saving timeby not computing $h_2$, at the risk of additional expansions and evaluations of $h_1$.
+saving time by not computing $h_2$, at the risk of additional expansions and evaluations of $h_1$.
 An method which attempts to
-optimally manage this tradeoff, which we call \textit{Rational Lazy A*}, is presented next.
+optimally manage this trade-off, which we call \textit{Rational Lazy A*}, is presented next.
 In order to choose rationally we define a criterion based on value of
 information (VOI) of evaluating $h_2(n)$ in this context.
 
@@ -298,8 +298,8 @@ the weighted 15-puzzle variant, where the cost of moving each tile is
 equal to the number on the tile.  For consistency of comparison, we
 used a subset of 36 problem instances out of the set of 100 15-puzzle
 instances by~\cite{BFID85}, keeping the problems which could be solved
-with 2Gb of RAM and 15 minutes timeout using the Weighted Manhattan
-heuristic (WMD) for $h_1$. As the second, expensive and informative,
+with 2Gb of RAM and 15 minutes timeout using the weighted Manhattan
+distance heuristic (WMD) for $h_1$. As the second, expensive and informative,
 $h_2$ heuristic for \lazyastar~and \rationallazyastar, we a heuristic
 based on lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound
 $d$ we applied a bounded depth-first search from a node $n$ and
@@ -324,7 +324,7 @@ lookahead & generated & time &  Good1 & $N_2$ & time & generated & Good1   & Goo
 \end{table}
 Table~\ref{tbl:rla-rational-lazy-a-star} presents the results averaged
 on all instances solved. The running times are reported relative
-to the time of \astar with WMD (with no lookahead), which generated
+to the time of \astar~with WMD (with no lookahead), which generated
 2012643 nodes (not reported in the table). The first 3 columns of Table
 \ref{tbl:rla-rational-lazy-a-star} shows the results for \astar~with the
 lookahead heuristic for different lookahead depths. The best time is
@@ -347,13 +347,14 @@ saving is reflected in the timing results.  The best results are
 achieved for lookahead 8, with a runtime of 0.431 compared to \astar~
 with WMD.
 
-The final columns show the results of RLA* with different lookaheads for
-empirically best values of $\tau$. The {\em Good2} column counts the
+The final columns show the results of \rationallazyastar~, with the
+values of $\tau$, $p_h$, $t_2$ calibrated for each lookahead depth using a
+small subset of problem instances.  The {\em Good2} column counts the
 number of times that RLA* decided to bypass the $h_2$ computation and
-expand the node right away.Observe that RLA* outperforms \lazyastar,
+expand the node right away. Observe that RLA* outperforms \lazyastar,
 which in turn outperforms standard A*, for all lookahead depths. The
 lowest time with RLA* (0.378 of \astar with WMD) and empirically best
-$\tau$  was obtained for lookahead 10. That is achieved because the
+$\tau$ was obtained for lookahead 10. That is achieved because the
 more expensive $h_2$ heuristic is computed less often, reducing its
 effective computational overhead, with little or no adverse effect in
 the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
@@ -365,7 +366,7 @@ and $t_c$ can also be modeled using the 15-puzzle domain by considering only the
 time spent evaluating the heuristics. Table~\ref{tbl:rla-amax-la-rla-times}
 presents the results of solving the Weighted 15-puzzle obtained on
 the the set of 100 15-puzzle instances by~\cite{BFID85}, using the
-combination of weighted Manhattan distance and weigthed linear
+combination of weighted Manhattan distance and linear
 conflict \cite{hanssonmy.linconflict} heuristics. Rows $N_1$ and $N_2$ present the
 average numbers of evaluations of $h_1$ and $h_2$, rows $T_1$ and
 $T_2$ the average total times (per instance) spent evaluating each
@@ -557,14 +558,11 @@ Sel-MAX, suggesting that its decisions are better.
 
 \section{Conclusion and Further Research}
 
-We discussed two schemes for decreasing heuristic evaluation
-times. \lazyastar~is very simple to implement and is as informative as
-\astarmax. \lazyastar~can significantly speed up the search,
-especially if $t_2$ dominates the other time costs, as seen in
-weighted 15 puzzle and planning domains.  Rational \lazyastar~allows
+We discussed a scheme for decreasing heuristic evaluation
+times in \lazyastar. Compared to \lazyastar, \rationallazyastar~allows
 additional cuts in $h_2$ evaluations, at the expense of being less
-informed than \astarmax. However, due to a rational tradeoff, this
-allows for an additional speedup, and Rational \lazyastar~achieves the
+informed. However, due to a rational trade-off, this
+allows for an additional speedup, and \rationallazyastar~achieves the
 best overall performance in our domains.
 
 In particular, \rationallazyastar~is simpler to implement than its direct
@@ -573,8 +571,8 @@ competitor, selective max, but its decision can be more informed.  When
 $n$, it already {\em knows} that $f_1(n) \leq \optcost$.  By contrast,
 although selective max uses a much more complicated decision rule, it
 chooses which heuristic to compute when $n$ is first generated, and does
-not know whether $h_1$ will be informative enough to prune $n$. Rational
-\lazyastar~outperforms selective max in our planning experiments.
+not know whether $h_1$ will be informative enough to prune $n$.
+\rationallazyastar~outperforms selective max in our planning experiments.
 
 There are numerous other ways to use rational metareasoning to
 improve~\astar, starting from generalizing \rationallazyastar~to

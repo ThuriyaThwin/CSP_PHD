@@ -28,7 +28,7 @@ immediately when $n$ re-emerges from \OPEN. \rationallazyastar~aims to
 reduce search time, even at the expense of more node expansions than
 \astarmax.
 
-\subsection{Background and Related Work}
+\section{Background and Related Work}
 
 The \astar~algorithm \cite{ASTR68} is a best-first heuristic search
 algorithm guided by the cost function $f(n)=g(n)+h(n)$.  If the
@@ -36,15 +36,22 @@ heuristic $h(n)$ is admissible (never overestimates the real cost to
 the goal) then the set of nodes expanded by \astar~is both necessary
 and sufficient to find the optimal path to the goal~\cite{ASTR85}.
 
-The idea behind the \lazyastar~algorithm was briefly mentioned
-by~\cite{zhang-bacchus:aaai-2012} in the context of the MAXSAT
-heuristic for planning domains. \cite{Helmert.fdps} described
-\emph{deferred evaluation} of heuristics in the context of the Fast
-Downward Planning System. In deferred evaluation, the successors of
-node $n$ are placed in the open list with the heuristic estimate of
-$n$ and heuristically evaluated only when expanded.  The technique
-bears a similarity to a special case of \lazyastar~where the first
-heuristic always returns 0.
+Throughout this study we assume for clarity that we have two available
+admissible heuristics, $h_1$ and $h_2$.Extension to multiple heuristics is straightforward.
+Unless stated otherwise, we assume that $h_1$ is faster to compute than $h_2$
+but that $h_2$ is {\em weakly more informed}, i.e., $h_1(n) \leq h_2(n)$ for
+the majority of the nodes $n$, although counter cases where $h_1(n) > h_2(n)$
+are possible. We say that $h_2$ {\em dominates} $h_1$, if such counter cases do not
+exist and $h_2(n) \geq h_1(n)$ for {\em all} nodes $n$.
+We use $f_1(n)$ to denote $g(n)+h_1(n)$. Likewise, $f_2(n)$
+denotes $g(n)+h_2(n)$, and $f_{max}(n)$ denotes $g(n) + \max(h_1(n),h_2(n))$.
+We denote the cost of the optimal solution by $\optcost$. Additionally, we
+denote the computation time of $h_1$ and of $h_2$ by $t_1$ and $t_2$,
+respectively and denote the overhead of an {\em insert/pop} operation in
+\OPEN~by $t_o$. Unless stated otherwise we assume that $t_2$ is much greater
+than $t_1 + t_o$. 
+
+\subsection{Selective MAX}
 
 Based on the idea of of trading off more node expansions for less
 heuristic computation time, \cite{domshlak-et-al:jair-2012} formulated
@@ -57,23 +64,18 @@ factor.
 
 \subsection{Lazy \astar}
 
-Throughout this study we assume for clarity that we have two available
-admissible heuristics, $h_1$ and $h_2$.
-Extension to multiple heuristics is straightforward, at least for \lazyastar.
-Unless stated otherwise, we assume that $h_1$ is faster to compute than $h_2$
-but that $h_2$ is {\em weakly more informed}, i.e., $h_1(n) \leq h_2(n)$ for
-the majority of the nodes $n$, although counter cases where $h_1(n) > h_2(n)$
-are possible.
-We say that $h_2$ {\em dominates} $h_1$, if such counter cases do not
-exist and $h_2(n) \geq h_1(n)$ for {\em all} nodes $n$.
-We use $f_1(n)$ to denote $g(n)+h_1(n)$. Likewise, $f_2(n)$
-denotes $g(n)+h_2(n)$, and $f_{max}(n)$ denotes $g(n) + \max(h_1(n),h_2(n))$.
-We denote the cost of the optimal solution by $\optcost$. Additionally, we
-denote the computation time of $h_1$ and of $h_2$ by $t_1$ and $t_2$,
-respectively and denote the overhead of an {\em insert/pop} operation in
-\OPEN~by $t_o$. Unless stated otherwise we assume that $t_2$ is much greater
-than $t_1 + t_o$. \lazyastar~thus mainly aims to reduce computations of $h_2$.
+The idea behind the \lazyastar~algorithm was briefly mentioned
+by~\cite{zhang-bacchus:aaai-2012} in the context of the MAXSAT
+heuristic for planning domains. \cite{Helmert.fdps} described
+\emph{deferred evaluation} of heuristics in the context of the Fast
+Downward Planning System. In deferred evaluation, the successors of
+node $n$ are placed in the open list with the heuristic estimate of
+$n$ and heuristically evaluated only when expanded.  The technique
+bears a similarity to a special case of \lazyastar~where the first
+heuristic always returns 0.
 
+The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}.
+\lazyastar~mainly aims to reduce computations of $h_2$.
 \begin{algorithm}[h]
 \caption{Lazy \astar}
 \begin{algorithmic}[1]
@@ -101,9 +103,7 @@ than $t_1 + t_o$. \lazyastar~thus mainly aims to reduce computations of $h_2$.
 \end{algorithmic}
 \label{LAZYA}
 \end{algorithm}
-
-The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}, and is
-very similar to \astar.
+\lazyastar is very similar to \astar.
 In fact, without lines 7 -- 10, \lazyastar~would be identical to
 \astar~using the $h_1$ heuristic.
 When a node $n$ is generated we only compute $h_1(n)$ and $n$ is added to
@@ -134,7 +134,7 @@ refer to such nodes where we saved the computation of $h_2$ as {\em good} nodes.
 those with $f_1(n) < \optcost$ (and some with $f_1(n) = \optcost$) are called
 {\em regular nodes} as we apply both heuristics for them.
 
-\subsection{Rational Lazy A*}
+\section{Rational Lazy A*}
 
 Using the principles of rational metareasoning (Section~\ref{sec:ratimeta}),
 theoretically every computational operator (heuristic function evaluation, node
@@ -285,8 +285,10 @@ b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
 \label{eqn:rla-planning-rule}
 \end{equation}
 
-\subsection{Empirical Evaluation}
+\section{Empirical Evaluation}
 \label{sec:rla-empirical}
+
+\subsection{Weighted 15-puzzle}
 
 In the uniform-cost 15 puzzle, the open list contains only a few
 different f-costs, and is frequently implemented using buckets,
@@ -358,6 +360,8 @@ the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
 performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
 
+\subsection{Planning Domains}
+
 \cite{TolpinEtAl.rla} presents results for comparing \rationallazyastar and
 other algorithms on 42 planning domains. In these domains, time spent evaluating
 heuristics constitutes approximately 90\% of the total search time,
@@ -365,9 +369,157 @@ hence applying rule~(\ref{eqn:rla-planning-rule}) is justified.
 \rationallazyastar~was compared to \lazyastar~and to \astar~using
 each of the heuristics individually, as well as to the max-based
 combination of the heuristics, and to the combination using selective-max
-(Sel-MAX)~\cite{domshlak-et-al:jair-2012}. In the evaluation,
+(Sel-MAX)~\cite{domshlak-et-al:jair-2012}. In the evaluation, 
 \rationallazyastar~solved most problem instances in the shortest
 total search time.
+\begin{table}[h!]
+\parindent -0.5in
+\tiny{
+\begin{tabular}{|l|r|r|r|r|r|r||r|r|r|r|r|r||r|r|r|r|r|r||r|r|}
+\hline &
+\multicolumn{6}{|c||}{Problems Solved } &
+\multicolumn{6}{|c||}{Planning Time (seconds)} &
+%\multicolumn{6}{|c||}{Expansions (623)} &
+\multicolumn{2}{|c|}{GOOD } \\
+\hline Domain &
+$h_{LA}$ & lmcut & max & selmax & \lazyastar& \rationallazyastar &
+$h_{LA}$ & lmcut & max & selmax & \lazyastar& \rationallazyastar &
+%$h_1$ & $h_2$ & M & S & L& R &
+\lazyastar& \rationallazyastar \\
+
+\hline airport & 25 & 24 & 26 & 25 & \textbf{29} & \textbf{29} & \textbf{0.29} & 0.57 & 0.5 & 0.33 & 0.38 & 0.38 & 0.48 & 0.67 \\
+barman-opt11 & \textbf{4} & 0 & 0 & 0 & 0 & 3 & N/A & N/A & N/A & N/A & N/A & N/A & N/A & N/A \\
+blocks & 26 & 27 & 27 & 27 & \textbf{28} & \textbf{28} & 1.0 & \textbf{0.65} & 0.73 & 0.81 & 0.67 & 0.67 & 0.19 & 0.21 \\
+depot & \textbf{7} & 6 & 5 & 5 & 6 & 6 & \textbf{2.27} & 2.69 & 3.17 & 3.14 & 2.73 & 2.75 & 0.06 & 0.06 \\
+driverlog & 10 & \textbf{12} & \textbf{12} & \textbf{12} & \textbf{12} & \textbf{12} & 2.65 & \textbf{0.29} & 0.33 & 0.36 & 0.3 & 0.31 & 0.09 & 0.09 \\
+elevators-opt08 & 12 & \textbf{18} & 17 & 17 & 17 & 17 & 14.14 & 4.21 & 4.84 & 4.85 & \textbf{3.56} & 3.64 & 0.27 & 0.27 \\
+elevators-opt11 & 10 & \textbf{14} & \textbf{14} & \textbf{14} & \textbf{14} & \textbf{14} & 26.97 & 8.03 & 9.28 & 9.28 & \textbf{6.64} & 6.78 & 0.28 & 0.28 \\
+floortile-opt11 & 2 & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & 8.52 & \textbf{0.44} & 0.6 & 0.58 & 0.5 & 0.52 & 0.02 & 0.02 \\
+freecell & \textbf{54} & 10 & 36 & 51 & 41 & 41 & \textbf{0.16} & 7.34 & 0.22 & 0.24 & 0.18 & 0.18 & 0.86 & 0.86 \\
+grid & \textbf{2} & \textbf{2} & 1 & \textbf{2} & \textbf{2} & \textbf{2} & \textbf{0.1} & 0.16 & 0.18 & 0.34 & 0.15 & 0.15 & 0.17 & 0.17 \\
+gripper & \textbf{7} & 6 & 6 & 6 & 6 & 6 & \textbf{0.84} & 1.53 & 2.24 & 2.2 & 1.78 & 1.25 & 0.01 & 0.4 \\
+logistics00 & \textbf{20} & 17 & 16 & \textbf{20} & 19 & 19 & \textbf{0.23} & 0.57 & 0.68 & 0.27 & 0.47 & 0.47 & 0.51 & 0.51 \\
+logistics98 & 3 & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & 0.72 & \textbf{0.1} & 0.1 & 0.11 & \textbf{0.1} & \textbf{0.1} & 0.07 & 0.07 \\
+miconic & \textbf{141} & 140 & 140 & \textbf{141} & \textbf{141} & \textbf{141} & \textbf{0.13} & 0.55 & 0.58 & 0.57 & 0.16 & 0.16 & 0.87 & 0.88 \\
+mprime & 16 & 20 & 20 & 20 & \textbf{21} & 20 & 1.27 & 0.5 & 0.51 & 0.5 & \textbf{0.44} & 0.45 & 0.25 & 0.25 \\
+mystery & 13 & \textbf{15} & \textbf{15} & \textbf{15} & \textbf{15} & \textbf{15} & 0.71 & \textbf{0.35} & 0.38 & 0.43 & 0.36 & 0.37 & 0.3 & 0.3 \\
+nomystery-opt11 & \textbf{18} & 14 & 16 & \textbf{18} & \textbf{18} & \textbf{18} & \textbf{0.18} & 1.29 & 0.58 & 0.25 & 0.33 & 0.33 & 0.72 & 0.72 \\
+openstacks-opt08 & 15 & \textbf{16} & 14 & 15 & \textbf{16} & \textbf{16} & 2.88 & \textbf{1.68} & 3.89 & 3.03 & 2.62 & 2.64 & 0.44 & 0.45 \\
+openstacks-opt11 & 10 & \textbf{11} & 9 & 10 & \textbf{11} & \textbf{11} & 13.59 & \textbf{6.96} & 19.8 & 14.44 & 12.03 & 12.06 & 0.43 & 0.43 \\
+parcprinter-08 & 14 & \textbf{18} & \textbf{18} & \textbf{18} & \textbf{18} & \textbf{18} & 0.92 & \textbf{0.36} & 0.37 & 0.38 & 0.37 & 0.37 & 0.17 & 0.26 \\
+parcprinter-opt11 & 10 & \textbf{13} & \textbf{13} & \textbf{13} & \textbf{13} & \textbf{13} & 2.24 & \textbf{0.56} & 0.6 & 0.61 & 0.58 & 0.59 & 0.14 & 0.17 \\
+parking-opt11 & 1 & 1 & 1 & \textbf{3} & 2 & 2 & 9.74 & 22.13 & 17.85 & 7.11 & \textbf{6.33} & 6.43 & 0.64 & 0.64 \\
+pathways & 4 & \textbf{5} & \textbf{5} & \textbf{5} & \textbf{5} & \textbf{5} & 0.5 & \textbf{0.1} & \textbf{0.1} & \textbf{0.1} & \textbf{0.1} & \textbf{0.1} & 0.1 & 0.12 \\
+pegsol-08 & \textbf{27} & \textbf{27} & \textbf{27} & \textbf{27} & \textbf{27} & \textbf{27} & 1.01 & \textbf{0.84} & 1.2 & 1.1 & 1.06 & 0.95 & 0.04 & 0.42 \\
+pegsol-opt11 & \textbf{17} & \textbf{17} & \textbf{17} & \textbf{17} & \textbf{17} & \textbf{17} & 4.91 & \textbf{3.63} & 5.85 & 5.15 & 4.87 & 4.22 & 0.04 & 0.38 \\
+pipesworld-notankage & \textbf{16} & 15 & 15 & \textbf{16} & 15 & 15 & \textbf{0.5} & 1.48 & 1.12 & 0.85 & 0.9 & 0.91 & 0.42 & 0.42 \\
+pipesworld-tankage & \textbf{11} & 8 & 9 & 9 & 9 & 9 & \textbf{0.36} & 2.24 & 1.02 & 0.47 & 0.69 & 0.71 & 0.62 & 0.62 \\
+psr-small & \textbf{49} & 48 & 48 & \textbf{49} & 48 & 48 & \textbf{0.15} & 0.2 & 0.21 & 0.19 & 0.19 & 0.18 & 0.17 & 0.49 \\
+rovers & 6 & \textbf{7} & \textbf{7} & \textbf{7} & \textbf{7} & \textbf{7} & 0.74 & \textbf{0.41} & 0.45 & 0.45 & 0.41 & 0.42 & 0.47 & 0.47 \\
+scanalyzer-08 & 6 & \textbf{13} & \textbf{13} & \textbf{13} & \textbf{13} & \textbf{13} & 0.37 & \textbf{0.25} & 0.27 & 0.27 & 0.26 & 0.26 & 0.06 & 0.06 \\
+scanalyzer-opt11 & 3 & \textbf{10} & \textbf{10} & \textbf{10} & \textbf{10} & \textbf{10} & \textbf{0.59} & 0.64 & 0.75 & 0.73 & 0.67 & 0.68 & 0.05 & 0.05 \\
+sokoban-opt08 & 23 & 25 & 25 & 24 & 26 & \textbf{27} & 3.94 & 1.76 & 2.19 & 2.96 & 1.9 & \textbf{1.32} & 0.04 & 0.4 \\
+sokoban-opt11 & \textbf{19} & \textbf{19} & \textbf{19} & 18 & \textbf{19} & \textbf{19} & 7.26 & 2.83 & 3.66 & 5.19 & 3.1 & \textbf{2.02} & 0.03 & 0.46 \\
+storage & 14 & \textbf{15} & 14 & 14 & \textbf{15} & \textbf{15} & \textbf{0.36} & 0.44 & 0.49 & 0.45 & 0.44 & 0.42 & 0.21 & 0.28 \\
+tidybot-opt11 & \textbf{14} & 12 & 12 & 12 & 12 & 12 & \textbf{3.03} & 16.32 & 17.55 & 9.35 & 15.67 & 15.02 & 0.11 & 0.18 \\
+tpp & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & 0.39 & \textbf{0.22} & 0.23 & 0.23 & 0.22 & 0.22 & 0.32 & 0.4 \\
+transport-opt08 & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & 1.45 & \textbf{1.24} & 1.41 & 1.54 & 1.25 & 1.26 & 0.04 & 0.04 \\
+transport-opt11 & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & \textbf{6} & 12.46 & \textbf{8.5} & 10.38 & 11.13 & 8.56 & 8.61 & 0.0 & 0.0 \\
+trucks & 7 & \textbf{9} & \textbf{9} & \textbf{9} & \textbf{9} & \textbf{9} & 4.49 & \textbf{1.34} & 1.52 & 1.44 & 1.41 & 1.42 & 0.07 & 0.07 \\
+visitall-opt11 & 12 & 10 & \textbf{13} & 12 & \textbf{13} & \textbf{13} & 0.2 & 0.34 & 0.19 & \textbf{0.18} & 0.18 & 0.18 & 0.38 & 0.38 \\
+woodworking-opt08 & 12 & \textbf{16} & \textbf{16} & \textbf{16} & \textbf{16} & \textbf{16} & 1.08 & 0.71 & 0.75 & 0.75 & \textbf{0.66} & 0.67 & 0.56 & 0.56 \\
+woodworking-opt11 & 7 & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & 5.7 & 2.86 & 3.15 & 3.01 & \textbf{2.55} & 2.58 & 0.52 & 0.52 \\
+zenotravel & 8 & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & \textbf{11} & 0.38 & \textbf{0.14} & 0.14 & 0.14 & 0.14 & 0.14 & 0.17 & 0.19 \\
+\hline
+OVERALL & 698 & 697 & 722 & 747 & 747 & \textbf{750} & 1.18 & 0.98 & 0.98 & 0.89 & 0.79 & \textbf{0.77} & 0.27 & 0.34 \\
+\hline
+\end{tabular}
+}
+\begin{small}
+\caption{\label{tbl:rla-planning} Planning Domains --- Number of Problems
+Solved, Total Planning Time, and Fraction of Good Nodes}
+\end{small}
+\end{table}
+Table~\ref{tbl:rla-planning} depicts the experimental results
+(provided by Erez Karpas). \lazyastar~and \rationallazyastar~on were
+implemented on top of the Fast Downward
+planning system \cite{helmert:jair-2006}, and two state
+of the art heuristics were used: the admissible landmarks heuristic $h_{LA}$ (used as $h_1$)
+\cite{karpas-domshlak:ijcai-2009}, and the landmark cut heuristic $h_{LMCUT}$
+\cite{helmert-domshlak:icaps-2009} (used as $h_2$).
+On average, $h_{LMCUT}$ computation is 8.36 times more expensive than $h_{LA}$
+computation.
+
+The leftmost part of the table shows the number of solved problems in each
+domain. As the table demonstrates, \rationallazyastar~solves the most problems,
+and \lazyastar~solves the same number of problems as Sel-MAX. Thus, both
+\lazyastar~and \rationallazyastar~are state-of-the-art in cost-optimal planning.
+Looking more closely at the results, note that Sel-MAX
+solves 10 more problems than \lazyastar~and \rationallazyastar~in the freecell
+domain. Freecell is one of only three domains in which $h_{LA}$ is more
+informed than $h_{LMCUT}$ ~(the other two are nomystery-opt11 and
+visitall-opt11), violating the basic assumptions behind 
+\lazyastar~ that $h_2$ is more informed than $h_1$. If
+we ignore these domains, both \lazyastar~and \rationallazyastar~solve more
+problems than Sel-MAX.
+
+The middle part of the Table~\ref{tbl:rla-planning} shows the geometric mean of
+planning time in each domain, over the commonly solved problems (i.e., those
+that were solved by all 6 methods). \rationallazyastar~is the fastest overall,
+with \lazyastar~second. It is important to note that both \lazyastar~and
+\rationallazyastar~are very robust, and even in cases where they are not the
+best they are never too far from the best. For example, consider the {\em
+miconic} domain. Here,  $h_{LA}$ is very informative and thus the variant that
+only computed $h_{LA}$ is the best choice (but a bad choice overall). Observe
+that both  \lazyastar~and \rationallazyastar~saved 86\% of $h_{LMCUT}$
+computations, and were very close to the best algorithm in this extreme case.
+In contrast, the other algorithms that consider both heuristics (max and
+Sel-MAX) performed very poorly here (more than three times slower).
+
+The rightmost part of Table~\ref{tbl:rla-planning} shows the average
+fraction of nodes for which \lazyastar~ and \rationallazyastar~did not evaluate
+the more expensive heuristic, $h_{LMCUT}$, over the problems solved by both
+these methods.
+This is shown in the {\em good} columns. Our first observation is that this
+fraction varies between different domains, indicating why \lazyastar~works well
+in some domains, but not in others. Additionally, we can see that in domains
+where there is a difference in this number between \lazyastar~and
+\rationallazyastar, \rationallazyastar~usually performs better in terms of
+time. This indicates that when \rationallazyastar~decides to skip the
+computation of the expensive heuristic, it is usually the right
+decision. 
+
+\begin{table}[h!]
+\begin{center}
+\begin{small}
+\begin{tabular}{|l|r|r|}
+\hline
+&  Expanded & Generated\\
+\hline
+$h_{LA}$     & 183,320,267 & 1,184,443,684\\
+lmcut    & 23,797,219 & 114,315,382\\
+\astarmax          & 22,774,804 & 108,132,460\\
+selmax          & 54,557,689 & 193,980,693\\
+\hline
+$\lazyastar$  & 22,790,804 & 108,201,244\\
+$\rationallazyastar$   & 25,742,262 & 110,935,698\\
+\hline
+\end{tabular}
+\end{small}
+\end{center}
+\caption{\label{tbl:rla-planning-states} Total Number of Expanded and Generated States}
+\end{table}
+
+Table~\ref{tbl:rla-planning-states} shows the total number of expanded and generated
+states over all commonly solved problems. \lazyastar~is indeed as informative
+as \astarmax~(the small difference is caused by tie-breaking), while
+\rationallazyastar~is a little less informed and expands slightly more nodes.
+However, \rationallazyastar~is much more informative than its ``intelligent''
+competitor - Sel-MAX, as these are the only two algorithms in our set
+which selectively omit some heuristic computations.
+\rationallazyastar~generated almost half of the nodes compared to
+Sel-MAX, suggesting that its decisions are better. 
+
 
 The case of both $t_1$ and $t_2$ being significantly larger than $t_o$
 and $t_c$ can also be modeled using the 15-puzzle domain by considering only the
@@ -390,7 +542,8 @@ $T_2, sec$ & 4.122     & 2.425     & 1.938 \\ \hline
 $T_1+T_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
 \end{tabular}
 \end{center}
-\caption{Weighted 15 puzzle: comparison of heuristic computation times in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$}
+\caption{Weighted 15 puzzle: comparison of heuristic computation times
+in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$} 
 \label{tbl:rla-amax-la-rla-times}
 \end{table}
 \astarmax~evaluates both $h_1$ and $h_2$ on both nodes and is obviously
@@ -401,7 +554,7 @@ spends 20\% less time than \lazyastar~evaluating $h_2$ \emph{at the
   expense} of spending 4\% more time evaluating $h_1$, and takes
 12\% less time than \lazyastar~and 40\% less time than \astarmax~overall.
 
-\subsection{Conclusion and Further Research}
+\section{Conclusion and Further Research}
 
 We discussed two schemes for decreasing heuristic evaluation
 times. \lazyastar~is very simple to implement and is as informative as

@@ -1,13 +1,14 @@
 
-MCTS, and especially UCT \cite{Kocsis.uct} appears in numerous search
-applications, such as \cite{Eyerich.ctp}. Although these methods are
-shown to be successful empirically, most authors appear to be using
-UCT ``because it has been shown to be successful in the past'', and
-``because it does a good job of trading off exploration and
-exploitation''. While the latter statement may be correct for the
-Multi-armed Bandit problem and for the UCB1 algorithm \cite{Auer.ucb},
-we argue that a simple reconsideration from basic principles can
-result in schemes that outperform UCT.
+Monte Carlo Tree Search (MCTS), and especially UCT \cite{Kocsis.uct}
+appears in numerous search applications, such
+as \cite{Eyerich.ctp}. Although these methods are shown to be
+successful empirically, most authors appear to be using UCT ``because
+it has been shown to be successful in the past'', and ``because it
+does a good job of trading off exploration and exploitation''. While
+the latter statement may be correct for the Multi-armed Bandit problem
+and for the UCB1 algorithm \cite{Auer.ucb}, we argue that a simple
+reconsideration from basic principles can result in schemes that
+outperform UCT.
 
 The core issue is that in MCTS for adversarial search and search in
 ``games against nature'' the goal is typically to find the best
@@ -234,12 +235,13 @@ Substituting the bound on $\Pr\left(\overline X_i^{n_i+N}\ge x\right)$ from Theo
 Derivation for the case $i=\alpha$ is similar.
 \end{proof}
 
-
-
-Selection problems usually separate out the decision of {\em whether} to
-sample or to stop (called the stopping policy), and {\em what} to sample.
-We shall examine the first issue here, along with the empirical evaluation 
-of the above approximate algorithms, and the second in the following section.
+Selection problems usually separate out the decision of (1) {\em what}
+to sample and (2) {\em whether} to sample or to stop (called the stopping policy).
+In this section we will examine the first issue, along with the empirical evaluation 
+of the above approximate algorithms. The second issue --- the stopping
+policy --- is important in the context of sampling in trees, when the
+selection problem is solved multiple times, at every node along the
+path. This issue is explored in Section~\ref{sec:mcts-sampling-in-trees}.
 
 Assuming that the sample costs are constant,
 a semi-myopic policy will decide to test the arm that has the best
@@ -270,11 +272,8 @@ Equation~(\ref{eqn:mcts-erf-blinkered}) (VOI+).
 UCB1 is always considerably worse than the VOI-aware sampling policies.
 
 
-
-
-
 \section{Sampling in trees}
-\label{sec:mcts-empirical-evaluation}
+\label{sec:mcts-sampling-in-trees}
 
 The previous section addressed the selection problem in the flat case.
 Selection in trees is more complicated.  The goal of Monte-Carlo tree 

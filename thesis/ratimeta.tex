@@ -137,3 +137,42 @@ net value of information can be either positive or negative depending on
 the cost of the action, the intrinsic value of information is always
 non-negative.
 
+\subsection{Simplifying Assumptions}
+
+Theoretically, as suggested by Russell and Wefald, optimally solving
+the meta-level decision problem reveals an optimal policy to adopt at
+every step of the search. However, the meta-level MDP is actually
+harder to solve in general than the original search problem;
+therefore, it makes no sense in practice to actually define and solve 
+this MDP, at least not during search. Instead, Russell and Wefald
+introduced a simplified model that is much easier to solve. The model
+is based on the following \emph{simplifying
+assumptions} \cite{Russell.right}: 
+\begin{enumerate}
+\item \textbf{Myopic:} all computations involved in estimation of the
+value of information of meta-level actions assume that at most a single
+meta-level action will be performed before a base-level action is
+chosen. 
+\item All computational operators have a \textbf{known time cost}.
+\item In addition, the \textbf{subtree independence} assumption can
+be used to further simplify the model: every meta-level action
+affects the utility estimate of a single base-level action. 
+\end{enumerate}
+Applied to certain search problems, this \emph{simplified
+meta-reasoning approach}, even if not entirely justified, results in
+improved search performance. However, even application of the
+simplified approach is at least non-trivial in many cases, mostly due
+to difficulties in obtaining beliefs, transition probabilities and
+utility values, as well as due to high computational complexity of the
+meta-reasoning level itself. On the other hand, none of the simplifying
+assumptions hold in general, and in many cases their applicability is
+limited. For example, with many computational operators the subtree
+independence assumption is inappropriate --- a computation updates
+the belief state, and along the new belief state utilities of several
+base-level actions are updated. The myopic assumption is limited to
+the cases when the value of information of a sequence of meta-level
+actions is approximately submodular \cite{Guestrin.submodular}. When 
+the intrinsic value of information is concave in the amount of
+computation, the net value of information can be negative for any
+single action, and the myopic assumption results in premature
+termination of meta-level computation. 

@@ -360,6 +360,39 @@ the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
 performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
 
+The case of both $t_1$ and $t_2$ being significantly larger than $t_o$
+and $t_c$ can also be modeled using the 15-puzzle domain by considering only the
+time spent evaluating the heuristics. Table~\ref{tbl:rla-amax-la-rla-times}
+presents the results of solving the Weighted 15-puzzle obtained on
+the the set of 100 15-puzzle instances by~\cite{BFID85}, using the
+combination of weighted Manhattan distance and weigthed linear
+conflict \cite{hanssonmy.linconflict} heuristics. Rows $N_1$ and $N_2$ present the
+average numbers of evaluations of $h_1$ and $h_2$, rows $T_1$ and
+$T_2$ the average total times (per instance) spent evaluating each
+of the heuristics.
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{|l | c | c | c | } \hline
+  &\astarmax&\lazyastar&\rationallazyastar\\ \hline 
+$N_1$ & 1,482,271 & 1,482,271 & 1,521,163 \\ \hline
+$T_1, sec$ & 0.979     & 0.979     & 1.026 \\ \hline
+$N_2$ & 1,482,271 & 1,117,826 & 868,182 \\ \hline
+$T_2, sec$ & 4.122     & 2.425     & 1.938 \\ \hline
+$T_1+T_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
+\end{tabular}
+\end{center}
+\caption{Weighted 15 puzzle: comparison of heuristic computation times
+in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$} 
+\label{tbl:rla-amax-la-rla-times}
+\end{table}
+\astarmax~evaluates both $h_1$ and $h_2$ on both nodes and is obviously
+the slowest. \lazyastar~evaluates $h_2$ selectively, spending 40\%
+less time evaluating $h_2$ and 33\% less time
+overall. \rationallazyastar, using Rule~(\ref{eqn:rla-planning-rule}),
+spends 20\% less time than \lazyastar~evaluating $h_2$ \emph{at the
+  expense} of spending 4\% more time evaluating $h_1$, and takes
+12\% less time than \lazyastar~and 40\% less time than \astarmax~overall.
+
 \subsection{Planning Domains}
 
 \cite{TolpinEtAl.rla} presents results for comparing \rationallazyastar and
@@ -440,8 +473,9 @@ OVERALL & 698 & 697 & 722 & 747 & 747 & \textbf{750} & 1.18 & 0.98 & 0.98 & 0.89
 Solved, Total Planning Time, and Fraction of Good Nodes}
 \end{small}
 \end{table}
+
 Table~\ref{tbl:rla-planning} depicts the experimental results
-(provided by Erez Karpas). \lazyastar~and \rationallazyastar~on were
+(provided by Erez Karpas). \lazyastar~and \rationallazyastar~were
 implemented on top of the Fast Downward
 planning system \cite{helmert:jair-2006}, and two state
 of the art heuristics were used: the admissible landmarks heuristic $h_{LA}$ (used as $h_1$)
@@ -520,39 +554,6 @@ which selectively omit some heuristic computations.
 \rationallazyastar~generated almost half of the nodes compared to
 Sel-MAX, suggesting that its decisions are better. 
 
-
-The case of both $t_1$ and $t_2$ being significantly larger than $t_o$
-and $t_c$ can also be modeled using the 15-puzzle domain by considering only the
-time spent evaluating the heuristics. Table~\ref{tbl:rla-amax-la-rla-times}
-presents the results of solving the Weighted 15-puzzle obtained on
-the the set of 100 15-puzzle instances by~\cite{BFID85}, using the
-combination of weighted Manhattan distance and weigthed linear
-conflict \cite{hanssonmy.linconflict} heuristics. Rows $N_1$ and $N_2$ present the
-average numbers of evaluations of $h_1$ and $h_2$, rows $T_1$ and
-$T_2$ the average total times (per instance) spent evaluating each
-of the heuristics.
-\begin{table}[h!]
-\begin{center}
-\begin{tabular}{|l | c | c | c | } \hline
-  &\astarmax&\lazyastar&\rationallazyastar\\ \hline 
-$N_1$ & 1,482,271 & 1,482,271 & 1,521,163 \\ \hline
-$T_1, sec$ & 0.979     & 0.979     & 1.026 \\ \hline
-$N_2$ & 1,482,271 & 1,117,826 & 868,182 \\ \hline
-$T_2, sec$ & 4.122     & 2.425     & 1.938 \\ \hline
-$T_1+T_2, sec$ & 5.101 & 3.404    & 2.964 \\ \hline
-\end{tabular}
-\end{center}
-\caption{Weighted 15 puzzle: comparison of heuristic computation times
-in $A^*_{\max}$, Lazy $A^*$, and Rational Lazy $A^*$} 
-\label{tbl:rla-amax-la-rla-times}
-\end{table}
-\astarmax~evaluates both $h_1$ and $h_2$ on both nodes and is obviously
-the slowest. \lazyastar~evaluates $h_2$ selectively, spending 40\%
-less time evaluating $h_2$ and 33\% less time
-overall. \rationallazyastar, using Rule~(\ref{eqn:rla-planning-rule}),
-spends 20\% less time than \lazyastar~evaluating $h_2$ \emph{at the
-  expense} of spending 4\% more time evaluating $h_1$, and takes
-12\% less time than \lazyastar~and 40\% less time than \astarmax~overall.
 
 \section{Conclusion and Further Research}
 

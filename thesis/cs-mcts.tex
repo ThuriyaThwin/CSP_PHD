@@ -297,7 +297,7 @@ at non-root nodes will typically cause values observed at children of
 the root node to be non-stationary.  Nevertheless, sampling based on
 VOI estimates computed as for stationary distributions works well in
 practice. As illustrated by the empirical evaluation
-(Section~\ref{sec:mcts-empirical-evaluation}), estimates based on
+(Section~\ref{sec:mcts-emp-go}), estimates based on
 upper bounds on the VOI result in good sampling policies, which
 exhibit performance comparable to the performance of some
 state-of-the-art heuristic algorithms.
@@ -326,7 +326,7 @@ giving a reasonable stopping criterion:
     &\forall i: i\ne\alpha
 \label{eqn:mcts-stopping-blnk}
 \end{align}
-The empirical evaluation (Section~\ref{sec:mcts-empirical-evaluation})
+The empirical evaluation (Section~\ref{sec:mcts-emp-go})
 confirms the viability of this stopping criterion and illustrates the
 influence of the sample cost $c$ on the performance of
 the sampling policy. When the sample cost $c$ is unknown, one can perform initial calibration experiments

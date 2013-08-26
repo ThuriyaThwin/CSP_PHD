@@ -5,18 +5,16 @@ The thesis comprises two major topics:
   selection and application of heuristic computations (Chapters~\ref{ch:cs-csp}--\ref{ch:cs-rla}).
 \end {enumerate}
 
-The first topic addressed cases in which estimating the value
-of information of a computational action is expensive, as well as
-cases of too many computational actions, such that although
-estimating the value of information of a single action is cheap,
-estimating the value of information of all actions at each step of the
-algorithm is expensive. The research, published in
-\cite{TolpinShimony.raticomp}, resulted in an improvement to a widely
-used class of VOI-based optimization algorithms that allows to decrease the
-computation time while only slightly affecting the reward. Theoretical
-analysis of the proposed approach to rational computation of the
-value of information was supported by empirical evaluation of several
-combinations of algorithms and search problems.
+The first topic addressed cases in which estimating the value of
+information is expensive and explores the trade-off between the
+accuracy of estimating VOI and computational resources used for the
+estimation. The research, published in \cite{TolpinShimony.raticomp},
+resulted in an improvement to a widely used class of VOI-based
+optimization algorithms that allows to decrease the computation time
+while only slightly affecting the reward. Theoretical analysis of the
+proposed approach to rational computation of the value of information
+was supported by empirical evaluation of several combinations of
+algorithms and search problems.
 
 The second topic considered several search problems and improved some
 well-known algorithms for solving the problems using the rational
@@ -58,10 +56,16 @@ the improvements, while approached the theoretical limits of each
 particular algorithm variant, were moderate. It is still not clearly
 understood \textbf{whether a dramatic breakthrough in performance is possible}
 if more elaborated models of utility and information are used, or the 
-limitations are inherent to the approach itself. Another interesting
-field of research is rational metareasoning where \textbf{action costs and
-state utilities are not commensurable}. Instead of mapping between
-different measures, as suggested in Chapter~\ref{ch:raticomp}, a
-more general combination function should probably be used for best
-results. Ways of choosing or deriving such a function still remain
-to be discovered.
+limitations are inherent to the approach itself. Rational
+metareasoning where \textbf{action costs and state utilities are not
+  commensurable} is also an interested field of research. Instead of
+mapping between different measures, as suggested in
+Chapter~\ref{ch:raticomp}, a more general combination function should
+probably be used for best results. Ways of choosing or deriving such a
+function still remain to be discovered. Yet another direction worth
+pursuing is \textbf{offline analysis} of the metareasoning
+problem. Up until now, rational metareasoning was employed almost
+exclusively in on-line decisions. A new approach, capable of combining
+preprocessed off-line information about the search algorithm and the
+problem domain with on-line decision making, may result in a more
+efficient approximate solution of the rational meta-reasoning problem.

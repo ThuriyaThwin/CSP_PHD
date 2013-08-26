@@ -144,16 +144,17 @@ achieve the minimal expected search time. However, the appropriate
 general metareasoning problem is extremely hard to define precisely, and even harder
 to solve optimally.
 
-Therefore, we focus here on just one decision type, to be
-made in the context of \lazyastar, when $n$ re-emerges from \OPEN~(Line 8).
-We have two options: {\bf (1)}  Evaluate the second heuristic $h_2(n)$ and add
-the node back to \OPEN~(Lines 8-10) like \lazyastar, or {\bf 2} bypass the
-computation of $h_2(n)$ and expand $n$ right way (Lines 11 -13), thereby
-saving time by not computing $h_2$, at the risk of additional expansions and evaluations of $h_1$.
-An method which attempts to
-optimally manage this trade-off, which we call \textit{Rational Lazy A*}, is presented next.
-In order to choose rationally we define a criterion based on value of
-information (VOI) of evaluating $h_2(n)$ in this context.
+Therefore, we focus here on just one decision type, to be made in the
+context of \lazyastar, when $n$ re-emerges from \OPEN~(Line 8).  We
+have two options: {\bf (1)} Evaluate the second heuristic $h_2(n)$ and
+add the node back to \OPEN~(Lines 8-10) like \lazyastar, or {\bf 2}
+bypass the computation of $h_2(n)$ and expand $n$ right way (Lines 11
+-13), thereby saving time by not computing $h_2$, at the risk of
+additional expansions and evaluations of $h_1$.  An method which
+attempts to optimally manage this trade-off, which we
+call \textit{Rational Lazy A*} (\rationallazyastar), is presented
+next.  In order to choose rationally we define a criterion based on
+value of information (VOI) of evaluating $h_2(n)$ in this context.
 
 The only addition of RLA* to LA* is the option to bypass $h_2$ computations (Lines 8-10).
 Suppose that we choose to compute $h_2$ --- this results in one of the
@@ -163,24 +164,35 @@ following outcomes:
 \item $n$ is re-inserted into \OPEN, and the goal is found without ever expanding $n$.
 \end{enumerate}
 
-Observe that computing $h_2$ can be beneficial only in outcome 2, where
-potential time savings are due to pruning a search subtree at the expense of
-the time $t_2(n)$. However, whether outcome 2 takes place after a given state
-is not known to the algorithm until the goal is found, and the algorithm must
-decide whether to evaluate $h_2$ according to what it \textit{believes to be}
-the probability of each of the outcomes. We derive a \textit{rational policy}
-for when to evaluate $h_2$, under the myopic assumption that the algorithm
-continues to behave like \lazyastar~afterwards (i.e., it will never again
-consider bypassing the computation of $h_2$).
+Observe that computing $h_2$ can be beneficial only in outcome 2,
+where potential time savings are due to pruning a search subtree at
+the expense of the time $t_2(n)$. However, whether outcome 2 takes
+place after a given state is not known to the algorithm until the goal
+is found, and the algorithm must decide whether to evaluate $h_2$
+according to what it \textit{believes to be} the probability of each
+of the outcomes. The time wasted by being sub-optimal in deciding
+whether to evaluate $h_2$ is called the {\em regret} of the decision.
+We derive a \textit{rational policy} for deciding when to evaluate
+$h_2$, under the following assumptions:
+\begin{itemize}
+\item The decision is made \textit{myopically}: the algorithm continues to
+  behave like \lazyastar~starting with the children of
+  $n$. If \rationallazyastar~is indeed better than $\lazyastar$, the
+  myopic assumption results in an upper bound on the regret.
+\item $h_2$ is \textit{consistent}: if evaluating $h_2$ is benefitial
+  on $n$, it is also benefitial on any successor of $n$. The empirical
+  evaluation (Section~\ref{sec:rla-empirical}) covers also the cases
+  where $h_2$ is not consistent. Despite violation of the assumption,
+  \rationallazyastar~still exhibits the best performance among
+  the compared algorithms.
+\end{itemize}
 
-The time wasted by being sub-optimal in deciding whether to evaluate
-$h_2$ is called the {\em regret} of the decision. If $h_2(n)$ is not
-helpful and we decide to compute it, the effort for evaluating
+If $h_2(n)$ is not helpful and we decide to compute it, the effort for evaluating
 $h_2(n)$ turns out to be wasted. On the other hand, if $h_2(n)$ is
 helpful but we decide to bypass it, we needlessly expand $n$. Due to
 the myopic assumption, \rationallazyastar~would evaluate both $h_1$
-and $h_2$ for all successors of $n$.
-
+and $h_2$ for all children of $n$. Due to consistency of $h_2$,
+the children of $n$ will never be expanded.
 \begin{table}[h!]
 \begin{center}
 \begin{tabular}{|l|c|c|}
@@ -334,7 +346,6 @@ clearly due to the fact that although the resulting heuristic improves
 as a function of lookahead depth (expanding and generating fewer nodes),
 the increasing overheads of computing the heuristic eventually outweights
 the computation time it saved by expanding fewer nodes.
-
 
 The next 3 columns show the results for \lazyastar~ with WMD as $h_1$,
 lookahead as $h_2$, for different lookahead depths

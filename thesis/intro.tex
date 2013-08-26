@@ -1,19 +1,22 @@
 Search for optimal or near optimal solutions of combinatorial problems
 is a fundamental field of research in classical and applied Artificial
-Intelligence. Search problems can be found in navigation, routing,
-planning, and numerous other combinatorial domains.  Despite the
+Intelligence. Search problems can be found in
+navigation~\cite{Kocsis.uct}, routing~\cite{Bellman.routing},
+planning~\cite{Domshlak.maxornot}, and numerous other combinatorial
+domains~\cite{Korf.partitioning,Braudis.pachi}.  Despite the
 tremendous volume of research on search in various settings, it is
 well known that for many search problems no algorithm dominates all
-others in all cases. Similarly, many algorithms have tunable
-parameters that need optimizing. The nature of the required solution
-(e.g., optimal, suboptimal etc.) also has significant impact on the
-desired search algorithm. Selecting the best algorithm and parameters
-for the task at hand is thus a non-trivial and important
-issue. Moreover, every problem instance induces a search graph, which
-can be extremely non-uniform and have areas with radically different
-behavior. This calls for algorithms which change their settings
-dynamically during the search, so as to better adapt to the task at
-hand.
+others in all cases~\cite{Wolpert.nofree}. Similarly, many algorithms
+have tunable parameters that need
+optimizing~\cite{Hutter.spo,TolpinShimony.raticomp}. The nature of the
+required solution (e.g., optimal, suboptimal etc.) also has
+significant impact on the desired search algorithm. Selecting the best
+algorithm and parameters for the task at hand is thus a non-trivial
+and important issue~\cite{Gomes.portfolio}. Moreover, every problem
+instance induces a search graph, which can be extremely non-uniform
+and have areas with radically different behavior. This calls for
+algorithms which change their settings dynamically during the search,
+so as to better adapt to the task at hand.
 
 The subject of this search are space and task diversity problems.
 Here, a two-level framework for search is proposed: the regular search
@@ -31,9 +34,10 @@ optimal in its use of resources, with self-adaptation capabilities to
 the task and domain at hand. However, this rational MR theory is
 extremely non-trivial to apply in actual search, due to the difficulty
 in obtaining the requisite quantitative model (utility values and
-probability distribution), and intractability of the model (typically, higher
-than that of the search problem itself!).  As a result, this theory
-has seen relatively little application to real search problems to date.
+probability distribution), and intractability of the
+model~\cite{Conitzer.complexity}---often higher than that of the
+search problem itself!.  As a result, this theory has seen relatively
+little application to real search problems to date.
 
 This research develops a methodology of applying the rational
 metareasoning theory to actual search problems.  On the one hand, some

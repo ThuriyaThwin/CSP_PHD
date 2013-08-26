@@ -1,87 +1,60 @@
-A common approach in Artificial intelligence (AI)
-solves computational problems by designing {\em agents}. Agents
-act in an environment, exploring and possibly modifying the
-environment in order to reach the {\em goal}: a solution of the
-problem. Agent behavior is determined by the {\em agent function} that
-maps the agent's knowledge about the environment to actions. AI
-classifies problems according to the number of agents, the type of
-interaction among the agents and between the agents and the
-environment, as well as by the {\em problem domain}---properties of
-the environment which help design efficient problem-specific agents.
+Search for optimal or near optimal solutions of combinatorial problems
+is a fundamental field of research in classical and applied Artificial
+Intelligence. Search problems can be found in navigation, routing,
+planning, and numerous other combinatorial domains.  Despite the
+tremendous volume of research on search in various settings, it is
+well known that for many search problems no algorithm dominates all
+others in all cases. Similarly, many algorithms have tunable
+parameters that need optimizing. The nature of the required solution
+(e.g., optimal, suboptimal etc.) also has significant impact on the
+desired search algorithm. Selecting the best algorithm and parameters
+for the task at hand is thus a non-trivial and important
+issue. Moreover, every problem instance induces a search graph, which
+can be extremely non-uniform and have areas with radically different
+behavior. This calls for algorithms which change their settings
+dynamically during the search, so as to better adapt to the task at
+hand.
 
-A simple yet large class of problems is {\em problem-solving
-  search}. In problem-solving search, a single agent acts in a neutral
-environment to reach the goal. Many problems, such as routing and
-path-finding problems, finite-domain constraint satisfaction, function
-optimization, fit within the problem-solving search abstraction. The
-problem-solving search agent's behavior is described by a {\em search
-  algorithm}. The same search algorithms can be used to solve
-different search problems, but a general search algorithm often
-requires adaptation to solve a particular problem efficiently.
+The subject of this search are space and task diversity problems.
+Here, a two-level framework for search is proposed: the regular search
+level and a meta reasoning level (MR). The MR level selects the next
+computational operator to be used in the current state of the
+search. The search level applies the selected operator. This dual
+process is repeated until the search task is completed, resulting in
+more flexible search algorithms that should perform better than
+existing inflexible algorithms.  \textit{Rational metareasoning}, a
+theory presented over two decades ago by Russell and
+Wefald~\cite{Russell.right} aims at optimal decision-making
+w.r.t. which computational operator should be applied at every point
+of the search. It achieves a search algorithm that is (theoretically)
+optimal in its use of resources, with self-adaptation capabilities to
+the task and domain at hand. However, this rational MR theory is
+extremely non-trivial to apply in actual search, due to the difficulty
+in obtaining the requisite quantitative model (utility values and
+probability distribution), and intractability of the model (typically, higher
+than that of the search problem itself!).  As a result, this theory
+has seen relatively little application to real search problems to date.
 
-Computer scientists approach problem-solving search in two ways. On
-the one hand, general search algorithms capable of solving large sets
-of search problems are designed, such as A* search for path-finding
-problems, or the Maintaing Arc Consistency (MAC) algorithm for
-finite-domain constraint satisfaction \cite{Russell.aima}. Theoretical
-performance bounds can often be proved for these algorithms, and the
-same algorithm can efficiently solve many problem instances with
-little or no adaptation. On the other hand, the algorithm performance
-can be significantly improved by tuning the algorithm to a particular
-problem domain. For example, specialized algorithms for task
-scheduling outperform general constraint satisfaction algorithms by
-orders of magnitude \cite{Wolf.scheduling}. However, such fine-tuned
-algorithms exhibit good performance only on small sets of search
-problems, and the effort invested in the algorithm design cannot be
-reused in other problem domains.
-
-Specialized versions of general search algorithms are often created by
-combination and selective application of {\em search
-  heuristics}---domain-specific modifications or extensions of search
-algorithms. A human expert decides which heuristics to use with the
-problem domain, and specifies how the search algorithm should apply
-the heuristics to solve a particular problem instance. A search
-algorithm that rationally select and applies heuristics would decrease
-the need for the costly human expertise.
-
-The principles of rational metareasoning \cite{Russell.right} can be
-used to design rational search agents. A rational agent deliberates
-before acting. The deliberation is composed of {\em computational
-  actions}. The purpose of the deliberation is to select the best {\em
-  base-level action}. A base-level action affects the state of the
-search algorithm looking for a solution of a problem instance, for
-example, by a exploring the search space, or pruning a part of the
-search that does not contain a solution. Computational actions are
-selected according to their net value of information, the difference
-between the expected benefit and the cost of the action, and the agent
-deliberates only if there is a computational action with positive
-value of information.
-
-Some rational search algorithms were designed and shown to compare to
-or even outperform manually tuned algorithms
-\cite{Russell.right}. However, wide adoption of rational metareasoning
-algorithms for problem solving search is hindered both by theoretical
-difficulties and by lack of problem domain specific case studies. This
-research aims at lifting some of the theoretical difficulties in
-application of the rational methodology. In particular, the problem of
-efficiency of estimating the value of information of computational
-actions is considered. In addition, this research proposes rational
-metareasoning extensions for several search algorithms, and
-theoretically and empirically analyses the gain in performance due to
-the extensions.
-
-The presented case studies explore rational
-metareasoning in the context of satisfaction problems
-(Chapter~\ref{ch:cs-csp}), as well as of approximating
+This research develops a methodology of applying the rational
+metareasoning theory to actual search problems.  On the one hand, some
+of the theoretical difficulties are lifted; in particular, the problem
+of efficiency of estimating the value of information of computational
+actions is considered (Chapter~\ref{ch:raticomp}). On the other hand,
+a series of case studies explores rational metareasoning extensions
+for state-of-the-art search algorithms, and demonstrates how a
+significant gain in the algorithm performance is achieved due to the
+application of rational metareasoning. The cases studies investigate
+various aspects of the methodology in the context of satisfaction
+problems (Chapter~\ref{ch:cs-csp}), as well as of approximating
 (Chapter~\ref{ch:cs-mcts}) and optimal (Chapter~\ref{ch:cs-rla})
 search in optimization problems. In addition to providing a
 metareasoning-based solution to a particular problem, the studies
-outline both techniques which are common to different problem types
-(identifying base-level and computational actions, 
-defining the utility and the value of information, etc.)
-and those which exploit features present only in some of the problems,
-such as estimating the VOI based on distribution-independent bounds
-(Chapter~\ref{ch:cs-mcts}). 
+outline both ubiquitous aspects of application of rational metareasoning
+(identifying base-level and computational actions, defining the
+utility and the value of information, etc.)  and techniques which
+exploit features present only in some problem classes, such as
+estimating the value of information based on distribution-independent
+bounds (Chapter~\ref{ch:cs-mcts}).
 
 A straightforward application of rational metareasoning often faces
 difficulties because some of the assumptions of the approach do not
@@ -94,9 +67,10 @@ example is the myopic assumption \cite{Russell.right} which suggests
 that an action can be chosen based on its anticipated immediate
 effect. In some search algorithms, the information is obtained through
 \emph{sampling}---recurring actions with probabilistic outcomes---and
-the myopic VOI of a single sample is often
+the value of information of a single sample is often
 zero. Chapter~\ref{ch:cs-mcts} addresses such a case in the context
-of Monte-Carlo tree search and suggests a semi-myopic VOI estimate.
+of Monte-Carlo tree search and suggests a value of information
+estimate based on recurring actions of the same kind.
 
 Advanced search algorithms are often parameterized and require tuning
 to achieve the best performance. Building an algorithm upon the
@@ -133,7 +107,7 @@ rational metareasoning approach in several search problems are
 presented and evaluated in Chapters~\ref{ch:cs-csp}--\ref{ch:cs-rla} (based
 on~\cite{TolpinShimony.csp,TolpinShimony.mcts,HayRussellTolpinShimony.selecting,TolpinEtAl.rla}).
 Chapter~\ref{ch:insights} summarizes the experience of applying 
-the rational metareasoning approach to different search problems, and
+the rational metareasoning approach to various search problems, and
 Chapter~\ref{ch:summary} concludes this thesis with a discussion of
 achieved results and further research directions.
 

@@ -29,12 +29,12 @@ Algorithm~\ref{alg:ramesrch-selecting-baselevel-action}.
   \label{alg:ramesrch-selecting-baselevel-action}
   \begin{algorithmic}[1]
     \Loop                                    \label{alg:ramesrch-sba-compute-voi-begin}
-      \ForAll {computational actions $S_i$}
-        \State Compute $VOI(S_i)$            \label{alg:ramesrch-sba-compute-voi}
+      \ForAll {computational actions $M_i$}
+        \State Compute $VOI(M_i)$            \label{alg:ramesrch-sba-compute-voi}
       \EndFor
-      \State $i_{\max} \leftarrow \arg \max\limits_i VOI(S_i)$
-      \If {$VOI\left(S_{i_{\max}}\right)>0$}
-         \State Perform $S_i$                \label{alg:ramesrch-sba-perform-s}
+      \State $i_{\max} \leftarrow \arg \max\limits_i VOI(M_i)$
+      \If {$VOI\left(M_{i_{\max}}\right)>0$}
+         \State Perform $M_i$                \label{alg:ramesrch-sba-perform-s}
       \Else
          \State {\bf break}
       \EndIf
@@ -50,7 +50,7 @@ In the algorithm, the VOI of all computational actions available in
 the current state is repeatedly computed
 (lines~\ref{alg:ramesrch-sba-compute-voi-begin}--\ref{alg:ramesrch-sba-compute-voi-end}),
 and if the maximum VOI is positive, a computational action
-$S_{i_{max}}$ with the maximum VOI is performed
+$M_{i_{max}}$ with the maximum VOI is performed
 (line~\ref{alg:ramesrch-sba-perform-s}). Otherwise, a base-level
 action with the maximum utility is selected
 (line~\ref{alg:ramesrch-sba-select-a}).

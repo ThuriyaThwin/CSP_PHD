@@ -387,45 +387,45 @@ $g(c)$ online from earlier VOI recomputations during
 the same run proved to be robust and easy to implement by gradually
 updating $\tau^2$ after each VOI recomputation.
 
-\section{ Computation Time}
+\section{Intensity of VOI estimations}
 \label{sec:raticomp-comptime}
 
-Influence of the rational VOI recomputation on the computation time
+Influence of the rational VOI recomputation on the intensity of VOI estimations
 can be estimated under the assumption that there are potentially many
 measurements---the cost of a single measurement $c$ is negligible
 compared to the budget $C$: $c \ll C$.
 
 When the computation cost $c_V$ increases, the VOI for a smaller
-number of measurements is recomputed at each step, and the computation
-time of the rational recomputing algorithm decreases. Let $\eta$ be
-the ratio between the expected computation time of the rational
-recomputing algorithm $T_r$ to the computation time of the original
-algorithm $T$: $\eta=\IE\left(\frac {T_r} T\right)$.
+number of measurements is recomputed at each step, and the number of
+VOI estimations of the rational recomputing algorithm decreases. Let $\eta$ be
+the \textit{intensity of VOI estimations}---the ratio between the expected
+number of VOI estimations of the rational 
+recomputing algorithm $N_r$ to the number of VOI estimations of the original
+algorithm $N$: $\eta=\IE\left(\frac {N_r} N\right)$.
 
 According to the assumption, $\tau$ changes slowly. Given $\tau$,
 $\varsigma_j^2$ of measurement $q_i$ in the measurement sequence $Q$
 (Equation~\ref{eq:measurement-sequence}) is proportional to
 the {\em VOI age}---the total cost of measurements performed since the
 last recomputation of the VOI of the measurement. Assuming that the
-time to compute the VOI of a single measurement is constant, the
-expected VOI age over all measurements and all steps of the algorithm
-is $\frac 1 \eta$: $\IE_{i,j}(age_j^i)=\frac 1 \eta$.
+measurement cost $c$ is constant, the expected VOI age over all measurements and all
+steps of the algorithm is $c/\eta$.
 
 VOI variance $\varsigma^2$ (Equation~\ref{eq:varsigma}) is proportional to
 the VOI age given $\tau$, i.e. inversely-proportional to $\eta$:
 \begin{equation}
-\varsigma^2=\Theta\left(\frac 1 \eta\right)
+\varsigma^2 \propto \frac 1 \eta
 \label{eq:varsigma-theta}
 \end{equation}
 As follows from substitution of (\ref{eq:varsigma-theta}) into
-(\ref{eq:rational-w}), the expected computation time of the rational
+(\ref{eq:rational-w}), the expected intensity of VOI estimations of the rational
 recomputing algorithm decreases with the logarithm of the computation
-cost:
+cost $c_V$:
 \begin{equation}
-\eta=\Theta\left(1-\alpha\log c_V\right)
+\eta \propto 1-\alpha\log c_V
 \label{eq:eta}
 \end{equation}
-where $\alpha$ is a constant.  Empirical evaluations
+where $\alpha$ is a constant.  Empirical estimations
 (Section~\ref{sec:raticomp-empirical}) confirm this estimate.
 
 \section{ Empirical Evaluation}
@@ -445,7 +445,9 @@ problem, can be prohibitive. According to blinkered scheme, the value
 of information of a measurement is estimated by considering batches of
 multiple measurements of a single item.
 
-For each of the optimization problems plots of the number of VOI recomputations and of the reward vs. the time cost of VOI estimation are presented. 
+For each of the optimization problems plots of the number of VOI
+recomputations and of the reward vs. the computation cost of VOI
+estimation are presented. 
 Since here we are concerned with the cost of VOI estimation as
 well as with the cost of measurements, the reward accounts for the
 total time cost of VOI estimation.  The results are averaged for multiple

@@ -17,7 +17,7 @@ define a meta-level decision problem over states of the search space
 with computational operators as meta-level actions, as a problem of
 sequential decision-making under uncertainty. This meta-level problem
 can be formalized as a (belief state) meta-level Markov decision
-process (MDP) defined by a tuple $(Q, S, \pi, R)$ as follows. Each
+process (MDP) defined by a tuple $(Q, M, \pi, R)$ as follows. Each
 state $Q_i \in Q$ of this MDP includes all current knowledge about the
 search graph. For example, in a single-agent search problem, a state
 is comprised of the known part of the search graph. including all
@@ -25,7 +25,7 @@ available heuristic estimates of nodes of this graph. For every
 meta-level state $Q_i$ there is a corresponding base-level action
 $A_i \in A$, such as transition to a neighbor node in the search graph, which
 appears to be the best action given $Q_i$. The
-meta-level actions $S_j \in S$ are all the potential computational
+meta-level actions $M_j \in M$ are all the potential computational
 operators that are applicable to a state $Q_i$, such as calculating an
 heuristic for a given node. The transition probabilities $\pi$ are
 defined by the distributions over new knowledge that may be revealed
@@ -53,21 +53,21 @@ outcomes of meta-level actions nor the true utility of $A_\alpha$ are
 known in advance, a meta-level action is selected according to its
 expected influence on the expected utility of $A_\alpha$.
 
-$S_j$ affects the meta-level state and the effect of
+$M_j$ affects the meta-level state and the effect of
 a possible further meta-level action sequence $\mathbf{T}$. Thus, the expected utility of
-$S_j$ is:
+$M_j$ is:
 \begin{equation}
 \label{eq:bg-limited-su}
-\IE(U(S_j))=\sum_{\mathbf{T}}\Pr(\mathbf{T})\IE(U(A_{\alpha}^\mathbf{T},S_j\cdot\mathbf{T}))
+\IE(U(M_j))=\sum_{\mathbf{T}}\Pr(\mathbf{T})\IE(U(A_{\alpha}^\mathbf{T},M_j\cdot\mathbf{T}))
 \end{equation}
-where $S_j\cdot\mathbf{T}$ denotes the meta-level action $S_j$
+where $M_j\cdot\mathbf{T}$ denotes the meta-level action $M_j$
 followed by possible further meta-level action sequence $\mathbf{T}$.
-The {\em value of information} of a meta-level action $S_j$ is
-the expected difference between the expected utility of $S_j$ and the
+The {\em value of information} of a meta-level action $M_j$ is
+the expected difference between the expected utility of $M_j$ and the
 expected utility of the current $A_\alpha$.
 \begin{equation}
 \label{eq:bg-limited-nv}
-V(S_j)=\IE(\IE(U(S_j))-\IE(U(A_\alpha)))
+V(M_j)=\IE(\IE(U(M_j))-\IE(U(A_\alpha)))
 \end{equation}
 
 While a perfectly rational agent would always choose the most valuable
@@ -80,12 +80,12 @@ decisions based on an approximation of the utility.
 The general dependence on the overall state complicates the analysis. Under
 certain assumptions, it is possible to capture the dependence of utility on time in a
 separate notion of {\em time cost} $C$. Then, the utility of an action $A_i$ taken
- after a meta-level action $S_j$ is the utility of $A_i$ taken now less the
-cost of time for performing $S_j$:
+ after a meta-level action $M_j$ is the utility of $A_i$ taken now less the
+cost of time for performing $M_j$:
 
 \begin{equation}
 \label{eq:bg-limited-iu}
-U(A_i, S_j) = U(A_i) - C(A_i, S_j)
+U(A_i, M_j) = U(A_i) - C(A_i, M_j)
 \end{equation}
 
 It is customary to call the current utility of a future base-level
@@ -96,19 +96,19 @@ estimate according to the time pressure represented by $C$.
 
 In many cases, the time cost of an internal action is independent of
 the subsequently taken base-level action. When $C$ depends only on
-$S_j$, (\ref{eq:bg-limited-nv}) can be rewritten with the cost and the
+$M_j$, (\ref{eq:bg-limited-nv}) can be rewritten with the cost and the
 intrinsic value of information of a computation as separate terms.
 
 \begin{eqnarray}
 \label{eq:bg-limited-v=bc}
-V(S_j)&=&\IE\left(\IE(U(A_\alpha^j, S_J))-\IE(U(A_\alpha))\right)\nonumber\\
-     &=&\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)-C(S_j)\\
-     &=& \Lambda(S_j)-C(S_j)
+V(M_j)&=&\IE\left(\IE(U(A_\alpha^j, M_J))-\IE(U(A_\alpha))\right)\nonumber\\
+     &=&\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)-C(M_j)\\
+     &=& \Lambda(M_j)-C(M_j)
 \end{eqnarray}
 where
 \begin{equation}
 \label{eq:bg-limited-benefit}
-\Lambda(S_j)=\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)
+\Lambda(M_j)=\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)
 \end{equation}
 denotes the intrinsic value of information, that is, the expected
 difference between the intrinsic expected utilities of the new
@@ -138,6 +138,7 @@ the cost of the action, the intrinsic value of information is always
 non-negative.
 
 \subsection{Simplifying Assumptions}
+\label{sec:ratimeta-assumptions}
 
 Theoretically, as suggested by Russell and Wefald, optimally solving
 the meta-level decision problem reveals an optimal policy to adopt at

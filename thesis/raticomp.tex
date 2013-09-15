@@ -445,24 +445,10 @@ problem, can be prohibitive. According to blinkered scheme, the value
 of information of a measurement is estimated by considering batches of
 multiple measurements of a single item.
 
-For each of the optimization problems, four plots are presented:
-\begin{itemize}
-\item the number of VOI recomputations,
-\item the reward (Equation~\ref{eq:problem-reward}),
-\item the intrinsic utility,
-\item and the total cost of measurements.
-\end{itemize}
-The cost of VOI recomputation is not
-subtracted from the final reward, since the chosen greedy algorithm
-terminates the recomputation based on the difference between the
-intrinsic VOI and the  cost of a single VOI computation, rather than of
-all VOI computations made since the last measurement; consequently,
-the time costs of VOI recomputations and of measurements are on
-different scales. An improved termination condition would allow a
-more accurate analysis of the reward; however, the algorithm behavior would
-stay the same, with the appropriate scaling of the computation cost.
-
-The results are averaged for multiple
+For each of the optimization problems plots of the number of VOI recomputations and of the reward vs. the time cost of VOI estimation are presented. 
+Since here we are concerned with the cost of VOI estimation as
+well as with the cost of measurements, the reward accounts for the
+total time cost of VOI estimation.  The results are averaged for multiple
 (100) runs of each experiment, such that the standard deviation of the
 reward is $\approx 5\%$ of the mean reward. In the plots, 
 \begin{itemize}
@@ -475,7 +461,7 @@ same number of measurements as the rational recomputing algorithm
 for the given computation cost $c_V$.
 \end{itemize}
 Since, as can be derived from
-(\ref{eq:rational-w}), the computation time $T_r$ of the rational
+(\ref{eq:rational-w}), the number of VOI estimations $N_r$ of the rational
 recomputing algorithm decreases with the logarithm of the computation
 cost $c_V$ (Equation~\ref{eq:eta}), the computation cost axis is
 scaled logarithmically.
@@ -484,9 +470,9 @@ scaled logarithmically.
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.63]{ackley-myopic.pdf}
-\caption{The Ackley function, myopic scheme.}
-\label{fig:ackley-myopic}
+\includegraphics[scale=0.63]{raticomp-ackley.pdf}
+\caption{The Ackley function.}
+\label{fig:ackley}
 \end{figure}
 The Ackley function \cite{Ackley.function} is a popular optimization
 benchmark. The two-argument form of the Ackley function is used in the
@@ -500,24 +486,16 @@ $u(z)=\tanh(2z)$, the measurements are normally distributed around the
 true values with variance $\sigma_m^2=0.5$, and the measurement cost is
 $0.01$. There are uniform dependencies with $\sigma_w^2=0.5$ in both
 directions of the coordinate grid with a step of $0.2$ along each axis.
-\begin{figure}[t]
-\centering
-\includegraphics[scale=0.63]{ackley-blinkered.pdf}
-\caption{The Ackley function, blinkered scheme.}
-\label{fig:ackley-blinkered}
-\end{figure}
-The results are presented in Figure~\ref{fig:ackley-myopic} for the
-myopic scheme, and in Figure~\ref{fig:ackley-blinkered} for the
-blinkered scheme \cite{TolpinShimony.blinkered}.
+The results are presented in Figure~\ref{fig:ackley}.
 
 \subsection{SVM Parameter Search}
 \label{sec:raticomp-svm}
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.63]{svmguide2-myopic.pdf}
-\caption{SVM parameter search, myopic scheme.}
-\label{fig:svmguide2-myopic}
+\includegraphics[scale=0.63]{raticomp-svmguide2.pdf}
+\caption{SVM parameter search.}
+\label{fig:svmguide2}
 \end{figure}
 An SVM (Support Vector Machine) classifier based on the radial basis
 function has two parameters: $C$ and $\gamma$.  A combination of $C$
@@ -531,15 +509,7 @@ The utility function is $u(z)=\tanh(4(z-0.5))$, the $\log C$ and $\log
 are uniform dependencies along both axes with $\sigma_w^2=0.4$. The
 measurements are normally distributed with variance $\sigma_m^2=0.25$
 around the true values, and the measurement cost is $c_m=0.01$.
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.63]{svmguide2-blinkered.pdf}
-\caption{SVM parameter search, blinkered scheme.}
-\label{fig:svmguide2-blinkered}
-\end{figure}
-The results are presented in Figure~\ref{fig:svmguide2-myopic} for the
-myopic scheme, and in Figure~\ref{fig:svmguide2-blinkered} for the
-blinkered scheme \cite{TolpinShimony.blinkered}.
+The results are presented in Figure~\ref{fig:svmguide2}.
 
 \subsection{Discussion of Results}
 

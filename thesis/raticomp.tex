@@ -96,7 +96,7 @@ be provided, as illustrated by the following examples:
 \begin{quote}
 {\bf Water reservoir monitoring:} A water reservoir is monitored for
 contamination sources. Water probes can be taken in a number of
-predefined spots, and the goal is to predict the location of a
+predefined spots, and the goal is to find the location of a
 contamination source based on analysis of water quality. The
 contamination must be identified quickly, before it distributes too
 far or affects the consumers. In this problem, the {\em features} are
@@ -122,8 +122,8 @@ the computation time with a factor reflecting the time constraints.
 The above selection problem is intractable, and is therefore commonly solved
 approximately using a greedy heuristic algorithm. The greedy algorithm
 selects a measurement $q_{j_{\max}}$ with the greatest net VOI
-$V_{j_{\max}}$. The {\it net VOI} (or just `VOI') is the difference between the intrinsic VOI
-and the measurement cost.
+$V_{j_{\max}}$. The {\it net VOI} (or just `VOI' for short) is the
+difference between the intrinsic VOI and the measurement cost.
 \begin{equation}
 \label{eq:greedy-net-value}
 V_j = \Lambda_j -c_{k_j}

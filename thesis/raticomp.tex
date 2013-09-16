@@ -116,7 +116,7 @@ good one can be chosen. A good setting must be found under certain time
 constraints. Here, the only {\em feature} is the classification
 accuracy $\alpha$, the {\em utility function} is the identity function
 $u(\alpha)=\alpha$, and the {\em measurement cost} is proportional to
-the computation time with a factor relfecting the time constraints.
+the computation time with a factor reflecting the time constraints.
 \end{quote}
 
 The above selection problem is intractable, and is therefore commonly solved
@@ -517,10 +517,10 @@ The results are presented in Figure~\ref{fig:svmguide2}.
 \subsection{Discussion of Results}
 
 In all experiments, the reward, including the computation cost, of the
-rational recomputing algorithm was comparable to or higher than the
+rational recomputing algorithm is comparable to or higher than the
 reward of the original algorithm. When the computation cost is
 relatively small (left-hand side of the plots), the rewards of the
-rational recomputing algorithm and of the original algoritms are
+rational recomputing algorithm and of the original algorithms are
 essentially the same, despite that much fewer VOI estimations are
 computed. This suggests that the \textit{benefit of estimating the VOI}
 of a measurement is in many cases low, and rational elective VOI
@@ -534,15 +534,24 @@ cost.
 
 The advantage of the rational recomputing algorithm becomes obvious
 when the cost of estimating the VOI of all measurements achieves or
-exceeds the cost of performing a measurements (the right-hand side of
+exceeds the cost of performing a measurement (the right-hand side of
 the plots). The reward of the original algorithm decreases rapidly,
-falling below the reward of the Monte-carlo algorithm. Rational
+falling below the reward of the Monte-Carlo algorithm. Rational
 recomputing algorithm still performs well: the reward degrades
 gradually with the increase of the computation cost, and approaches
-asymptotically from above the reward of uninformed sampling (the
+asymptotically from above to the reward of random sampling (the
 Monte-Carlo algorithm). 
 
-Overall, the rational recomputing algorithm 
+Overall, the rational recomputing algorithm is robust, despite the
+simplicity of the model. Both the case of a negligibly low computation
+cost of VOI estimation, where both the original an the rational
+recomputing algorithm exhibit good performance, and the case when the
+cost of recomputation of VOI for all measurements is comparable to the
+cost of performing a measurement are handled well: the reward is
+almost as high as of the original algorithm in the former case, and is
+higher than of Monte-Carlo algorithm performing the same number of
+measurements in the latter case.
+
 \section{Conclusion and Further Research}
 \label{sec:raticomp-conclusion}
 
@@ -555,7 +564,7 @@ the VOI is likely to affect the choice of the next
 measurement.
 
 The proposed scheme of rational VOI computation can be further
-improved.
+improved. 
 \begin{itemize}
 \item  the normal distribution is chosen rather arbitrarily to model
   uncertainty about the VOI. Often, the VOI is non-increasing

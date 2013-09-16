@@ -17,14 +17,20 @@ define a meta-level decision problem over states of the belief space
 with computational operators as meta-level actions, as a problem of
 sequential decision-making under uncertainty. This meta-level problem
 can be formalized as a (belief state) meta-level Markov decision
-process (MDP) defined by a tuple $(Q, M, \pi, R)$ as follows. Each
-state $Q_i \in Q$ of this MDP includes all current knowledge about the
-search graph. For example, in a single-agent search problem, a state
-is comprised of the known part of the search graph. including all
-available heuristic estimates of nodes of this graph. For every
-meta-level state $Q_i$ there is a corresponding base-level action
-$A_i \in A$, such as transition to a neighbor node in the search graph, which
-appears to be the best action given $Q_i$. The
+process (MDP) defined by a tuple $(Q, M, \pi, R)$ as follows:
+\begin{itemize}
+\item $Q$ is the state space. Each state $Q_i \in Q$ includes all
+current knowledge about the search graph. For example, in a
+single-agent search problem, a state is comprised of the known part of
+the search graph. including all available heuristic estimates of nodes
+of this graph. 
+
+For every meta-level state $Q_i$ there is a
+corresponding base-level action $A_i \in A$, such as transition to a
+neighbor node in the search graph, which \textit{appears to be the best action}
+given $Q_i$.
+
+\item $M$ is the set of state transitions. The transitions---the
 meta-level actions $M_j \in M$ are all the potential computational
 operators that are applicable to a state $Q_i$, such as calculating an
 heuristic for a given node. The transition probabilities $\pi$ are
@@ -35,12 +41,15 @@ expect a heuristic to yield, we can use the distribution to describe
 our expectation of the potential (belief) state of the search after
 (and if) the heuristic is computed at a search node.
 
-The rewards $R$ are defined by the costs of the computational
-operators, in terms of time, memory, etc. and by the utilities of the
-base-level actions corresponding to the meta-level states.
-At each step of the search algorithm the algorithm selects a
-`best' base-level action $A_\alpha$ by solving the meta-level MDP.
-The goal of meta-level actions is to refine the choice of $A_\alpha$.
+\item $R$ are transition rewards. The rewards $R$ are determined by the 
+costs of the computational operators, in terms of time, memory,
+etc., and by the utilities of the base-level actions corresponding to
+the meta-level states.  
+\end{itemize}
+The search algorithm selects at each step, by solving
+the meta-level MDP, a `best' base-level action $A_\alpha$.
+The goal of meta-level actions is thus to refine the choice of
+$A_\alpha$.
 
 \subsection{Value of Information}
 \label{sec:ratimeta-voi}
@@ -89,7 +98,8 @@ U(A_i, M_j) = U(A_i) - C(A_i, M_j)
 \end{equation}
 
 It is customary to call the current utility of a future base-level
-action its {\em intrinsic utility}. The separation into intrinsic
+action, without subtracting the time cost of the computational action,
+its {\em intrinsic utility}. The separation into intrinsic
 utility and time cost allows to estimate the utility of a base-level
 action in a time-independent manner, and then refine the net utility
 estimate according to the time pressure represented by $C$.
@@ -172,10 +182,10 @@ assumptions hold in general, and in many cases their applicability is
 limited. For example, with many computational operators the subtree
 independence assumption is inappropriate --- a computation updates
 the belief state, and along the new belief state utilities of several
-base-level actions are updated. The myopic assumption is limited to
+base-level actions are updated. The myopic assumption is appropriate to
 the cases when the value of information of a sequence of meta-level
 actions is approximately submodular \cite{Guestrin.submodular}. When 
-the intrinsic value of information is concave in the amount of
-computation, the net value of information can be negative for any
+the intrinsic value of information is strongly concave in the amount of
+computation, the net value of information can be negative for every
 single action, and the myopic assumption results in premature
 termination of meta-level computation. 

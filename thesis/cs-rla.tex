@@ -1,6 +1,6 @@
 
 This study examines improvements to the \astar~algorithm when we have
-several available admissible heuristics. Clearly, we can evaluate all
+several available admissible heuristics $h_1$, $h_2$, ... . Clearly, we can evaluate all
 these heuristics, and use their {\em maximum} as an admissible
 heuristic, a scheme we call \astarmax.  The problem with naive
 maximization is that all the heuristics are computed for all the
@@ -37,7 +37,7 @@ the goal) then the set of nodes expanded by \astar~is both necessary
 and sufficient to find the optimal path to the goal~\cite{ASTR85}.
 
 Throughout this study we assume for clarity that we have two available
-admissible heuristics, $h_1$ and $h_2$.Extension to multiple heuristics is straightforward.
+admissible heuristics, $h_1$ and $h_2$.
 Unless stated otherwise, we assume that $h_1$ is faster to compute than $h_2$
 but that $h_2$ is {\em weakly more informed}, i.e., $h_1(n) \leq h_2(n)$ for
 the majority of the nodes $n$, although counter cases where $h_1(n) > h_2(n)$
@@ -112,8 +112,8 @@ When $n$ is first removed from \OPEN~(Lines 7 -- 10), we compute $h_2(n)$ and
 reinsert it into \OPEN, this time with $f_{max}(n)$.
 
 It is easy to see that \lazyastar~is as informative as \astarmax, in
-the sense that both \astarmax~and \lazyastar expand a node $n$ only
-if $f_{max}(n)$ is the best $f$-value in \OPEN.  Therefore,
+the sense that both \astarmax~and \lazyastar~expand a node $n$ only
+if $f_{max}(n)$ is the best $f$-value in \textsc{Open}.  Therefore,
 \lazyastar~and \astarmax~generate and expand and the same set of
 nodes, up to differences caused by tie-breaking.
 
@@ -121,7 +121,7 @@ In its general form \astar~generates many nodes that it does not expand. These
 nodes, called {\em surplus} nodes~\cite{Felner2012}, are in \OPEN~when we
 expand the goal node with $f=\optcost$. All nodes in \OPEN~with $f>\optcost$ are
 surely surplus but some nodes with $f=\optcost$ may also be surplus. The number
-of surplus nodes in OPEN can grow exponentially in the size of the domain, resulting in
+of surplus nodes in \OPEN can grow exponentially in the size of the domain, resulting in
 significant costs.
 
 \lazyastar~avoids $h_2$ computations for many of these surplus nodes. Consider
@@ -150,7 +150,7 @@ have two options: {\bf (1)} Evaluate the second heuristic $h_2(n)$ and
 add the node back to \OPEN~(Lines 8-10) like \lazyastar, or {\bf 2}
 bypass the computation of $h_2(n)$ and expand $n$ right way (Lines 11
 -13), thereby saving time by not computing $h_2$, at the risk of
-additional expansions and evaluations of $h_1$.  An method which
+additional expansions and evaluations of $h_1$.  A method which
 attempts to optimally manage this trade-off, which we
 call \textit{Rational Lazy A*} (\rationallazyastar), is presented
 next.  In order to choose rationally we define a criterion based on
@@ -240,7 +240,7 @@ these cases, RLA* cannot be expected to do better than \lazyastar.
 For example, in the 15-puzzle and its variants, the effective
 branching factor is $\approx 2$. Therefore, if $h_2$ is expected to be
 helpful for more than half of the nodes $n$ on which
-\lazyastar~evaluates $h_2(n)$, then one should simple use \lazyastar.
+\lazyastar~evaluates $h_2(n)$, then one should simply use \lazyastar.
 
 For $p_h b(n) < 1$,  the decision of whether to evaluate $h_2$
 depends on the values of $t_d$ and $t_e$:
@@ -269,7 +269,7 @@ We now turn to implementation-specific estimation of the respective runtimes.
 \OPEN~in \astar~is frequently implemented as a priority queue, and thus we have, approximately,
 $t_o=\tau \log N_o$ for some $\tau$, when the size of \OPEN~is $N_o$.
 Evaluating $h_1$ is cheap in many domains, as is the
-case with MD in discrete domains, $t_o$ is the most significant part of
+case with the Manhattan Distance heuristic in discrete domains, $t_o$ is the most significant part of
 $t_{e}$. In such cases,
 rule (\ref{eqn:rla-criterion-expanded}) can be approximated as (\ref{eqn:rla-criterion-gamma}):
 \begin{align}
@@ -288,7 +288,7 @@ not involving $t_1$ or $t_2$ can be dropped from
   &\mbox{\bf evaluate }h_2\mbox{ \bf if } \frac{t_2}{t_1} < \frac {p_hb(n)} {1-p_hb(n)}
 \label{eqn:rla-criterion-beta}
 \end{align}
-The right side of (\ref{eqn:rla-criterion-beta}) grows with $b(n)$, and here it is beneficial to evaluate $h_2$
+The right-hand side of (\ref{eqn:rla-criterion-beta}) grows with $b(n)$, and here it is beneficial to evaluate $h_2$
 only for nodes with a sufficiently large branching factor. On rearranging equation \ref{eqn:rla-criterion-beta},
 we get the criterion which we actually use for planning domains,
 which is to evaluate $h_2$ only when:
@@ -304,8 +304,8 @@ b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
 
 In the uniform-cost 15 puzzle, the open list contains only a few
 different f-costs, and is frequently implemented using buckets,
-violating the assumption of logarithmic time for which RLA* is
-beneficial. In order to better evaluate the latter, we therefore use
+violating the assumption of logarithmic time for which \rationallazyastar is
+beneficial. In order to better evaluate \rationallazyastar, we therefore use
 the weighted 15-puzzle variant, where the cost of moving each tile is
 equal to the number on the tile.  For consistency of comparison, we
 used a subset of 36 problem instances out of the set of 100 15-puzzle
@@ -341,7 +341,7 @@ to the time of \astar~with WMD (with no lookahead), which generated
 \ref{tbl:rla-rational-lazy-a-star} shows the results for \astar~with the
 lookahead heuristic for different lookahead depths. The best time is
 achieved for lookahead 6, (0.601 compared to \astar~with WMD). The fact
-that the time is not continuing to decrease with deeper lookaheads is
+that the time does not continue to decrease with deeper lookaheads is
 clearly due to the fact that although the resulting heuristic improves
 as a function of lookahead depth (expanding and generating fewer nodes),
 the increasing overheads of computing the heuristic eventually outweights
@@ -576,7 +576,7 @@ informed. However, due to a rational trade-off, this
 allows for an additional speedup, and \rationallazyastar~achieves the
 best overall performance in our domains.
 
-In particular, \rationallazyastar~is simpler to implement than its direct
+In addition, \rationallazyastar~is simpler to implement than its direct
 competitor, selective max, but its decision can be more informed.  When
 \rationallazyastar~has to decide whether to compute $h_2$ for some node
 $n$, it already {\em knows} that $f_1(n) \leq \optcost$.  By contrast,
@@ -588,5 +588,5 @@ not know whether $h_1$ will be informative enough to prune $n$.
 There are numerous other ways to use rational metareasoning to
 improve~\astar, starting from generalizing \rationallazyastar~to
 handle more than two heuristics, to using the meta-level to control
-decisions in other variants of \astar. All these potential extensions
+decisions in other variants of \astar, such as \idastar. All these potential extensions
 provide fruitful ground for further research.

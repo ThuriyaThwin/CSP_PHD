@@ -58,7 +58,8 @@ of the variables---the scope of the constraint--- and specifies the
 allowable combinations of values for that subset. An assignment that
 does not violate any constraints is called {\em consistent} (or {\em a solution}).
 There are numerous variants of CSP settings and algorithmic paradigms. This
-study focuses on binary CSPs over discrete-values variables,
+study focuses on binary CSPs\footnote{CSPs where each constraint
+involves at most two variables.} over discrete-values variables,
 and backtracking search algorithms \cite{Tsang.csp}.
 
 A basic method used in numerous CSP search algorithms is
@@ -98,15 +99,8 @@ from the constraint graph; \cite{HorschHavens.pac} propose the
 iterative belief propagation for a better accuracy of relative
 solution count estimates; \cite{Kask.solcount} adapt Iterative
 Join-Graph Propagation to solution counting, allowing a tradeoff
-between accuracy and complexity.
-
-These methods vary by computation time and precision, although all are
-rather computationally heavy. As a means to improve the performance of
-search algorithms based on computationally expensive heuristics,
-runtime selection of heuristics has lately become of interest, e.g.
-deploying heuristics for planning \cite{Domshlak.maxornot}. The
-approach taken is usually that of {\em learning} which heuristics to
-deploy based on features of the search state.
+between accuracy and complexity. These methods vary by computation
+time and precision, although all are rather computationally heavy.
 
 \section{Rational Value-Ordering}
 \label{sec:csp-generic}
@@ -329,7 +323,6 @@ estimates of value assignments, is returned
     \State $n_i \gets$ {\sc EstimateSolutionCount}($csp'$) \label{alg:csp-estimate-solution-count}
     \State {\bf if} {$n_i>n_\mathrm{max}$} {\bf then} $n_\mathrm{max} \gets n_i$
   \EndWhile \label{alg:csp-solcount-endwhile}
-  \State {\bf end while}
   \State $D_{ord} \gets$ sort $D_k$ by non-increasing $n_i$ \label{alg:csp-solcount-sort}
   \State {\bf return} $D_{ord}$ \label{alg:csp-solcount-return}
 \EndProcedure
@@ -385,14 +378,19 @@ CSP benchmarks from CSP Solver Competition~2005
 \cite{Boussemart.benchmarks} were used. 14 out of 26 benchmarks
 solved by at least one of the solvers submitted for the competition
 could be solved with 30 minutes timeout by the solver used for this
-empirical study for all values of $\gamma$: $\gamma=0$ and the
-exponential range $\gamma \in \{10^{-7}, 10^{-6}, ..., 1\}$, as well
-as with the minimum-conflicts heuristic and the pAC heuristic.
+study with each of the following value-ordering heuristics:
+\begin{description}
+\item[VSC] --- VOI-driven solution count estimate for all values of
+$\gamma$: $\gamma=0$ and the exponential range $\gamma \in \{10^{-7}, 10^{-6}, ..., 1\}$.
+\item[SC] --- exhaustive solution count estimate.
+\item[MC] --- minimum-conflicts.
+\item[pAC] --- probabilistic arc consistency~\cite{HorschHavens.pac}.
+\end{description}
 
 Figure~\ref{fig:benchmarks}.a shows the mean search time of VOI-driven
 solution count estimate deployment $T_{VSC}$ normalized by the search
 time of exhaustive deployment $T_{SC}$ ($\gamma=0$), for the minimum
-conflicts heuristic $T_{MC}$, and for the pAC heuristic $T_{PAC}$.
+conflicts heuristic $T_{MC}$, and for the pAC heuristic $T_{pAC}$.
 The shortest search time on average is achieved by VSC for $\gamma \in
 [10^{-4},3\cdot10^{-3}]$ (shaded in the figure) and is much shorter
 than for SC ($\mean \left(\frac {T_{VSC}(10^{-3})}

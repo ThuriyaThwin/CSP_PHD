@@ -1,6 +1,8 @@
+\subsection{Problem-Solving Search}
+
 {\em Problem-solving search} is characterized by a single agent acting
 in a neutral environment\cite{Russell.aima}. The ultimate goal of the
-agent is to select a single member from a given set of feasible
+agent is to select a single member from an implicit set of feasible
 solutions. The value of an {\em evaluation function}, possibly
 randomized, can be efficiently computed for any member; however,
 evaluating all of the members is infeasible because the set is too
@@ -29,7 +31,7 @@ approximate the solution by selecting a member which is `good enough'
 while not necessarily the best one, achieving a compromise between the
 running time and the solution quality.
 
-\subsection{Problem Examples}
+\subsubsection{Problem Examples}
 
 \begin{description}
 \item[Sliding tile puzzle:] an $N\times N$ board with $N^2-1$
@@ -71,12 +73,12 @@ running time and the solution quality.
  a better lever.
 \end{description}
 
-\subsection{Search Algorithms}
+\subsubsection{Search Algorithms}
 
-Search problems are often solved by enumerating members of the set of
+Search problems are often solved by traversing the set of
 feasible solutions until a member satisfying the goal test (for
 satisfaction problems), or maximizing the evaluation function (for
-optimization problems) is found. The two common enumeration strategies
+optimization problems) is found. The two common strategies
 are {\em complete-state} and {\em partial-state} traversal. A search
 algorithm passes between states by performing {\em search actions}
 starting from some {\em initial state}. The algorithm stops when a
@@ -191,19 +193,20 @@ node $n$.
 Provided that $h(n)$ is {\em admissible} and {\em consistent}, A*
 is optimal; even more, A* is {\em optimally efficient}: no
 other optimal algorithm is guaranteed to expand fewer nodes than A*
-\cite{Russell.aima}. Variations of A* with lower space requirements
+\cite{Russell.aima}, given only the information provided by $h$.
+Variations of A* with lower space requirements
 were developed. However, many search problems are NP-hard, which
 means that finding an optimal solution may take exponential time;
-approximating algorithms must be used to find a solution in polynomial
+approximation algorithms may be used to find a solution in polynomial
 time.
 
-RTA* (Real-Time A*) \cite{Korf.rta} is an approximating version of A*
-with limited lookup horizon. RTA* explores the search graph upto a
+RTA* (Real-Time A*) \cite{Korf.rta} is an approximation version of A*
+with limited lookahead horizon. RTA* explores the search graph to a
 given depth, and then moves to a node with the lowest estimated
 distance to the goal, updating $g(n)$ for all nodes to the distances
 from the current node. RTA* is not optimal unless the goal is within
-the lookup horizon, but the solution quality increases with  the
-lookup depth. RTA* is complete in a space with positive edge hosts and
+the lookahead horizon, but the solution quality increases with  the
+lookahead depth. RTA* is complete in a space with positive edge hosts and
 finite heuristic values, in which the goal is reachable from any state.
 Variants of RTA* have been developed \cite{Russell.right},
 \cite{Bulitko.dynamiccontrol}  with improved control over the
@@ -273,31 +276,18 @@ variants of the backtracking search also involve {\em intelligent
 variables are not considered after a failure if it can be proved
 that that they would not fix the inconsistency.
 
-
 \subsubsection{Local Search}
 
-Local search is a family of complete-state algorithms, as opposite to
-best-first search and backtracking search. The search operates using a
-single {\em current state} and recursively explores neighbor states
-until a maximum of the evaluation function is found. Local search can
-be used to solve both satisfaction and optimization problems. To solve
-satisfaction problems, a heuristic function estimating proximity of a
-state to the goal is used instead of the evaluation function. The
-eight queens puzzle and the multi-armed bandit are examples of
-problems that can be solved using local search.
+Local search is a family of complete-state algorithms. The search
+operates using a single {\em current state} and recursively explores
+neighbor states until a maximum of the evaluation function is
+found. Local search can be used to solve both satisfaction and
+optimization problems. To solve satisfaction problems, a heuristic
+function estimating proximity of a state to the goal is used instead
+of the evaluation function. The N-queens puzzle and the multi-armed
+bandit are examples of problems that can be solved using local search.
 
-The simplest variant of local search, {\em hill-climbing}
-\cite{Russell.aima}, moves only to higher-valued neighbors of the
-current state and is prone to getting stuck on local maxima. Therefore,
-variants that can escape a local maximum and eventually find a global
-maximum if enough time is given have been developed, such as {\em
-stochastic hill-climbing}, {\em random-restart hill climbing}, {\em
-simulated annealing} \cite{Russell.aima}, and {\em genetic algorithms}
-\cite{Eiben.evolcomp}. These variants heuristically alternate between
-searching for a local maximum and exploring different areas of the
-search space.
-
-\subsubsection{Online Search}
+\\subsubsection{Online Search}
 
 When the search space is dynamic or only partially known, an agent
 that builds a complete solution before committing to an action is
@@ -327,3 +317,7 @@ example of learning in online search is the LRTA* algorithm
 \cite{Korf.rta}, an extension of RTA*. LRTA* continuously
 updates cost estimates of visited states and used the current cost
 estimates to choose the ``apparently best'' move.
+
+\subsection{Adversarial Search}
+
+TODO

@@ -5,7 +5,7 @@ as \cite{Eyerich.ctp}. Although these methods are shown to be
 successful empirically, most authors appear to be using UCT ``because
 it has been shown to be successful in the past'', and ``because it
 does a good job of trading off exploration and exploitation''. While
-the latter statement may be correct for the Multi-armed Bandit problem
+the latter statement may be correct for the Multi-armed Bandit problem (MAB)
 and for the UCB1 algorithm \cite{Auer.ucb}, we argue that a simple
 reconsideration from basic principles can result in schemes that
 outperform UCT.
@@ -62,11 +62,12 @@ where $\Delta_j=\mu_*-\mu_j$.
 Strategies that minimize the simple regret are called pure exploration
 strategies \cite{Bubeck.pure}. 
 
-A different scheme for control of sampling can use the principles of
-rational metareasoning (Section~\ref{sec:ratimeta}).  In search, one
-maintains a current best action $\alpha$, and finds the expected gain
-from finding another action $\beta $ to be better than the current
-best.
+A different scheme for control of sampling can use the principles of 
+rational metareasoning (Section~\ref{sec:ratimeta}).
+In particular, a pure exploration strategy  based on the principles of
+rational metareasoning would always select a sample with the highest
+value of information, and stop the sampling when the VOI of the sample
+is lower than the cost.
 
 \section{Upper bounds on Value of Information}
 \label{sec:mcts-approx-nonbayesian-section}
@@ -234,12 +235,16 @@ Substituting the bound on $\Pr\left(\overline X_i^{n_i+N}\ge x\right)$ from Theo
 \end{align}
 Derivation for the case $i=\alpha$ is similar.
 \end{proof}
+\vspace{\baselineskip}
+It is important to note that Corollary~\ref{crl:bound-blnk-hoeffding}
+Theorem~\ref{thm:mcts-better-bound-blnk-hoeffding}
+provide actual bounds, rather than ``in probability''.
 
 Selection problems usually separate out the decision of (1) {\em what}
-to sample and (2) {\em whether} to sample or to stop (called the stopping policy).
+to sample and (2) {\em whether} to sample or to stop (called the stopping criterion).
 In this section we will examine the first issue, along with the empirical evaluation 
 of the above approximate algorithms. The second issue --- the stopping
-policy --- is important in the context of sampling in trees, when the
+criterion --- is important in the context of sampling in trees, when the
 selection problem is solved multiple times, at every node along the
 path. This issue is explored in Section~\ref{sec:mcts-sampling-in-trees}.
 
@@ -247,8 +252,8 @@ Assuming that the sample costs are constant,
 a semi-myopic policy will decide to test the arm that has the best
 current VOI estimate. 
 When the distributions are unknown, it makes sense
-to use the upper bounds established in Theorem~\ref{thm:mcts-be}, as we do in the following.
-This evaluation assumes a fixed budget of samples, which is
+to use the upper bounds established in Theorem~\ref{thm:mcts-be}, as
+we do in what follows. This evaluation assumes a fixed budget of samples, which is
 completely used up by each of the candidate schemes, making a stopping
 criterion irrelevant.
 
@@ -432,7 +437,7 @@ increasing the maximum number of samples in a future state is low.
 Note that if we disallowed reuse of samples in both Pachi and
 in our VOI-based scheme, the VOI based-scheme
 win rate is even higher than shown in Figure~\ref{fig:voi-wins}. This is as expected,
-as this setting (which is somewhat unfair to Pachi) is closer to
+as this setting (which is somewhat unfair to UCT-Pachi) is closer to
 meeting the assumptions underlying the selection MDP.
 
 \section{Conclusion and Further Research}

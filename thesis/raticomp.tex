@@ -516,12 +516,33 @@ The results are presented in Figure~\ref{fig:svmguide2}.
 
 \subsection{Discussion of Results}
 
-In all experiments, the performance of the rational recomputing
-algorithm decreases slowly with the computation cost and compares to
-or exceeds performance of the algorithm that makes random measurements
-even when VOI estimates for only a small fraction of measurements are
-recomputed at each step. 
+In all experiments, the reward, including the computation cost, of the
+rational recomputing algorithm was comparable to or higher than the
+reward of the original algorithm. When the computation cost is
+relatively small (left-hand side of the plots), the rewards of the
+rational recomputing algorithm and of the original algoritms are
+essentially the same, despite that much fewer VOI estimations are
+computed. This suggests that the \textit{benefit of estimating the VOI}
+of a measurement is in many cases low, and rational elective VOI
+estimation is a viable approach to decreasing computation costs.
+When the computation cost of VOI estimation grows, the rewards still
+remain comparable, with the reward of the original algorithm only
+slighter greater for the SVM parameter search
+(Figure~\ref{fig:svmguide2}): a lower utility of the final choice of the
+rational recomputing algorithm is compensated by a lower computation
+cost. 
 
+The advantage of the rational recomputing algorithm becomes obvious
+when the cost of estimating the VOI of all measurements achieves or
+exceeds the cost of performing a measurements (the right-hand side of
+the plots). The reward of the original algorithm decreases rapidly,
+falling below the reward of the Monte-carlo algorithm. Rational
+recomputing algorithm still performs well: the reward degrades
+gradually with the increase of the computation cost, and approaches
+asymptotically from above the reward of uninformed sampling (the
+Monte-Carlo algorithm). 
+
+Overall, the rational recomputing algorithm 
 \section{Conclusion and Further Research}
 \label{sec:raticomp-conclusion}
 

@@ -174,18 +174,19 @@ of the outcomes. The time wasted by being sub-optimal in deciding
 whether to evaluate $h_2$ is called the {\em regret} of the decision.
 We derive a \textit{rational policy} for deciding when to evaluate
 $h_2$, under the following assumptions:
-\begin{itemize}
+\begin{enumerate}
 \item The decision is made \textit{myopically}: the algorithm continues to
   behave like \lazyastar~starting with the children of
-  $n$. If \rationallazyastar~is indeed better than $\lazyastar$, the
-  myopic assumption results in an upper bound on the regret.
+  $n$.
 \item $h_2$ is \textit{consistent}: if evaluating $h_2$ is benefitial
-  on $n$, it is also benefitial on any successor of $n$. The empirical
-  evaluation (Section~\ref{sec:rla-empirical}) covers also the cases
-  where $h_2$ is not consistent. Despite violation of the assumption,
-  \rationallazyastar~still exhibits the best performance among
-  the compared algorithms.
-\end{itemize}
+  on $n$, it is also benefitial on any successor of $n$.
+\end{enumerate}
+If \rationallazyastar~is indeed better than $\lazyastar$, the
+first assumption results in an upper bound on the regret. The empirical
+evaluation (Section~\ref{sec:rla-empirical}) covers also the cases
+where $h_2$ is not consistent. Despite violation of the second assumption,
+\rationallazyastar~still exhibits the best performance among
+the compared algorithms.
 
 If $h_2(n)$ is not helpful and we decide to compute it, the effort for evaluating
 $h_2(n)$ turns out to be wasted. On the other hand, if $h_2(n)$ is

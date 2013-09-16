@@ -397,19 +397,21 @@ compared to the budget $C$: $c \ll C$.
 
 When the computation cost $c_V$ increases, the VOI for a smaller
 number of measurements is recomputed at each step, and the number of
-VOI estimations of the rational recomputing algorithm decreases. Let $\eta$ be
-the \textit{intensity of VOI estimations}---the ratio between the expected
-number of VOI estimations of the rational 
-recomputing algorithm $N_r$ to the number of VOI estimations of the original
-algorithm $N$: $\eta=\IE\left(\frac {N_r} N\right)$.
+VOI estimations of the rational recomputing algorithm decreases. Let
+$\eta$ be the \textit{intensity of VOI estimations}---the ratio
+between the expected number of VOI estimations $N_r$ of the rational
+recomputing algorithm to the number of VOI estimations $N$ of the
+original algorithm for the same number of measurements: $\eta=\frac
+{\IE(N_r)} N$.
 
 According to the assumption, $\tau$ changes slowly. Given $\tau$,
 $\varsigma_j^2$ of measurement $q_i$ in the measurement sequence $Q$
 (Equation~\ref{eq:measurement-sequence}) is proportional to
 the {\em VOI age}---the total cost of measurements performed since the
 last recomputation of the VOI of the measurement. Assuming that the
-measurement cost $c$ is constant, the expected VOI age over all measurements and all
-steps of the algorithm is $c/\eta$.
+measurement cost $c$ is the same for all measurements, the expected
+VOI age over all measurements and all steps of the algorithm is
+$c/\eta$. 
 
 VOI variance $\varsigma^2$ (Equation~\ref{eq:varsigma}) is proportional to
 the VOI age given $\tau$, i.e. inversely-proportional to $\eta$:
@@ -431,19 +433,19 @@ where $\alpha$ is a constant.  Empirical estimations
 \section{ Empirical Evaluation}
 \label{sec:raticomp-empirical}
 
-Experiments in this section compare performance of the algorithm that recomputes the VOI
-selectively with the original algorithm in which the VOI
-of every measurement is recomputed at every step.
-Two of the problems evaluated in \cite{TolpinShimony.blinkered} are 
-considered: {\it noisy Ackley function maximization} and {\it SVM parameter search}.
-For these problems, the
-performance of the greedy algorithm was analyzed in
-\cite{TolpinShimony.blinkered}, and the semimyopic (blinkered) scheme, while
-giving better results than the myopic scheme, caused an increase in
-the computation time that, while still polynomial in the size of the
-problem, can be prohibitive. According to blinkered scheme, the value
-of information of a measurement is estimated by considering batches of
-multiple measurements of a single item.
+Experiments in this section compare performance of the algorithm that
+recomputes the VOI selectively with the original algorithm in which
+the VOI of every measurement is recomputed at every step.  Two of the
+problems evaluated in \cite{TolpinShimony.blinkered} are considered:
+{\it noisy Ackley function maximization} and {\it SVM parameter
+search}.  For these problems, the performance of the greedy algorithm
+was analyzed in \cite{TolpinShimony.blinkered}, and the semimyopic
+(blinkered) scheme, while giving better results than the myopic
+scheme, caused an increase in the computation time that, while still
+polynomial in the size of the problem, can be prohibitive. According
+to blinkered scheme, the value of information of a measurement is
+estimated by considering batches of multiple measurements of a single
+item. 
 
 For each of the optimization problems plots of the number of VOI
 recomputations and of the reward vs. the computation cost of VOI
@@ -457,16 +459,15 @@ reward is $\approx 5\%$ of the mean reward. In the plots,
 \item the solid line corresponds to the rational recomputing
   algorithm,
 \item the dashed line corresponds to the original algorithm,
-\item the dotted line corresponds to the Monte Carlo algorithm that selects
-  measurements randomly and performs the 
-same number of measurements as the rational recomputing algorithm
-for the given computation cost $c_V$.
+\item the dotted line corresponds to the Monte Carlo algorithm that
+  selects measurements randomly and performs the same number of
+  measurements as the rational recomputing algorithm for the given
+  computation cost $c_V$. 
 \end{itemize}
-Since, as can be derived from
-(\ref{eq:rational-w}), the number of VOI estimations $N_r$ of the rational
-recomputing algorithm decreases with the logarithm of the computation
-cost $c_V$ (Equation~\ref{eq:eta}), the computation cost axis is
-scaled logarithmically.
+Since, as can be derived from (\ref{eq:rational-w}), the intensity of VOI
+estimations $\eta$ of the rational recomputing algorithm decreases with
+the logarithm of the computation cost $c_V$ (Equation~\ref{eq:eta}),
+the computation cost axis is scaled logarithmically.
 
 \subsection{The Ackley Function}
 
@@ -510,21 +511,16 @@ The utility function is $u(z)=\tanh(4(z-0.5))$, the $\log C$ and $\log
 \gamma$ axes are scaled for uniformity to ranges $[1..21]$ and there
 are uniform dependencies along both axes with $\sigma_w^2=0.4$. The
 measurements are normally distributed with variance $\sigma_m^2=0.25$
-around the true values, and the measurement cost is $c_m=0.01$.
+around the true values, and the measurement cost is $c=0.01$.
 The results are presented in Figure~\ref{fig:svmguide2}.
 
 \subsection{Discussion of Results}
 
-In all experiments, a significant decrease in computation time is
-achieved with only a slight degradation of the reward; performance of
-bthe rational recomputing algorithm decreases slowly with the
-computation cost and exceeds performance of the algorithm that
-makes random measurements even when VOI estimates for only a small fraction of
-measurements is recomputed at each step. Exact dependency of
-performance of the rational recomputing algorithm on the
-overhead caused by the VOI recomputations varies among problems and depends
-both on the problem properties and on the VOI estimate used in the
-algorithm.
+In all experiments, the performance of the rational recomputing
+algorithm decreases slowly with the computation cost and compares to
+or exceeds performance of the algorithm that makes random measurements
+even when VOI estimates for only a small fraction of measurements are
+recomputed at each step. 
 
 \section{Conclusion and Further Research}
 \label{sec:raticomp-conclusion}

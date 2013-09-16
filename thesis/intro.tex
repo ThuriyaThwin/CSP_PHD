@@ -2,8 +2,9 @@ Search for optimal or near optimal solutions of combinatorial problems
 is a fundamental field of research in classical and applied Artificial
 Intelligence. Search problems can be found in
 navigation~\cite{Kocsis.uct}, routing~\cite{Bellman.routing},
-planning~\cite{Domshlak.maxornot}, and numerous other combinatorial
-domains~\cite{Korf.partitioning,Braudis.pachi}.  Despite the
+planning~\cite{Domshlak.maxornot}, game
+playing \cite{Braudis.pachi,Good.chess} and numerous other
+combinatorial domains~\cite{Korf.partitioning}.  Despite the
 tremendous volume of research on search in various settings, it is
 well known that for many search problems no algorithm dominates all
 others in all cases~\cite{Wolpert.nofree}. Similarly, many algorithms
@@ -12,11 +13,11 @@ optimizing~\cite{Hutter.spo,TolpinShimony.raticomp}. The nature of the
 required solution (e.g., optimal, suboptimal etc.) also has
 significant impact on the desired search algorithm. Selecting the best
 algorithm and parameters for the task at hand is thus a non-trivial
-and important issue~\cite{Allen.selheur,Gomes.portfolio}. Moreover, every problem
-instance induces a search graph, which can be extremely non-uniform
-and have areas with radically different behavior. This calls for
-algorithms which change their settings dynamically during the search,
-so as to better adapt to the task at hand.
+and important issue~\cite{Allen.selheur,Gomes.portfolio}. Moreover,
+every problem instance induces a search graph, which can be extremely
+non-uniform and have areas with radically different behavior. This
+calls for algorithms which change their settings dynamically during
+the search, so as to better adapt to the task at hand.
 
 The subject of this search are space and task diversity problems.
 Here, a two-level framework for search is proposed: the regular search
@@ -48,8 +49,8 @@ a series of case studies explores rational metareasoning extensions
 for state-of-the-art search algorithms, and demonstrates how a
 significant gain in the algorithm performance is achieved due to the
 application of rational metareasoning. The cases studies investigate
-various aspects of the methodology in the context of satisfaction
-problems (Chapter~\ref{ch:cs-csp}), as well as of approximating
+various aspects of the methodology in the context of constraint satisfaction
+problems (Chapter~\ref{ch:cs-csp}), as well as of approximation
 (Chapter~\ref{ch:cs-mcts}) and optimal (Chapter~\ref{ch:cs-rla})
 search in optimization problems. In addition to providing a
 metareasoning-based solution to a particular problem, the studies
@@ -61,14 +62,14 @@ estimating the value of information based on distribution-independent
 bounds (Chapter~\ref{ch:cs-mcts}).
 
 A straightforward application of rational metareasoning often faces
-difficulties because some of the assumptions of the approach do not
+difficulties because some of the assumptions of the original approach do not
 hold. For example, estimating the value of information depends on
 the belief distribution of action outcomes; however, a reasonable choice
 of the distribution is not always possible. Chapter~\ref{ch:cs-csp}
 derives the distribution model from the properties of the search
 algorithm rather than from the set of problem instances. Another
 example is the myopic assumption \cite{Russell.right} which suggests
-that an action can be chosen based on its anticipated immediate
+that a computational action can be chosen based on its anticipated immediate
 effect. In some search algorithms, the information is obtained through
 \emph{sampling}---recurring actions with probabilistic outcomes---and
 the value of information of a single sample is often
@@ -80,14 +81,17 @@ Advanced search algorithms are often parameterized and require tuning
 to achieve the best performance. Building an algorithm upon the
 principles of rational metareasoning allows to keep the number of
 tunable parameters to a minimum---a single parameter needs to be tuned
-in Chapters~\ref{ch:cs-csp},~\ref{ch:cs-rla}. In addition, as
+in Chapters~\ref{ch:cs-csp}~and~\ref{ch:cs-rla}. In addition, as
 Chapter~\ref{ch:cs-csp} demonstrates, parameters
 of a metareasoning-based algorithm are likely to reflect
 implementation details of the algorithm and the heuristics rather
-than features of a particular set of problem instances.
+than features of a particular set of problem instances; this is
+advantageous since the algorithm can be tuned on a small training set,
+and readjustments for different sets of problem instances are
+unnecessary. 
 
 Finally, rational metareasoning is commonly applied to approximating
-search where decision quality is traded for computation time. Optimal
+search where decision quality is traded off for computation time. Optimal
 search algorithms aim at finding the optimal solution in the shortest
 possible time, and seemingly little can be achieved through
 application of rational metareasoning.  Chapter~\ref{ch:cs-rla}

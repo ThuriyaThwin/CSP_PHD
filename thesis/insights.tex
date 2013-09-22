@@ -27,20 +27,20 @@ of knowledge about the method:
 
 \begin{itemize}
 \item On the one hand, if \textbf{the heuristic relies on pre-computed
-  data}, and online evaluation is cheap at the expense of intensive
+  data}~\ref{pattern,Felner.apdb}, and online evaluation is cheap at the expense of intensive
   offline computation performed ahead of time for a wide
   range of problem instances, computing the heuristic selectively is
   unlikely to save the total search time. For example, pattern
   databases \cite{pattern} proved to be an efficient approach for
   building informative and fast heuristics. 15-puzzle is one of
   domains in which pattern databases are particularly powerful
-  \cite{Felner.apdb}; at the same time evaluating a state is just a
-  small number of table lookups, so it never makes sense to try and
+  \cite{Felner.apdb}; when a PDB is already built,  evaluating a state
+  requires  just a small number of table lookups, so it does not makes sense to try and
   compute the heuristic selectively.
 \item On the other hand, in the case of an \textbf{informative but
   very expensive heuristic} evaluating the heuristic is likely 
   to make the search algorithm slower in most cases, and the
-  algorithm should rely on domain-specific knowledge to
+  algorithm must rely on domain-specific knowledge to
   identify the states in which computing the heuristic is beneficial. 
   Such fine domain-specific knowledge is usually hard to derive from
   a general notion of value of information. One example is
@@ -52,26 +52,27 @@ of knowledge about the method:
 
 Of course, this criterion does not cover all possible situations where
 rational metareasoning is helpful, but provides a good starting point
-for assessing applicability of metareasoning approach to a given
+for assessing applicability of the metareasoning approach to a given
 problem domain.
 
-\section{Identifying the Metareasoning Decision}
+\section{Identifying the Relevant Metareasoning Decisions}
 
 For a successful realization of the rational metareasoning layer it is
-important to identify the metareasoning decision. Determining the
+important to identify the metareasoning decision which can be useful
+in practice. Determining the
 choices available at the decision points, and benefits and costs
 associated with each of the choices is not always simple. For example,
 in Chapter~\ref{ch:cs-mcts}, ``VOI-aware MCTS'', the originally
 considered decision was whether to continue sampling or to commit to a
 move. This model facilitated derivation of VOI estimates for simple
 regret in Multi-armed bandits
-(Section~\ref{sec:mcts-approx-nonbayesian-section}). However, we could
-improve the Go agent only after realizing that for sampling in trees
+(Section~\ref{sec:mcts-approx-nonbayesian-section}). However, we
+succeeded in improving the Go agent only after realizing that for sampling in trees
 the alternative is to either continue sampling or to commit to a move
 \emph{and possibly spend the unused samples at the selected child} of
 the current state (Section~\ref{sec:mcts-control-redistribution}).
 
-Similarly, in \rationallazyastar~(Chapter~\ref{ch:cs-rla}) the
+Likewise, in \rationallazyastar~(Chapter~\ref{ch:cs-rla}) the
 decision is whether to compute the expensive heuristic $h_2$ in the current
 node $n$ or to bypass the evaluation \emph{and compute $h_2$ in all
   children of $n$}, as though the algorithm resorts to plain \lazyastar.
@@ -105,7 +106,7 @@ bring additional  benefits:
   computations at the metareasoning level when an expensive utility
   function is absolutely necessary, but, as the case studies in
   Chapters~\ref{ch:cs-csp}--~\ref{ch:cs-rla} show, even simple utility
-  functions result in considerable improvements.
+  functions may result in considerable improvements.
 \item A utility model is often overly complicated because the
   algorithm designer tried to squeeze into the model domain-specific
   heuristic knowledge. However, metareasoning decisions
@@ -147,7 +148,7 @@ instances. Due to that, parameter values obtained on a small training
 set remain valid, for the given algorithm implementation and
 heuristics, over a wide range of problem variations. 
 
-\section{Analyzing the Results of Empirical Evaluation}
+\section{Analyzing the Results of Intermediate Empirical Evaluation}
 
 Empirical evaluation is an indispensable part of developing an
 application of the rational metareasoning approach to a given
@@ -165,7 +166,7 @@ was initially in favor of UCT, in contradiction with earlier results
 on randomly generated trees, where VOI-aware MCTS was considerably
 better. This contradiction helped us realize the influence of sample
 reuse (Section~\ref{sec:mcts-control-redistribution}) and
-introduce VOI-based stopping and sample redistribution into the
+to introduce VOI-based stopping and sample redistribution into the
 algorithm.
 
 Another example is the analysis of

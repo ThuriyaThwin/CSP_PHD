@@ -20,4 +20,7 @@ thesis.pdf: thesis.tex
 	pdflatex thesis
 
 clean:
-	rm *.bbl thesis.pdf *.log *.aux
+	rm -f *.bbl *.log *.aux *.lot *.lof *.out *.toc
+
+distclean: clean
+	rm -f thesis.pdf

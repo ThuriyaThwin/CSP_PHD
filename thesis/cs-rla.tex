@@ -87,15 +87,15 @@ The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}.
         \If{Goal(n)}
             \Return Trace(n)
         \EndIf
-        \If{$h_2$ was not applied to $n$}
+        \If{$h_2$ was not applied to $n$} \label{alg:rla-if-not-h2-beg}
             \State Apply $h_2$ to $n$
             State Insert $n$ into \OPEN
 			\State {\bf continue} \Comment next node in OPEN
-        \EndIf
-        \ForAll{child $c$ of $n$}
+        \EndIf                           \label{alg:rla-if-not-h2-end}
+        \ForAll{child $c$ of $n$}        \label{alg:rla-open-beg}
             \State Apply $h_1$ to $c$
             \State Insert $c$ into \OPEN
-        \EndFor
+        \EndFor                          \label{alg:rla-open-end}
         \State Insert $n$ into \CLOSED
     \EndWhile  \\
     \Return FAILURE
@@ -104,11 +104,11 @@ The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}.
 \label{LAZYA}
 \end{algorithm}
 \lazyastar is very similar to \astar.
-In fact, without lines 7 -- 10, \lazyastar~would be identical to
+In fact, without lines~\ref{alg:rla-if-not-h2-beg}--\ref{alg:rla-if-not-h2-end}, \lazyastar~would be identical to
 \astar~using the $h_1$ heuristic.
 When a node $n$ is generated we only compute $h_1(n)$ and $n$ is added to
-\OPEN ~(Lines 11 -- 13), without computing $h_2(n)$ yet.
-When $n$ is first removed from \OPEN~(Lines 7 -- 10), we compute $h_2(n)$ and
+\OPEN ~(lines \ref{alg:rla-open-beg}--\ref{alg:rla-open-end}), without computing $h_2(n)$ yet.
+When $n$ is first removed from \OPEN~(lines~\ref{alg:rla-if-not-h2-beg}--\ref{alg:rla-if-not-h2-end}), we compute $h_2(n)$ and
 reinsert it into \OPEN, this time with $f_{max}(n)$.
 
 It is easy to see that \lazyastar~is as informative as \astarmax, in
@@ -147,16 +147,15 @@ to solve optimally.
 Therefore, we focus here on just one decision type, to be made in the
 context of \lazyastar, when $n$ re-emerges from \OPEN~(Line 8).  We
 have two options: {\bf (1)} Evaluate the second heuristic $h_2(n)$ and
-add the node back to \OPEN~(Lines 8-10) like \lazyastar, or {\bf 2}
-bypass the computation of $h_2(n)$ and expand $n$ right way (Lines 11
--13), thereby saving time by not computing $h_2$, at the risk of
+add the node back to \OPEN~(lines~\ref{alg:rla-if-not-h2-beg}--\ref{alg:rla-if-not-h2-end}) like \lazyastar, or {\bf 2}
+bypass the computation of $h_2(n)$ and expand $n$ right way~(lines~\ref{alg:rla-open-beg}--\ref{alg:rla-open-end}), thereby saving time by not computing $h_2$, at the risk of
 additional expansions and evaluations of $h_1$.  A method which
 attempts to optimally manage this trade-off, which we
 call \textit{Rational Lazy A*} (\rationallazyastar), is presented
 next.  In order to choose rationally we define a criterion based on
 value of information (VOI) of evaluating $h_2(n)$ in this context.
 
-The only addition of RLA* to LA* is the option to bypass $h_2$ computations (Lines 8-10).
+The only addition of RLA* to LA* is the option to bypass $h_2$ computations~(lines~\ref{alg:rla-if-not-h2-beg}--\ref{alg:rla-if-not-h2-end}).
 Suppose that we choose to compute $h_2$ --- this results in one of the
 following outcomes:
 \begin{enumerate}
@@ -305,7 +304,7 @@ b(n) > \frac{t_2}{t_1 p_h \left(1 + \frac{t_2}{t_1}\right)}
 
 In the uniform-cost 15 puzzle, the open list contains only a few
 different f-costs, and is frequently implemented using buckets,
-violating the assumption of logarithmic time for which \rationallazyastar is
+violating the assumption of logarithmic time for which \rationallazyastar~is
 beneficial. In order to better evaluate \rationallazyastar, we therefore use
 the weighted 15-puzzle variant, where the cost of moving each tile is
 equal to the number on the tile.  For consistency of comparison, we
@@ -359,18 +358,18 @@ saving is reflected in the timing results.  The best results are
 achieved for lookahead 8, with a runtime of 0.431 compared to \astar~
 with WMD.
 
-The final columns show the results of \rationallazyastar~, with the
+The final columns show the results of \rationallazyastar, with the
 values of $\tau$, $p_h$, $t_2$ calibrated for each lookahead depth using a
 small subset of problem instances.  The {\em Good2} column counts the
-number of times that RLA* decided to bypass the $h_2$ computation and
-expand the node right away. Observe that RLA* outperforms \lazyastar,
+number of times that \rationallazyastar~decided to bypass the $h_2$ computation and
+expand the node right away. Observe that \rationallazyastar~outperforms \lazyastar,
 which in turn outperforms standard A*, for all lookahead depths. The
-lowest time with RLA* (0.378 of \astar with WMD) and empirically best
+lowest time with \rationallazyastar~(0.378 of \astar with WMD) and empirically best
 $\tau$ was obtained for lookahead 10. That is achieved because the
 more expensive $h_2$ heuristic is computed less often, reducing its
 effective computational overhead, with little or no adverse effect in
-the number of expanded nodes. Although LA* expanded fewer nodes, RLA*
-performed much fewer $h_2$ computations as can be seen in the table,
+the number of expanded nodes. Although LA* expanded fewer nodes,
+\rationallazyastar~performed much fewer $h_2$ computations as can be seen in the table,
 resulting in decreased overall runtimes for all lookahead depths.
 
 The case of both $t_1$ and $t_2$ being significantly larger than $t_o$
@@ -433,7 +432,7 @@ $h_{LA}$ & lmcut & max & selmax & \lazyastar& \rationallazyastar &
 %$h_1$ & $h_2$ & M & S & L& R &
 \lazyastar& \rationallazyastar \\
 
-\hline airport & 25 & 24 & 26 & 25 & \textbf{29} & \textbf{29} & \textbf{0.29} & 0.57 & 0.5 & 0.33 & 0.38 & 0.38 & 0.48 & 0.67 \\
+\hline airport & 25 & 24 & 26 & 25 & \textbf{29} & \textbf{29} & \textbf{0.29} & 0.57 & 0.5 & 0.33bb & 0.38 & 0.38 & 0.48 & 0.67 \\
 barman-opt11 & \textbf{4} & 0 & 0 & 0 & 0 & 3 & N/A & N/A & N/A & N/A & N/A & N/A & N/A & N/A \\
 blocks & 26 & 27 & 27 & 27 & \textbf{28} & \textbf{28} & 1.0 & \textbf{0.65} & 0.73 & 0.81 & 0.67 & 0.67 & 0.19 & 0.21 \\
 depot & \textbf{7} & 6 & 5 & 5 & 6 & 6 & \textbf{2.27} & 2.69 & 3.17 & 3.14 & 2.73 & 2.75 & 0.06 & 0.06 \\

@@ -169,7 +169,7 @@ assumption is presented as two assumptions: ``single-step'' and
 \item All computational operators have a \textbf{known time cost}.
 \item In addition, the \textbf{subtree independence} assumption can
 be used to further simplify the model: every meta-level action
-affects the utility estimate of a single base-level action. 
+affects the utility estimate only of a single base-level action. 
 \end{enumerate}
 Applied to certain search problems, this \emph{simplified
 meta-reasoning approach}, even if not entirely justified, results in
@@ -181,7 +181,7 @@ meta-reasoning level itself. On the other hand, none of the simplifying
 assumptions hold in general, and in many cases their applicability is
 limited. For example, with many computational operators the subtree
 independence assumption is inappropriate --- a computation updates
-the belief state, and along the new belief state utilities of several
+the belief state, and in the new belief state utility estimates of several
 base-level actions are updated. The myopic assumption is appropriate to
 the cases when the value of information of a sequence of meta-level
 actions is approximately submodular \cite{Guestrin.submodular}. When 

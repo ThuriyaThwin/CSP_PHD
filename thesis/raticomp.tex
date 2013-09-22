@@ -521,7 +521,7 @@ rational recomputing algorithm is comparable to or higher than the
 reward of the original algorithm. When the computation cost is
 relatively small (left-hand side of the plots), the rewards of the
 rational recomputing algorithm and of the original algorithms are
-essentially the same, despite that much fewer VOI estimations are
+essentially the same, despite the fact that much fewer VOI estimations are
 computed. This suggests that the \textit{benefit of estimating the VOI}
 of a measurement is in many cases low, and rational elective VOI
 estimation is a viable approach to decreasing computation costs.
@@ -533,8 +533,8 @@ rational recomputing algorithm is compensated by a lower computation
 cost. 
 
 The advantage of the rational recomputing algorithm becomes obvious
-when the cost of estimating the VOI of all measurements achieves or
-exceeds the cost of performing a measurement (the right-hand side of
+when the cost of estimating the VOI of all measurements is comparable
+to or exceeds the cost of performing a measurement (the right-hand side of
 the plots). The reward of the original algorithm decreases rapidly,
 falling below the reward of the Monte-Carlo algorithm. Rational
 recomputing algorithm still performs well: the reward degrades
@@ -548,8 +548,8 @@ cost of VOI estimation, where both the original an the rational
 recomputing algorithm exhibit good performance, and the case when the
 cost of recomputation of VOI for all measurements is comparable to the
 cost of performing a measurement are handled well: the reward is
-almost as high as of the original algorithm in the former case, and is
-higher than of Monte-Carlo algorithm performing the same number of
+almost as high as that of the original algorithm in the former case, and is
+higher than that of Monte-Carlo algorithm performing the same number of
 measurements in the latter case.
 
 \section{Conclusion and Further Research}
@@ -567,8 +567,9 @@ The proposed scheme of rational VOI computation can be further
 improved. 
 \begin{itemize}
 \item  the normal distribution is chosen rather arbitrarily to model
-  uncertainty about the VOI. Often, the VOI is non-increasing
-  \cite{Guestrin.submodular}, and a skewed distribution from the
+  uncertainty about the VOI. Often, the VOI of a
+  computational action decreases when other computational actions are  
+  performed \cite{Guestrin.submodular}, and a skewed distribution from the
   exponential family should be chosen for better results.
 \item The termination condition of VOI recomputation should be
   improved such that the VOI recomputation cost could be accounted for

@@ -96,7 +96,7 @@ cost. In addition, new heuristics can be invented based on the
 principles of metareasoning (Chapter~\ref{ch:cs-csp}).
 
 Still, in many cases it is not clear what reasoning model of a search
-algorithm suits the metareasoning approach the best. Classification
+algorithm suits the metareasoning approach best. Classification
 and analysis of search algorithms along the lines of the metareasoning
 approach would advance both theoretical research and applications of
 problem-solving search.
@@ -110,11 +110,13 @@ computational actions
 estimates are obvious, in others, the task of finding appropriate
 estimates is complicated.
 
-For estimating {\bf utility}, the simplest case is solving an
-optimization problem using a complete-state algorithm. The utility of
-the only base-level action---the selection of an element from the
-set---is the value of the evaluation function on the selected
-element. If a complete-state algorithm is used for solving a
+The simplest case for estimating {\bf utility} is solving an
+optimization problem using a complete-state algorithm, such as solving
+a Max-CSP (a constraint-satisfaction problem where the quality of a
+solution is measured by the number of satisfied constraints) using
+local search. The utility of a base-level action---selecting an
+element from the set---is the value of the evaluation function on the
+selected element. If a complete-state algorithm is used for solving a
 satisfaction problem, e.g. the {\em min-conflicts} algorithm
 \cite{Russell.aima}, then the evaluation function that estimates
 `closeness' of the state to a consistent state serves as the utility

@@ -39,7 +39,7 @@ to select meta-level actions offline. This makes the (simplified, but
 incomplete) search space ``only'' exponential in the general case, and
 polynomial in important, useful special cases.
 
-Let, again, $M$ be the set of all possible meta-level actions, and
+Let $M$ be the set of all possible meta-level actions, and
 ${\mathcal C}$ be a constraint over sets of actions from $M$. In the
 semi-myopic framework, all possible subsets (batches) ${\mathcal B}$
 of meta-level actions from $M$ that obey constraint ${\mathcal C}$ are
@@ -59,9 +59,9 @@ allowed. This extreme is tantamount to the myopic assumption.
 In the presence of recurring meta-level actions, such as
 noisy measurements, a useful compromise is the \textbf{blinkered
 scheme}~\cite{TolpinShimony.blinkered}, which considers sets of
-independent identical meta-level actions.  Although this scheme has a
+identical independent meta-level actions.  Although this scheme has a
 computational overhead over the myopic one, the factor is only linear
-in the budget.  The scheme selects a single meta-level action where
+in the computation-time budget.  The scheme selects a single meta-level action where
 {\em some} number of the meta-level actions gains the greatest value
 of information, and seems to be the simplest approximation that still
 works for a wide range of conditions under realistic assumptions.

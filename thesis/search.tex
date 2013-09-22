@@ -164,16 +164,16 @@ loops, visited nodes are kept in memory (line~\ref{alg:bg-best-first-search-reme
 \State $ClosedNodes \leftarrow \emptyset$
 \State $Fringe \leftarrow \{InitialState\}$
 \Loop
-  \If {$Empty(Fringe)$}  \label{alg:bg-best-first-search-fringe-empty}
+  \If {\Call{Empty}{$Fringe$}}  \label{alg:bg-best-first-search-fringe-empty}
     \Return {\bf failure}
   \EndIf
-  \State $node \leftarrow RemoveBestNode(Fringe)$
-  \If {$GoalTest(node)$}  \label{alg:bg-best-first-search-goal-reached}
+  \State $node \leftarrow $\Call{RemoveBestNode}{$Fringe$}
+  \If {\Call{GoalTest}{$node$}}  \label{alg:bg-best-first-search-goal-reached}
     \Return $node$
   \EndIf
   \If {$node \notin ClosedNodes$}
     \State $ClosedNodes \leftarrow ClosedNodes \cup \{node\}$ \label{alg:bg-best-first-search-remember-visited}
-    \State $Fringe \leftarrow Fringe \cup \{Expand(node) \}$ \label{alg:bg-best-first-search-add-to-fringe}
+    \State $Fringe \leftarrow Fringe \cup \{$\Call{Expand}{$node$}$\}$ \label{alg:bg-best-first-search-add-to-fringe}
   \EndIf
 \EndLoop
 \end{algorithmic}
@@ -236,14 +236,14 @@ presented in Algorithm~\ref{alg:bg-backtracking-search}.
 \label{alg:bg-backtracking-search}
 \begin{algorithmic}[1]
 \Procedure{Backtracking}{assignment, csp}
-\If {$Complete(assignment)$}
+\If {\Call{Complete}{$assignment$}}
    \Return $assignment$
 \EndIf
-\State {$var \leftarrow SelectUnassignedVariable(assignment, csp)$} \label{alg:bg-backtracking-search-var-ordering}
-\ForAll {$value$ {\bf in} $OrderValues(var, assignment, csp)$} \label{alg:bg-background-search-value-ordering}
+\State {$var \leftarrow $\Call{SelectUnassignedVariable}{$assignment$, $csp$}} \label{alg:bg-backtracking-search-var-ordering}
+\ForAll {$value$ {\bf in} \Call{OrderValues}{$var$, $assignment$, $csp$}} \label{alg:bg-background-search-value-ordering}
   \State $assignment' \leftarrow assignment \cup \{var=value\}$
-  \State $csp' \leftarrow PropagateConstraints(csp, var=value)$ \label{alg:bg-background-search-constraint-propagation}
-  \If {$Backtracking(assignment', csp') \ne {\bf failure}$} \label{alg:bg-backtracking-search-recurse}
+  \State $csp' \leftarrow $\Call{PropagateConstraints}{$csp$, $var=value$} \label{alg:bg-background-search-constraint-propagation}
+  \If {\Call{Backtracking}{$assignment'$, $csp'$} $\ne {\bf failure}$} \label{alg:bg-backtracking-search-recurse}
      \Return $assignment'$ \label{alg:bg-backtracking-search-success}
   \EndIf
 \EndFor
@@ -320,4 +320,89 @@ estimates to choose the ``apparently best'' move.
 
 \subsection{Adversarial Search}
 
-TODO
+{\em Adversarial search} problems, often known as {\em games}, arise
+in environments with multiple agents with conflicting
+goals~\cite{Russell.aima}. A specialized but still rich kind of games,
+addressed in this search description, are {\em zero-sum} games of {\em
+  perfect information} --- deterministic, fully observable
+environments with two agents whose actions must alternate and in which
+the utlity values at the end of the game are always equal and
+opposite. For example, if one player wins a game of chess (+1), the
+other player necessarily looses (-1).  More general kinds of
+games---multiplayer, non-zero-sum, stochastic---are out of scope of
+this research.
+
+\subsubsection{Optimal Decisions in Games}
+
+In an alternating game of two players, the first player is customarily
+called MAX and the second MIN. A game can be formally defined as a
+search problem with the following components:
+\begin{itemize}
+\item The {\em initial state}, which includes the board position and
+  identifies the player to move.
+\item A {\em successor function}, which returns a list of $(move,
+  state)$ pairs, each indicating a legal move and the resulting state.
+\item A {\em terminal test}, which determines when the game is
+  over. States where the game has ended are called {\em terminal
+    states}.
+\item A {\em utility function}, which gives a numeric value for the
+  terminal states. For example, in chess the outcome is a win, loss,
+  or draw, with numerical values +1, -1, 0.
+\end{itemize}
+The initial state and the legal moves for each side define the {\em
+  game tree} for the game.
+
+\begin{algorithm}
+\caption{Minimax Search}
+\label{alg:bg-minimax-search}
+\begin{algorithmic}[1]
+\Procedure {Minimax-Decision}{$state$}
+   \State $v \leftarrow$ \Call{Max-Value}{$state$}
+   \State \Return the $action$ in \Call{Successors}{$state$} with value $v$
+\EndProcedure
+\\
+\Procedure {Max-Value}{$state$}
+  \If {\Call{Terminal-Test}{$state$}}
+     \State \Return \Call{Utility}{$state$}
+  \EndIf
+  \State $v \leftarrow -\infty$ 
+  \ForAll {$a, s$ in \Call{Successors}{$state$}}
+     \State $v \leftarrow$ max($v$, \Call{Min-Value}{$s$})
+  \EndFor
+  \State \Return $v$
+\EndProcedure
+\\
+\Procedure {Min-Value}{$state$}
+  \If {\Call{Terminal-Test}{$state$}}
+     \State \Return \Call{Utility}{$state$}
+  \EndIf
+  \State $v \leftarrow \infty$ 
+  \ForAll {$a, s$ in \Call{Successors}{$state$}}
+     \State $v \leftarrow$ min($v$, \Call{Max-Value}{$s$})
+  \EndFor
+  \State \Return $v$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In a single-agent search problem, the optimal solution would be a
+sequence of moves leading to a goal state---a terminal state that is a
+win. In a game, the MAX player must find a contingent strategy, which
+specifies MAX's move in the initial state, and then MAX's moves in the
+states resulting from every possible respone by MIN. Given a game
+tree, the optimal strategy can be determined by examining the {\em
+  minimax value} of each node---the utility of being in the
+corresponding game state, {\em assuming that both players play
+  optimally} from there to the end of the game. Obviously, the minimax
+value of  a terminal state is just its utility. Given a choice, MAX
+will prefer to move to a state of maximum value, whereas MIN prefers a
+state of minimum value, hence the names of the players. 
+
+The {\bf minimax algorithm} recursively computes the minimax decision from the
+current state. The recursion proceeds all the way down to the leaves
+of the tree, and then the minimax values are {\em backed up} through
+the tree.  The minimax algorithm performs a complete depth-first
+exploration of the game tree, and has exponential time complexity in
+the depth of the tree. Due to the time cost, the algorithm cannot be
+directly applied to real games, but serves as the basis for more
+practical algorithms. 

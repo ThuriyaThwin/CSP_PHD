@@ -328,8 +328,8 @@ addressed in this search description, are {\em zero-sum} games of {\em
 environments with two agents whose actions must alternate and in which
 the utility values at the end of the game are always equal and
 opposite. For example, if one player wins a game of chess (+1), the
-other player necessarily looses (-1).  More general kinds of
-games---multiplayer, non-zero-sum, stochastic---are out of scope of
+other player necessarily loses (-1).  More general kinds of
+games---multiplayer, non-zero-sum, stochastic---are outside the scope of
 this research.
 
 \subsubsection{Optimal Decisions in Games}
@@ -398,7 +398,7 @@ value of  a terminal state is just its utility. Given a choice, MAX
 will prefer to move to a state of maximum value, whereas MIN prefers a
 state of minimum value, hence the names of the players. 
 
-The {\bf minimax algorithm} (Algorithm~\ref{alg:bg-minimax-search}) 
+The {\bf minimax algorithm}, Algorithm~\ref{alg:bg-minimax-search}~\cite{Russell.aima},
 recursively computes the minimax decision from the
 current state. The recursion proceeds all the way down to the leaves
 of the tree, and then the minimax values are {\em backed up} through
@@ -434,8 +434,9 @@ with the cutoff test and application of the evaluation function
 
 Another way to make real-time decisions is to still search all the
 way to terminal states, but to explore only certain
-subtrees of the game tree, chosen heuristically. Such selective
-exploration is called {\em Monte-Carlo sampling}. Multiple game {\em
-  playouts} are generated from the current node, and the utility of
-each particular move is estimated based on the outcomes of the
-playouts. 
+subtrees of the game tree, chosen either deterministically or
+randomly. Such selective exploration is called {\em Monte-Carlo
+  sampling}. Multiple game {\em playouts} are generated from the
+current node, and the utility of each particular move is estimated
+based on the outcomes of the playouts. In this dissertation we will
+examine algorithms based on Monte-Carlo sampling (Chapter~\ref{ch:cs-mcts}).

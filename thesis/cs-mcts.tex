@@ -223,7 +223,8 @@ application of the Hoeffding inequality, resulting in Theorem~\ref{thm:mcts-bett
 \end{equation}
 Integrating by parts, obtain
 \begin{align}
-\Lambda_i^b=&-\left.(x-\overline X_\alpha^{n_\alpha})\Pr\left(\overline X_i^{n_i+N}\ge x\right)\right|_{\overline X_\alpha^{n_\alpha}}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}+\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}\Pr\left(\overline X_i^{n_i+N}\ge x\right)dx\nonumber\\
+\Lambda_i^b=&-\left.(x-\overline X_\alpha^{n_\alpha})\Pr\left(\overline X_i^{n_i+N}\ge x\right)\right|_{\overline X_\alpha^{n_\alpha}}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}\nonumber\\
+&+\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}\Pr\left(\overline X_i^{n_i+N}\ge x\right)dx\nonumber\\
 =&\int\limits_{\overline X_\alpha}^{\overline X_\alpha^{n_\alpha}+\frac N {N+n_i}(1-\overline X_\alpha^{n_\alpha})}\Pr\left(\overline X_i^{n_i+N}\ge x\right)dx
 \label{eqn:mcts-better-bound-by-parts}
 \end{align}

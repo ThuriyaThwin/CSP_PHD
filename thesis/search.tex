@@ -1,7 +1,7 @@
 \subsection{Problem-Solving Search}
 
 {\em Problem-solving search} is characterized by a single agent acting
-in a neutral environment\cite{Russell.aima}. The ultimate goal of the
+in a neutral environment~\cite{Russell.aima}. The ultimate goal of the
 agent is to select a single member from an implicit set of feasible
 solutions. The value of an {\em evaluation function}, possibly
 randomized, can be efficiently computed for any member; however,
@@ -244,14 +244,14 @@ presented in Algorithm~\ref{alg:bg-backtracking-search}.
   \State $assignment' \leftarrow assignment \cup \{var=value\}$
   \State $csp' \leftarrow $\Call{PropagateConstraints}{$csp$, $var=value$} \label{alg:bg-background-search-constraint-propagation}
   \If {\Call{Backtracking}{$assignment'$, $csp'$} $\ne {\bf failure}$} \label{alg:bg-backtracking-search-recurse}
-     \Return $assignment'$ \label{alg:bg-backtracking-search-success}
+     \State \Return $assignment'$ \label{alg:bg-backtracking-search-success}
   \EndIf
 \EndFor
-\\ \Return {\bf failure} \label{alg:bg-backtracking-search-failure}
+\State \Return {\bf failure} \label{alg:bg-backtracking-search-failure}
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
-The algorithm calls function {\em Backtracking(assignment, csp)}
+The algorithm calls function {\sc Backtracking}($assignment, csp$)
 recursively, (line~\ref{alg:bg-backtracking-search-recurse})
 trying values consistent with previous assignments
 (line~\ref{alg:bg-background-search-value-ordering})
@@ -264,13 +264,13 @@ each new assignment, the problem is updated according to constraints
 imposed by the assignment in order to prune the search space (line~\ref{alg:bg-background-search-constraint-propagation}).
 
 The algorithm performance depends heavily on the efficiency of
-variable-ordering and value-ordering heuristics ({\em
+variable-ordering and value-ordering heuristics ({\sc
   SelectUnassignedVariable} in
 line~\ref{alg:bg-backtracking-search-var-ordering}
-and {\em  OrderValues} in
+and {\sc  OrderValues} in
 line~\ref{alg:bg-background-search-value-ordering}), as well on the
 amount of pruning due to the propagation of constraints
-({\em PropagateConstraints} in line~\ref{alg:bg-background-search-constraint-propagation}). Some
+({\sc PropagateConstraints} in line~\ref{alg:bg-background-search-constraint-propagation}). Some
 variants of the backtracking search also involve {\em intelligent
   backtracking}, when additional values for recently assigned
 variables are not considered after a failure if it can be proved
@@ -326,7 +326,7 @@ goals~\cite{Russell.aima}. A specialized but still rich kind of games,
 addressed in this search description, are {\em zero-sum} games of {\em
   perfect information} --- deterministic, fully observable
 environments with two agents whose actions must alternate and in which
-the utlity values at the end of the game are always equal and
+the utility values at the end of the game are always equal and
 opposite. For example, if one player wins a game of chess (+1), the
 other player necessarily looses (-1).  More general kinds of
 games---multiplayer, non-zero-sum, stochastic---are out of scope of
@@ -362,7 +362,7 @@ The initial state and the legal moves for each side define the {\em
 \EndProcedure
 \\
 \Procedure {Max-Value}{$state$}
-  \If {\Call{Terminal-Test}{$state$}}
+  \If {\Call{Terminal-Test}{$state$}} \label{alg:bg-minimax-terminal-max}
      \State \Return \Call{Utility}{$state$}
   \EndIf
   \State $v \leftarrow -\infty$ 
@@ -373,7 +373,7 @@ The initial state and the legal moves for each side define the {\em
 \EndProcedure
 \\
 \Procedure {Min-Value}{$state$}
-  \If {\Call{Terminal-Test}{$state$}}
+  \If {\Call{Terminal-Test}{$state$}} \label{alg:bg-minimax-terminal-min}
      \State \Return \Call{Utility}{$state$}
   \EndIf
   \State $v \leftarrow \infty$ 
@@ -389,7 +389,7 @@ In a single-agent search problem, the optimal solution would be a
 sequence of moves leading to a goal state---a terminal state that is a
 win. In a game, the MAX player must find a contingent strategy, which
 specifies MAX's move in the initial state, and then MAX's moves in the
-states resulting from every possible respone by MIN. Given a game
+states resulting from every possible response by MIN. Given a game
 tree, the optimal strategy can be determined by examining the {\em
   minimax value} of each node---the utility of being in the
 corresponding game state, {\em assuming that both players play
@@ -398,7 +398,8 @@ value of  a terminal state is just its utility. Given a choice, MAX
 will prefer to move to a state of maximum value, whereas MIN prefers a
 state of minimum value, hence the names of the players. 
 
-The {\bf minimax algorithm} recursively computes the minimax decision from the
+The {\bf minimax algorithm} (Algorithm~\ref{alg:bg-minimax-search}) 
+recursively computes the minimax decision from the
 current state. The recursion proceeds all the way down to the leaves
 of the tree, and then the minimax values are {\em backed up} through
 the tree.  The minimax algorithm performs a complete depth-first
@@ -406,3 +407,35 @@ exploration of the game tree, and has exponential time complexity in
 the depth of the tree. Due to the time cost, the algorithm cannot be
 directly applied to real games, but serves as the basis for more
 practical algorithms. 
+
+\subsubsection{Imperfect Real-Time Decisions}
+
+The minimax algorithm has to search the search space all the way
+to terminal states. This depth is not practical when moves must be
+made in a reasonable amount of time. One possible solution is to
+alternate the minimax algorithm in two ways: the utility function is
+replaced by a heuristic {\em evaluation function} \textsc{Eval}, which gives an
+estimate of the position's utility, and the terminal test is replace
+by a {\em cutoff test} that decides when to apply the evaluation
+function, often based on the search depth.  The modified algorithm is
+obtained by replacing terminal test (lines~\ref{alg:bg-minimax-terminal-max} 
+and \ref{alg:bg-minimax-terminal-min} of Algorithm~\ref{alg:bg-minimax-search})
+with the cutoff test and application of the evaluation function
+(Algorithm~\ref{alg:bg-cutoff-minimax}): 
+\begin{algorithm}
+\caption{Cutting off search}
+\label{alg:bg-cutoff-minimax}
+\begin{algorithmic}[1]
+  \If {\Call{Cutoff-Test}{$state$, $depth$}}
+     \State \Return \Call{Eval}{$state$}
+  \EndIf
+\end{algorithmic}
+\end{algorithm}
+
+Another way to make real-time decisions is to still search all the
+way to terminal states, but to explore only certain
+subtrees of the game tree, chosen heuristically. Such selective
+exploration is called {\em Monte-Carlo sampling}. Multiple game {\em
+  playouts} are generated from the current node, and the utility of
+each particular move is estimated based on the outcomes of the
+playouts. 

@@ -17,17 +17,78 @@ problem domain, and specifies how the search algorithm should apply
 the heuristics to solve a particular problem instance. A search
 algorithm that rationally selects and applies heuristics would decrease
 the need for the costly human expertise. Principles of rational
-metareasoning can be used to design rational search agents.
+metareasoning can be used to design rational search agents.  
 
 Some rational search algorithms were designed and shown to compare to
 or even outperform manually tuned algorithms. However, wide adoption
 of rational metareasoning algorithms for problem solving search is
 hindered both by theoretical difficulties and by lack of problem
-domain specific case studies. This research aims at lifting some of
-the theoretical difficulties in application of the rational
-methodology. In particular, the problem of efficiency estimating
-the value of information of computational actions is considered. In
-addition, this research proposes rational metareasoning versions of
+domain specific case studies. As a result, the rational metareasoning
+theory has seen relatively little application to real search
+problems. This research aims at lifting some of the theoretical
+difficulties in application of the rational methodology. 
+
+In particular, the \emph{problem of efficiency estimating the value of
+information} (VOI) of computational actions is considered. Computing value of
+information is a crucial task in meta-reasoning for search. Numerous
+VOI computations during a single run are typically required, and it is
+essential that VOI be computed efficiently. The research proposes to
+an extension to the known greedy algorithm. The extended algorithm
+estimates VOI selectively, based on principles of rational
+metareasoning, flexibly exploiting the tradeoff between the
+accuracy of estimating VOI and computational resources used for the
+estimation. As a case study, VOI estimation in the measurement selection
+problem is examined.  Empirical evaluation of the proposed extension in this
+domain shows that computational resources can indeed be significantly
+reduced, at little cost in expected rewards achieved in the overall
+decision problem.
+
+Further on, this research proposes rational metareasoning versions of
 algorithms for applications of problem-solving search in the areas of
-parameter tuning, constraint satisfaction, Monte-Carlo tree search,
-and optimal planning.
+constraint satisfaction, Monte-Carlo tree search, and optimal
+planning. 
+
+For \emph{constraint satisfaction problems}, this study proposes a model for
+adaptive deployment of value ordering heuristics in algorithms. The
+approach presented here does not attempt to introduce new
+heuristics or solution-count estimates; rather, an ``off the shelf''
+heuristic is deployed selectively based on value of information,
+thereby significantly reducing the heuristic's ``effective''
+computational overhead, with an improvement in performance for
+problems of different size and hardness. As a case study, the model
+was applied to a value-ordering heuristic based on solution count
+estimates, and a steady improvement in the overall algorithm
+performance was achieved compared to always computing the
+estimates.
+
+\emph{Monte-Carlo tree search} lays in the foundation of UCT, a
+state-of-the-art algorithm for Markov decision processes and
+adversarial games. Further improvement of the sampling scheme is thus
+of interest in numerous search applications. Although UCT is already
+very efficient, one can do better if the sampling scheme is considered
+from a metareasoning perspective of value of information. Here, a
+sampling policy based on upper bounds on the value of information is
+proposed. In the empricial evaluation, the new sampling policy 
+outperformed UCT on random problem instances as well as in playing
+Computer Go. 
+
+Variants of the A* algorithm are often employed to tackle 
+\emph{optimal planning} in many domains. In the presence of multiple
+admissible heuristics such algorithms as Lazy~A* or Selective~MAX
+are used to combine the heuristics while minimizing the computational
+overhead. In this study, an improvement to Lazy~A* is proposed in
+which the decision whether to evaluate the more expensive heuristic is
+made according to the value of information of the evaluation. The
+improved algorithm, Rational~Lazy~A*, despite being less informed,
+achieves the best overall performance on a wide range of planning
+domains. In addition,  Rational~Lazy~A* is simpler to implement than
+its direct competitor, Selective~MAX.
+
+As a whole, the research advanced the use of rational
+metareasoning in problem-solving search algorithms. Applications of
+rational metareasoning in the case studies serve as examples
+to help researchers employ the methodology in solutions for other
+problems. Advances in rational computation and estimation of VOI increase
+performance and applicability of existing and new search algorithms
+and alleviate dependence of algorithm performance on manual
+fine-tuning.

@@ -31,7 +31,7 @@ neighbor node in the search graph, which \textit{appears to be the best action}
 given $Q_i$.
 
 \item $M$ is the set of state transitions. The transitions---the
-meta-level actions $M_j \in M$ are all the potential computational
+meta-level actions $M_j \in M$---are all the potential computational
 operators that are applicable to a state $Q_i$, such as calculating an
 heuristic for a given node. The transition probabilities $\pi$ are
 defined by the distributions over new knowledge that may be revealed
@@ -41,7 +41,7 @@ expect a heuristic to yield, we can use the distribution to describe
 our expectation of the potential (belief) state of the search after
 (and if) the heuristic is computed at a search node.
 
-\item $R$ are transition rewards. The rewards $R$ are determined by the 
+\item $R$ is all transition rewards. The rewards $R$ are determined by the 
 costs of the computational operators, in terms of time, memory,
 etc., and by the utilities of the base-level actions corresponding to
 the meta-level states.  
@@ -100,8 +100,8 @@ U(A_i, M_j) = U(A_i) - C(A_i, M_j)
 It is customary to call the current utility of a future base-level
 action, without subtracting the time cost of the computational action,
 its {\em intrinsic utility}. The separation into intrinsic
-utility and time cost allows to estimate the utility of a base-level
-action in a time-independent manner, and then refine the net utility
+utility and time cost allows estimation of the utility of a base-level
+action in a time-independent manner, and then refining the net utility
 estimate according to the time pressure represented by $C$.
 
 In many cases, the time cost of an internal action is independent of
@@ -120,7 +120,7 @@ where
 \label{eq:bg-limited-benefit}
 \Lambda(M_j)=\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)
 \end{equation}
-denotes the intrinsic value of information, that is, the expected
+denotes the intrinsic value of information; that is, the expected
 difference between the intrinsic expected utilities of the new
 and the old selected base-level action, computed after the meta-level
 action was taken.
@@ -175,7 +175,7 @@ Applied to certain search problems, this \emph{simplified
 meta-reasoning approach}, even if not entirely justified, results in
 improved search performance. However, even application of the
 simplified approach is at least non-trivial in many cases, mostly due
-to difficulties in obtaining beliefs, transition probabilities and
+to difficulties in obtaining beliefs, transition probabilities, and
 utility values, as well as due to high computational complexity of the
 meta-reasoning level itself. On the other hand, none of the simplifying
 assumptions hold in general, and in many cases their applicability is

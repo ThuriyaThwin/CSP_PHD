@@ -16,7 +16,7 @@ The two common selection criteria are
     by the problem definition. The agent may choose any member
     satisfying the constraints.
 
-  \item[Optimization:] the evaluation function is an {\em utility} function
+  \item[Optimization:] the evaluation function is a {\em utility} function
     returning a numeric value, and the agent must choose a member that
     maximizes the utility.
 \end{description}
@@ -24,8 +24,8 @@ The two common selection criteria are
 One strives to design an agent that arrives at the final choice in as
 little time as possible, or at least within reasonable time bounds.
 If an agent that solves any instance of the problem efficiently cannot
-be designed, for example, because no polynomial-time algorithm is
-known, the agent that is the fastest one in expectation for a certain
+be designed, for example because no polynomial-time algorithm is
+known, the agent that is the fastest in expectation for a certain
 instance distribution is preferred.  An optimizing agent may
 approximate the solution by selecting a member which is `good enough'
 while not necessarily the best one, achieving a compromise between the
@@ -37,7 +37,7 @@ running time and the solution quality.
 \item[Sliding tile puzzle:] an $N\times N$ board with $N^2-1$
   sequentially numbered tiles is given. A tile adjacent to the blank
   space can slide into the space. The goal is to arrange the tiles in
-  the ascending order in as few moves as
+  ascending order in as few moves as
   possible \cite{Russell.aima}. This can be either an optimization
   problem, in which the shortest route from the initial state to the
   goal state must be found, or a satisfaction problem, in which either
@@ -49,8 +49,8 @@ running time and the solution quality.
   capture any other using the standard chess queen's
   moves \cite{Russell.aima}. The queens must be placed in such a way
   that no two queens attack each other. Thus, a solution requires that
-  no two queens share the same row, column, or diagonal. N-queens
-  puzzle is a satisfaction problem, any placement of queens satisfying
+  no two queens share the same row, column, or diagonal. The N-queens
+  puzzle is a satisfaction problem; any placement of queens satisfying
   the goal test is a valid solution.
 
 \item[Traveling salesman problem:] given a set of cities, and known
@@ -68,7 +68,7 @@ running time and the solution quality.
  through repeated trials, can focus on the most rewarding levers. This
  is an optimization problem with trade-off between {\em exploration}
  and {\em exploitation}: while searching for a series of pulls that maximizes
- the expected reward, the gambler both attempts to pull apparently the most
+ the expected reward, the gambler both attempts to pull the apparently most
  rewarding lever and tries different levers to discover
  a better lever.
 \end{description}
@@ -115,7 +115,7 @@ context of rational metareasoning.
 \end{description}
 
 Problem-independent, {\it uninformed} search algorithms, such as
-breadth-first search, iterative deepening search, and others, can be
+breadth-first search and iterative deepening search, can be
 applied to any search problem without modifications. Unfortunately,
 these algorithms are incredibly inefficient in most cases: a
 complete-state algorithm may have to evaluate all of the set members;
@@ -132,7 +132,7 @@ subproblems, or by learning from experience with the problem class.
 
 The exact role of heuristics in a search algorithm varies for
 different algorithm families, of which best-first search, backtracking
-search, local search are most widely known and used. Besides, online
+search, and local search are most widely known and used. Besides, online
 search algorithms, in which computation and action are interleaved,
 are important for exploration problems and dynamic environments.
 
@@ -283,7 +283,7 @@ operates using a single {\em current state} and recursively explores
 neighbor states until a maximum of the evaluation function is
 found. Local search can be used to solve both satisfaction and
 optimization problems. To solve satisfaction problems, a heuristic
-function estimating proximity of a state to the goal is used instead
+function estimating the proximity of a state to the goal is used instead
 of the evaluation function. The N-queens puzzle and the multi-armed
 bandit are examples of problems that can be solved using local search.
 
@@ -304,7 +304,7 @@ search algorithm, but can be used unchanged by online search agents.
 
 The simplest form of local search, hill climbing, can also be
 viewed as an online search algorithm. Other variants of local search
-involve `jumps' in the search space which are free offline but come at
+involve `jumps' in the search space that are free offline but come at
 a cost online. Consequently, random restarts or simulated annealing
 are impractical, and a {\em random walk} is used instead to escape
 local maxima. A random walk simply selects at random one of available
@@ -315,7 +315,7 @@ information about visited states and outcomes of the performed
 actions, and use the gained experience to compute heuristics. An
 example of learning in online search is the LRTA* algorithm
 \cite{Korf.rta}, an extension of RTA*. LRTA* continuously
-updates cost estimates of visited states and used the current cost
+updates cost estimates of visited states and uses the current cost
 estimates to choose the ``apparently best'' move.
 
 \subsection{Adversarial Search}
@@ -329,7 +329,7 @@ environments with two agents whose actions must alternate and in which
 the utility values at the end of the game are always equal and
 opposite. For example, if one player wins a game of chess (+1), the
 other player necessarily loses (-1).  More general kinds of
-games---multiplayer, non-zero-sum, stochastic---are outside the scope of
+games---multiplayer, non-zero-sum, stochastic---are out of the scope of
 this research.
 
 \subsubsection{Optimal Decisions in Games}
@@ -415,7 +415,7 @@ to terminal states. This depth is not practical when moves must be
 made in a reasonable amount of time. One possible solution is to
 alternate the minimax algorithm in two ways: the utility function is
 replaced by a heuristic {\em evaluation function} \textsc{Eval}, which gives an
-estimate of the position's utility, and the terminal test is replace
+estimate of the position's utility, and the terminal test is replaced
 by a {\em cutoff test} that decides when to apply the evaluation
 function, often based on the search depth.  The modified algorithm is
 obtained by replacing terminal test (lines~\ref{alg:bg-minimax-terminal-max} 

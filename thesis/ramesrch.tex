@@ -1,10 +1,10 @@
 An appropriate domain heuristic qualitatively improves performance of
-search algorithms, allowing to easily solve problems which were
+search algorithms, allowing easily solving problems which were
 considered hard \cite{Allen.selheur}. However, heuristics are
 inherently simplifications, and no heuristic is infallible even within
 a single problem class. When {\em heuristic portfolios} are available,
 some heuristics can be identified to work better than others on
-certain problem instances, and applied accordingly
+certain problem instances, and are applied accordingly
 \cite{Allen.selheur}; heuristics can also be combined
 \cite{Domshlak.maxornot}. For certain problem instances, uninformed
 search may actually be the best option \cite{Kask.solcount}.
@@ -59,9 +59,9 @@ action with the maximum utility is selected
 
 The metareasoning layer of an informed search algorithm decides
 \begin{itemize}
-\item whether to apply an heuristic computation or commit to an action;
+\item whether to apply a heuristic computation or commit to an action;
 \item which of the heuristics or what combination thereof to use;
-\item if the heuristic computation is parametrized, what parameter values
+\item if the heuristic computation is parameterized, what parameter values
   to use.
 \end{itemize}
 The metareasoning layer estimates the value of information and the
@@ -82,13 +82,13 @@ base-level actions are state transitions.
 
 In {\bf backtracking search} for constraint satisfaction problems
 the base-level actions are variable assignments, and the computations are
-evalutions of heuristics.  There are many different heuristics \cite{Tsang.csp}:
+evaluations of heuristics.  There are many different heuristics \cite{Tsang.csp}:
 \begin{itemize}
 \item for variable ordering (most constrained variable, minimal width,
-  minimal bandwidth, maximum cardinality etc.);
-\item for value ordering (minimum conflicts, least impact etc.);
+  minimal bandwidth, maximum cardinality, etc.);
+\item for value ordering (minimum conflicts, least impact, etc.);
 \item for constraint propagation (forward checking, lookahead, maintaining arc
-  consistency etc.).
+  consistency, etc.).
 \end{itemize}
 Some of the heuristics can be quite expensive, and should be used only
 if the anticipated benefit is greater than the computation
@@ -117,7 +117,7 @@ solution is measured by the number of satisfied constraints) using
 local search. The utility of a base-level action---selecting an
 element from the set---is the value of the evaluation function on the
 selected element. If a complete-state algorithm is used for solving a
-satisfaction problem, e.g. the {\em min-conflicts} algorithm
+satisfaction problem, e.g., the {\em min-conflicts} algorithm
 \cite{Russell.aima}, then the evaluation function that estimates
 `closeness' of the state to a consistent state serves as the utility
 function.
@@ -163,7 +163,7 @@ Value of information of a computational action depends on the belief
 distribution of outcomes of the action
 (Section~\ref{sec:ratimeta-voi}).  Often, the belief distribution is
 represented as an error distribution around the true value of the
-quantity to compute (e.g. the path length in best-first search, the
+quantity to compute (e.g., the path length in best-first search, the
 value of a state in local search); of course, the true value itself is
 also unknown.  The error distribution can be chosen heuristically,
 learned from earlier invocations of the algorithm on other problem
@@ -181,7 +181,7 @@ quantities are revised according to the dependencies;
 actions are revised.
 \end{itemize}
 Proper handling of base-level and meta-level beliefs in search
-algorithms is crucial for algorithm performance and allows to replace
+algorithms is crucial for algorithm performance and allows replacing
 the guessing and {\it ad hoc} heuristics with uniform techniques
 applicable to a wide range of
 problems. Chapter~\ref{ch:raticomp} presents a

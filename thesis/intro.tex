@@ -3,14 +3,14 @@ is a fundamental field of research in classical and applied Artificial
 Intelligence. Search problems can be found in
 navigation~\cite{Kocsis.uct}, routing~\cite{Bellman.routing},
 planning~\cite{Domshlak.maxornot}, game
-playing \cite{Braudis.pachi,Good.chess} and numerous other
+playing \cite{Braudis.pachi,Good.chess}, and numerous other
 combinatorial domains~\cite{Korf.partitioning}.  Despite the
 tremendous volume of research on search in various settings, it is
 well known that for many search problems no algorithm dominates all
 others in all cases~\cite{Wolpert.nofree}. Similarly, many algorithms
 have tunable parameters that need
 optimizing~\cite{Hutter.spo,TolpinShimony.raticomp}. The nature of the
-required solution (e.g., optimal, suboptimal etc.) also has
+required solution (e.g., optimal, suboptimal) also has
 significant impact on the desired search algorithm. Selecting the best
 algorithm and parameters for the task at hand is thus a non-trivial
 and important issue~\cite{Allen.selheur,Gomes.portfolio}. Moreover,
@@ -27,7 +27,7 @@ operator. This dual process is repeated until the search task is
 completed, resulting in more flexible search algorithms that should
 perform better than existing inflexible algorithms.  \textit{Rational
 metareasoning}, a theory presented over two decades ago by Russell and
-Wefald~\cite{Russell.right} aims at optimal decision-making
+Wefald~\cite{Russell.right}, aims at optimal decision-making
 w.r.t. which computational operator should be applied at every point
 of the search. It achieves a search algorithm that is (theoretically)
 optimal in its use of resources, with self-adaptation capabilities to
@@ -40,7 +40,7 @@ search problem itself!  As a result, this theory has seen relatively
 little application to real search problems to date.
 
 This research develops a methodology of applying the rational
-metareasoning theory to actual search problems.  On the one hand, some
+metareasoning theory to actual search problems.  On one hand, some
 of the theoretical difficulties are lifted; in particular, the problem
 of efficiency of estimating the value of information of computational
 actions is considered (Chapter~\ref{ch:raticomp}). On the other hand,
@@ -67,7 +67,7 @@ the belief distribution of action outcomes; however, the appropriate
 distribution type and parameters are not easy to determine. Chapter~\ref{ch:cs-csp}
 derives the distribution model from the properties of the search
 algorithm rather than from the set of problem instances. Another
-example is the myopic assumption \cite{Russell.right} which suggests
+example is the myopic assumption \cite{Russell.right}, which suggests
 that a computational action can be chosen based on its anticipated immediate
 effect. In some search algorithms, the information is obtained through
 \emph{sampling}---recurring actions with probabilistic outcomes---and
@@ -78,7 +78,7 @@ estimate based on recurring actions of the same kind.
 
 Advanced search algorithms are often parameterized and require tuning
 to achieve the best performance. Building an algorithm upon the
-principles of rational metareasoning allows to keep the number of
+principles of rational metareasoning allows keeping the number of
 tunable parameters to a minimum---a single parameter needs to be tuned
 in Chapters~\ref{ch:cs-csp}~and~\ref{ch:cs-rla}. In addition, as
 Chapter~\ref{ch:cs-csp} demonstrates, parameters
@@ -95,7 +95,7 @@ search algorithms aim at finding the optimal solution in the shortest
 possible time, and seemingly little can be achieved through
 application of rational metareasoning.  Chapter~\ref{ch:cs-rla}
 presents meta\-rea\-soning-based improvements to a variant of
-the \astar~algorithm which result in finding the optimal solution in a
+the \astar~algorithm that result in finding the optimal solution in a
 shorter time using the same heuristic functions; the employed
 technique is sufficiently general to extend to other optimal
 search algorithms.
@@ -105,10 +105,10 @@ provides the necessary background information about the rational
 metareasoning approach as well as about search problems and
 algorithms. Chapter~\ref{ch:ramesrch} describes application of the
 rational metareasoning approach to search problems and discusses
-difficulties arising in design of search algorithms based on the
+difficulties arising in design of search algorithms based on this
 approach. Chapter~\ref{ch:raticomp}, based
 on \cite{TolpinShimony.raticomp}, introduces rational computation of
-value of information---an important issue in design of efficient
+the value of information---an important issue in design of efficient
 search algorithms based on rational metareasoning. Case studies of the
 rational metareasoning approach in several search problems are
 presented and evaluated in Chapters~\ref{ch:cs-csp}--\ref{ch:cs-rla} (based

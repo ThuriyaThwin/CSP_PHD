@@ -58,7 +58,7 @@ problem domain.
 \section{Identifying the Relevant Metareasoning Decisions}
 
 For a successful realization of the rational metareasoning layer it is
-important to identify the metareasoning decision which can be useful
+important to identify the metareasoning decision that can be useful
 in practice. Determining the
 choices available at the decision points, and benefits and costs
 associated with each of the choices is not always simple. For example,
@@ -87,12 +87,12 @@ algorithm ${\mathcal A}$ and implement metareasoning decisions in ${\mathcal
 A}^{\textrm MR}$ as choices
 between either behaving provably better than ${\mathcal A}$ or
 resorting to ${\mathcal A}$.
-\rationallazyastar~in Chapter~\ref{ch:cs-rla} which is based on
+\rationallazyastar~in Chapter~\ref{ch:cs-rla}, which is based on
 \lazyastar, and MAC with VOI-driven solution-counting value-ordering
-heuristic~in Chapter~\ref{ch:cs-csp} which improves on MAC with
+heuristic~in Chapter~\ref{ch:cs-csp}, which improves on MAC with
 ubiquitous solution counting are examples of this technique.
 
-\section{Formulating an Utility and Information Model}
+\section{Formulating a Utility and Information Model}
 
 Decision-making of the rational metareasoning approach is based on the
 notions of state utility and value of information of computational and
@@ -102,7 +102,7 @@ bring additional  benefits:
 \item A complicated function is more expensive to compute, and
   metareasoning computations tend to increase the total search
   time.  Chapter~\ref{ch:raticomp}, ``Rational Computation of Value of
-  Information'' suggests some ways to leverage the costs of
+  Information'', suggests some ways to leverage the costs of
   computations at the metareasoning level when an expensive utility
   function is absolutely necessary, but, as the case studies in
   Chapters~\ref{ch:cs-csp}--~\ref{ch:cs-rla} show, even simple utility
@@ -126,12 +126,12 @@ analysis of the algorithm under assumptions about the structure of the
 search space. Yet in other applications, such as the selection problem
 (Chapter~\ref{ch:cs-mcts}), prior beliefs are not easily obtainable. An
 alternative to maintaining beliefs is estimating the value of
-information based on distribution-independent bounds derived from on
+information based on distribution-independent bounds derived from
 concentration inequalities;
 Section~\ref{sec:mcts-approx-nonbayesian-section} serves as an example  
 of this approach. An additional benefit of bound-based VOI estimates 
 is robustness of metareasoning decisions which would be otherwise
-by inadequate prior beliefs. 
+compromised by inadequate prior beliefs. 
 
 \section{Parameter Tuning}
 
@@ -142,7 +142,7 @@ satisfactory results. Seemingly, the need to adjust the algorithm
 parameters contradicts the idea of rational metareasoning as a
 systematic approach based on essential features of the search problem
 rather on \textit{ad hoc} adaptions. A significant common trait though
-is that in our case the parameters reflect implementation specifics
+is that in our case the parameters reflect the implementation specifics
 of the algorithm and the heuristics rather than features of problem
 instances. Due to that, parameter values obtained on a small training
 set remain valid, for the given algorithm implementation and
@@ -156,13 +156,13 @@ problem. Analysis of the empirical performance of the algorithm
 facilitates verifying and improving the metareasoning model.  Still,
 misleading results are frequent in the assessment of efficiency of the
 rational metareasoning approach. Such assessment involves comparing
-real search times which are influenced by inevitable noise of the
+real search times that are influenced by inevitable noise of the
 computer facilities, but even more by features of a particular problem
 domain or test set. 
 
 For example, the empirical comparison of VOI-aware MCTS
 to UCT in the context of Computer Go (Section~\ref{sec:mcts-emp-go})
-was initially in favor of UCT, in contradiction with earlier results
+was initially in favor of UCT, in contradiction to earlier results
 on randomly generated trees, where VOI-aware MCTS was considerably
 better. This contradiction helped us realize the influence of sample
 reuse (Section~\ref{sec:mcts-control-redistribution}) and

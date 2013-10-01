@@ -1,7 +1,10 @@
-all: thesis.pdf
+all: thesis.pdf acknowledgments.pdf abstract-hebrew.pdf
 
 %.pdf: %.dot
 	dot -Tpdf $< > $@
+
+%.pdf: %.html
+	prince $<
 
 thesis.tex: \
 	defs.tex \

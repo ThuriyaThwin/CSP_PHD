@@ -1,4 +1,4 @@
-all: thesis.pdf acknowledgments.pdf abstract-hebrew.pdf
+all: thesis.pdf abstract-hebrew.pdf
 
 %.pdf: %.dot
 	dot -Tpdf $< > $@
@@ -8,7 +8,7 @@ all: thesis.pdf acknowledgments.pdf abstract-hebrew.pdf
 
 thesis.tex: \
 	defs.tex \
-    abstract.tex \
+	acknowledgments.tex abstract.tex \
 	intro.tex related.tex ratimeta.tex search.tex ramesrch.tex blinkered.tex \
 	raticomp.tex raticomp-ackley.pdf raticomp-svmguide2.pdf \
 	cs-csp.tex cs-mcts.tex cs-rla.tex \

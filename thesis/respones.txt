@@ -1,0 +1,28 @@
+Review 1
+
+Chapters 1 & 2 - 
+
+  * emphasize two-level reasoning in RM
+  * add citations to Butilko and Kagan
+  * justify games
+
+Chapter 3
+
+  * mention Pattern Databases as example of ammortized cost
+  * explain that particular applications are the subject of
+    following chapters 
+  * add notes to distinguish between contribution and existing 
+
+
+Chapters 4&5
+
+  * New experiments???? Add references to Russell instead showing
+    that importance sampling is a particular case of VOI-based 
+	Rational Metareasoning
+
+Section 8:
+
+   Generally, when works and when does not work well. Section 8.1 answers this question, does not it?
+
+
+

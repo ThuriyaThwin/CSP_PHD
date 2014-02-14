@@ -148,7 +148,7 @@ Therefore, we focus here on just one decision type, to be made in the
 context of \lazyastar, when $n$ re-emerges from \OPEN~(Line 8).  We
 have two options: {\bf (1)} Evaluate the second heuristic $h_2(n)$ and
 add the node back to \OPEN~(lines~\ref{alg:rla-if-not-h2-beg}--\ref{alg:rla-if-not-h2-end}) like \lazyastar, or {\bf 2}
-bypass the computation of $h_2(n)$ and expand $n$ right way~(lines~\ref{alg:rla-open-beg}--\ref{alg:rla-open-end}), thereby saving time by not computing $h_2$, at the risk of
+bypass the computation of $h_2(n)$ and expand $n$ right away~(lines~\ref{alg:rla-open-beg}--\ref{alg:rla-open-end}), thereby saving time by not computing $h_2$, at the risk of
 additional expansions and evaluations of $h_1$.  A method which
 attempts to optimally manage this trade-off, which we
 call \textit{Rational Lazy A*} (\rationallazyastar), is presented

@@ -97,15 +97,15 @@ cost of time for performing $M_j$:
 
 \begin{equation}
 \label{eq:bg-limited-iu}
-U(A_i, M_j) = U(A_i) - C(A_i, M_j)
+U(A_i^{\chg{M_j}}) = U(A_i) - C(A_i, M_j)
 \end{equation}
 
 It is customary to call the current utility of a future base-level
 action, without subtracting the time cost of the computational action,
-its {\em intrinsic utility}. The separation into intrinsic
-utility and time cost allows estimation of the utility of a base-level
-action in a time-independent manner, and then refining the net utility
-estimate according to the time pressure represented by $C$.
+its {\em intrinsic utility}\chg{ \cite{Russell.right}}. The separation
+into intrinsic utility and time cost allows estimation of the utility
+of a base-level action in a time-independent manner, and then refining
+the net utility estimate according to the time pressure represented by $C$.
 
 In many cases, the time cost of an internal action is independent of
 the subsequently taken base-level action. When $C$ depends only on
@@ -114,14 +114,14 @@ intrinsic value of information of a computation as separate terms.
 
 \begin{eqnarray}
 \label{eq:bg-limited-v=bc}
-V(M_j)&=&\IE\left(\IE(U(A_\alpha^j, M_J))-\IE(U(A_\alpha))\right)\nonumber\\
-     &=&\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)-C(M_j)\\
+V(M_j)&=&\IE\left(\IE(U(A_\alpha^{\chg{M_j}}))-\IE(U(A_\alpha))\right)\nonumber\\
+     &=&\IE\left(\IE(U(A_\alpha^{\chg{M_j}}))-\IE(U(A_\alpha))\right)-C(M_j)\\
      &=& \Lambda(M_j)-C(M_j)
 \end{eqnarray}
 where
 \begin{equation}
 \label{eq:bg-limited-benefit}
-\Lambda(M_j)=\IE\left(\IE(U(A_\alpha^j))-\IE(U(A_\alpha))\right)
+\Lambda(M_j)=\IE\left(\IE(U(A_\alpha^{\chg{M_j}}))-\IE(U(A_\alpha))\right)
 \end{equation}
 denotes the intrinsic value of information; that is, the expected
 difference between the intrinsic expected utilities of the new
@@ -133,11 +133,11 @@ following cases takes place:
 
 \begin{enumerate}
 \item the selected base-level action $A_\alpha$ stays the same;
-  consequently, $\IE(U(A_\alpha^j))-\IE(U(A_\alpha))$ is zero;
-\item a different base-level action $A_\alpha^j$ is selected, with
+  consequently, $\IE(U(A_\alpha^{\chg{M_j}}))-\IE(U(A_\alpha))$ is zero;
+\item a different base-level action $A_\alpha^{\chg{M_j}}$ is selected, with
   {\bf higher} expected utility than the expected utility of
   $A_\alpha$ before the meta-level action was taken;
-\item a different $A_\alpha^j$ is selected, and its expected
+\item a different $A_\alpha^{\chg{M_j}}$ is selected, and its expected
   utility is {\bf the same} as or {\bf lower} than the expected
   utility of $A_\alpha$ before the meta-level action was taken.
 \end{enumerate}

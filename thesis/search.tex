@@ -142,6 +142,7 @@ state-of-the art algorithms. Only some widely adopted schemes
 referenced in the thesis are briefly described.
                              
 \subsubsection{Best-First Search}
+\label{sec:bg-best-first-search}
 
 Best-first search (Algorithm \ref{alg:bg-best-first-search}) is used to
 solve route-finding or touring problems, in which a shortest path
@@ -193,20 +194,20 @@ node $n$.
 Provided that $h(n)$ is {\em admissible} and {\em consistent}, A*
 is optimal; even more, A* is {\em optimally efficient}: no
 other optimal algorithm is guaranteed to expand fewer nodes than A*
-\cite{Russell.aima}, given only the information provided by $h$.
+\chg{\cite{ASTR85}}, given only the information provided by $h$.
 Variations of A* with lower space requirements
 were developed. However, many search problems are NP-hard, which
 means that finding an optimal solution may take exponential time;
 approximation algorithms may be used to find a solution in polynomial
 time.
 
-RTA* (Real-Time A*) \cite{Korf.rta} is an approximation version of A*
+RTA* (Real-Time A*) \cite{Korf.rta} is a \chg{suboptimal} version of A*
 with limited lookahead horizon. RTA* explores the search graph to a
 given depth, and then moves to a node with the lowest estimated
 distance to the goal, updating $g(n)$ for all nodes to the distances
 from the current node. RTA* is not optimal unless the goal is within
 the lookahead horizon, but the solution quality increases with  the
-lookahead depth. RTA* is complete in a space with positive edge hosts and
+lookahead depth. RTA* is complete in a space with positive edge \chg{costs} and
 finite heuristic values, in which the goal is reachable from any state.
 Variants of RTA* have been developed \cite{Russell.right},
 \cite{Bulitko.dynamiccontrol}  with improved control over the
@@ -218,7 +219,7 @@ compromise between the computation time and the solution quality.
 Backtracking search is used to solve {\em constraint satisfaction
 problems}. A constraint satisfaction problem (CSP) is defined by a set
 of variables, $X_1$, $X_2$, ..., $X_n$, and a set of constraints,
-$C_1$, $C_2$, ..., $C_n$. Each variable $X_i$ has a non-empty domain
+$C_1$, $C_2$, ..., \chg{$C_m$}. Each variable $X_i$ has a non-empty domain
 $D_i$ of possible values. Each constraint $C_i$ involves some subset
 of the variables and specifies the allowable combinations of values
 for that subset. A state of the problem is defined by an assignment of
@@ -284,8 +285,9 @@ neighbor states until a maximum of the evaluation function is
 found. Local search can be used to solve both satisfaction and
 optimization problems. To solve satisfaction problems, a heuristic
 function estimating the proximity of a state to the goal is used instead
-of the evaluation function. The N-queens puzzle and the multi-armed
-bandit are examples of problems that can be solved using local search.
+of the evaluation function. The N-queens puzzle and the \chg{Traveling
+salesman problem} are examples of problems that can be solved using local
+search.
 
 \subsubsection{Online Search}
 
@@ -300,7 +302,8 @@ Online versions of best-first search explore the search space up to a
 limited horizon or through sampling, use the current state
 of the search to choose an action, perform the action, and continue
 the search from the new state. Real-time A* is formulated as an offline
-search algorithm, but can be used unchanged by online search agents.
+\chg{best-first} search algorithm \chg{\cite{Korf.rta}}, but can
+be used unchanged by online search agents. 
 
 The simplest form of local search, hill climbing, can also be
 viewed as an online search algorithm. Other variants of local search
@@ -316,7 +319,8 @@ actions, and use the gained experience to compute heuristics. An
 example of learning in online search is the LRTA* algorithm
 \cite{Korf.rta}, an extension of RTA*. LRTA* continuously
 updates cost estimates of visited states and uses the current cost
-estimates to choose the ``apparently best'' move.
+estimates to choose the ``apparently best''\chg{, though not always locally
+optimal,} move.
 
 \subsection{Adversarial Search}
 

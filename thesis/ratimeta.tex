@@ -21,14 +21,15 @@ process (MDP) defined by a tuple $(Q, M, \pi, R)$ as follows:
 \begin{itemize}
 \item $Q$ is the state space. Each state $Q_i \in Q$ includes all
 current knowledge about the search graph. For example, in a
-single-agent search problem, a state is comprised of the known part of
-the search graph. including all available heuristic estimates of nodes
+single-agent search problem a state is comprised of the known part of
+the search graph, including all available heuristic estimates of nodes
 of this graph. 
 
 For every meta-level state $Q_i$ there is a
-corresponding base-level action $A_i \in A$, such as transition to a
-neighbor node in the search graph, which \textit{appears to be the best action}
-given $Q_i$.
+corresponding base-level action $A_i \in A$, which \textit{appears to
+be the best action} given $Q_i$. \chg{For example, in a best-first
+search algorithm (Section \ref{sec:bg-best-first-search}) 
+a base-level action is expanding a node in the fringe.}
 
 \item $M$ is the set of state transitions. The transitions---the
 meta-level actions $M_j \in M$---are all the potential computational
@@ -47,7 +48,7 @@ etc., and by the utilities of the base-level actions corresponding to
 the meta-level states.  
 \end{itemize}
 The search algorithm selects at each step, by solving
-the meta-level MDP, a `best' base-level action $A_\alpha$.
+the meta-level MDP, a \chg{best} base-level action $A_\alpha$.
 The goal of meta-level actions is thus to refine the choice of
 $A_\alpha$.
 
@@ -67,10 +68,12 @@ a possible further meta-level action sequence $\mathbf{T}$. Thus, the expected u
 $M_j$ is:
 \begin{equation}
 \label{eq:bg-limited-su}
-\IE(U(M_j))=\sum_{\mathbf{T}}\Pr(\mathbf{T})\IE(U(A_{\alpha}^\mathbf{T},M_j\cdot\mathbf{T}))
+\IE(U(M_j))=\sum_{\mathbf{T}}\Pr(\mathbf{T})\IE(\chg{U(A_{\alpha}^{M_j\cdot\mathbf{T}}}))
 \end{equation}
 where $M_j\cdot\mathbf{T}$ denotes the meta-level action $M_j$
-followed by possible further meta-level action sequence $\mathbf{T}$.
+followed by possible further meta-level action sequence $\mathbf{T}$\chg{,
+and $A_{\alpha}^{M_j\cdot\mathbf{T}}$ is a base-level action chosen
+after performing the sequence of meta-level actions $M_j\cdot\mathbf{T}$}.
 The {\em value of information} of a meta-level action $M_j$ is
 the expected difference between the expected utility of $M_j$ and the
 expected utility of the current $A_\alpha$.

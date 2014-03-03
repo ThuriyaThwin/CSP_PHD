@@ -213,7 +213,7 @@ Table~\ref{tbl:rla-rational-lazy-a-time}
 summarizes the regret of each possible decision, for each possible future
 outcome; each column in the table represents a decision, while each row
 represents a future outcome.
-In the table, $t_d$ is the to time compute $h_2$ and re-insert $n$ into
+In the table, $t_d$ is the \chg{time to} compute $h_2$ and re-insert $n$ into
 \OPEN~thus delaying the expansion of $n$, $t_e$ is the time to remove $n$ from \OPEN,
 expand $n$, evaluate $h_1$ on each of the $b(n)$ (``local branching factor'')
 children $\{n'\}$ of $n$, and insert $\{n'\}$ into the open list.
@@ -266,7 +266,7 @@ probability $p_h$, making it difficult to reach the optimum decision.
 However, if our goal is just to do better than \lazyastar, then it is safe to replace $p_h$ by an upper bound on $p_h$.
 
 We now turn to implementation-specific estimation of the respective runtimes.
-\OPEN~in \astar~is frequently implemented as a priority queue, and thus we have, approximately,
+\OPEN~in \chg{domain-independent versions of} \astar~is frequently implemented as a priority queue, and thus we have, approximately,
 $t_o=\tau \log N_o$ for some $\tau$, when the size of \OPEN~is $N_o$.
 Evaluating $h_1$ is cheap in many domains, as is the
 case with the Manhattan Distance heuristic in discrete domains, $t_o$ is the most significant part of
@@ -312,7 +312,7 @@ used a subset of 36 problem instances out of the set of 100 15-puzzle
 instances by~\cite{BFID85}, keeping the problems which could be solved
 with 2Gb of RAM and 15 minutes timeout using the weighted Manhattan
 distance heuristic (WMD) for $h_1$. As the second, expensive and informative,
-$h_2$ heuristic for \lazyastar~and \rationallazyastar, we a heuristic
+$h_2$ heuristic for \lazyastar~and \rationallazyastar, we \chg{use} a heuristic
 based on lookaheads~\cite{DBLP:conf/aaai/SternKFH10}. Given a bound
 $d$ we applied a bounded depth-first search from a node $n$ and
 backtracked when we reached leaf nodes $l$ for which $g(l)+WMD(l)>

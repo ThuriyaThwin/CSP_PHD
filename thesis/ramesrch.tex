@@ -168,16 +168,19 @@ value of a state in local search); of course, the true value itself is
 also unknown.  The error distribution can be chosen heuristically,
 learned from earlier invocations of the algorithm on other problem
 instances from the same domain, or gradually refined during the search
-using Bayesian inference, starting with a prior belief.
+using Bayesian inference, starting with a prior belief. \chg{Other
+quantities can probabilistically depend on the computed quantity, 
+in which case their belief distributions are indirectly affected by the
+computational action.}
 
 There are thus, in the general case, several simultaneous processes of
 Bayesian inference during the search:
 \begin{itemize}
-\item beliefs about quantities computed by the computational actions
+\item beliefs about quantities \chg{\textit{computed}} by the computational actions
 are updated based on outcomes of the actions;
-\item beliefs about other quantities dependent on the computed
+\item beliefs about other quantities \chg{\textit{dependent}} on the computed
 quantities are revised according to the dependencies;
-\item beliefs about error distributions of  outcomes of computational
+\item beliefs about \chg{\textit{error distributions}} of  outcomes of computational
 actions are revised.
 \end{itemize}
 Proper handling of base-level and meta-level beliefs in search

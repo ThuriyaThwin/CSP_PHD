@@ -75,15 +75,21 @@ Q=\{q_i=(k_i,s_i)\:\vline\;i \in 1..N_q\}.s_\alpha
 \end{equation}
 where $k_i$ is the type of measurement $q_i$, $s_i$ is the item
 measured by $q_i$, and $s_\alpha$ is the final selected item.
+\chg{The reward $R$ of the sequence $Q$ is the utility of the selected
+item $s_\alpha$ less the total cost of measurements:
+\begin{equation}
+\label{eq:problem-reward}
+R\triangleq u(\textbf{z}(s_\alpha))-\sum_{i=1}^{N_q}c_{k_i}
+\end{equation}}
+
 The goal is to find such a policy that obeys the budget constraint and maximizes
-the expectation of the reward $R$ over all possible measurement outcomes,
+the expectation of the reward \chg{(\ref{eq:problem-reward})} over all possible measurement outcomes,
 with a distribution based on the initial belief
 $P_0$ and the information received from measurements
 according to the observation distribution model. The objective function is:
-
 \begin{equation}
-\label{eq:problem-reward}
-\mbox{max}\;\IE[R]\colon R\triangleq u(\textbf{z}(s_\alpha))-\sum_{i=1}^{N_q}c_{k_i}\quad\mbox{s.t.:}\sum_{i=1}^{N_q}c_{k_i}\le C
+\label{eq:max-expected-reward}
+\chg{\mbox{max}\;\IE[R]\quad\mbox{s.t.:}\sum_{i=1}^{N_q}c_{k_i}\le C}
 \end{equation}
 
 Problems from different application areas can be viewed as instances
@@ -116,7 +122,9 @@ good one can be chosen. A good setting must be found under certain time
 constraints. Here, the only {\em feature} is the classification
 accuracy $\alpha$, the {\em utility function} is the identity function
 $u(\alpha)=\alpha$, and the {\em measurement cost} is proportional to
-the computation time with a factor reflecting the time constraints.
+the computation time with a factor reflecting the time \chg{pressure,
+i. e. the importance of selecting a combination of parameters in a short
+time.} 
 \end{quote}
 
 The above selection problem is intractable, and is therefore commonly solved
@@ -129,11 +137,11 @@ difference between the intrinsic VOI and the measurement cost.
 V_j = \Lambda_j -c_{k_j}
 \end{equation}
 The {\it intrinsic VOI} $\Lambda_j$ is the expected
-difference in the true utility of the finally selected item $s_\alpha$
-after and before the measurement:
+difference in the true utility of the finally selected 
+item \chg{--- $s_\alpha^j$ after and $s_\alpha$ before  the measurement:}
 \begin{equation}
 \label{eq:greedy-intrinsic-value}
-\Lambda_j = \IE_{q_j}(\IE_{z|q_j}[u(\textbf{z}(s_{\alpha^j}))]-\IE_{z|q_j}[u(\textbf{z}(s_\alpha))])
+\Lambda_j = \IE_{q_j}(\IE_{z|q_j}[u(\textbf{z}(s_\alpha^j))]-\IE_{z|q_j}[u(\textbf{z}(s_\alpha))])
 \end{equation}
 where expectation $\IE_{q_j}$ is computed according to the belief
 distribution about outcomes of the $j$th measurement, and

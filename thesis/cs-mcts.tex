@@ -106,8 +106,9 @@ We derive a VOI bound for testing an arm a fixed $N$ times,
 where $N$ can be the remaining budget of available samples or
 any other integer quantity.
 Denote by  $\Lambda_i^b$ the intrinsic VOI of testing the $i$th arm
-$N$ times, and the number of
-samples already taken from the $i$th arm by $n_i$.
+$N$ times, the number of
+samples already taken from the $i$th arm by $n_i$, \chg{and the sample mean
+of $m$ outcomes from the $i$th arm by $X_i^m$, for any $m$.}
 \begin{thm} $\Lambda_i^b$ is bounded from above as
 \begin{align}
 \label{eqn:mcts-thm-be}
@@ -343,7 +344,7 @@ to determine a reasonable value, as done in the following.
 
 The above hybrid approach assumes
 that the information obtained from rollouts in the
-current state is discarded after an real-world action is selected. In practice,
+current state is discarded after a real-world action is selected. In practice,
 many successful Monte-Carlo tree search algorithms reuse rollouts
 generated at earlier search states, if the sample traverses the
 current search state during the rollout; thus, the value of information of a rollout is
@@ -428,7 +429,7 @@ is almost always better than UCT, and reaches the winning rate of
 
 Figure~\ref{fig:voi-wins}
 shows the winning rate of VOI against UCT $c=10^{-6}$. In agreement with the intuition
-(Figure~\ref{sec:mcts-control-redistribution}), VOI-based stopping and
+(Section~\ref{sec:mcts-control-redistribution}), VOI-based stopping and
 sample redistribution is most influential for intermediate numbers of
 samples per ply. When the maximum number of samples is too low, early
 stopping would result in poorly selected moves. On the other hand,

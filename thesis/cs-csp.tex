@@ -172,7 +172,8 @@ search time of an ordering is estimated as though the parameters are
 computed only for $\omega_-(1)$, i.e. for the first value in the ordering;
 essentially, this is the metareasoning subtree independence assumption.
  Other value assignments are assumed to have the prior (``default'')
-parameters $T_\mathrm{def}, p_\mathrm{def}$. Assuming w.l.o.g. that $\omega_-(1)=1$:
+parameters $T_\mathrm{def}, p_\mathrm{def}$. Assuming \chg{without loss of
+generality} that $\omega_-(1)=1$:
 \begin{equation}
 \label{eq:time-estimate}
 T^{s|\omega_-}=T_1+p_1\sum_{i=2}^{|D_k|}T_\mathrm{def}p_\mathrm{def}^{i-2}
@@ -252,9 +253,8 @@ solutions for all values of $X_k$, and $n_i$ is the
 solution count estimate for $y_{ki}$; likewise, $T_1=\frac
 {T^{all}} {|D_k|n_\mathrm{max}}$, where $n_\mathrm{max}$ is the currently
 greatest $n_i$.  By substituting the expressions for
-$T_i$, $T_1$ into (\ref{eq:benefit-superestimate}), obtain
-%(\ref{eq:benefit-estimate-sc}) 
-as the intrinsic VOI of computing $n_i$:
+$T_i$, $T_1$ into (\ref{eq:benefit-superestimate}), 
+the intrinsic VOI of computing $n_i$ \chg{is obtained}:
 \begin{equation}
 \label{eq:benefit-estimate-sc}
 \Lambda_i=T^{all} \sum_{n=n_\mathrm{max}}^\infty\left(
@@ -361,8 +361,9 @@ maximum degree variable ordering heuristic.\footnote{A dynamic
   the analysis.} The value-ordering heuristic was based on a version
 of the solution count estimate proposed in \cite{Meisels.solcount}.
 The version used here was optimized for better computation time for
-overconstrained problem instances. As a result,
-Equation~(\ref{eq:csp-gamma}) is a reasonable approximation for this
+overconstrained problem instances \chg{through compilation and
+efficient handling of aggregate constraints}. As a result,
+Equation~(\ref{eq:csp-gamma}) is a reasonable approximation for this 
 implementation. The source code is available from
 \url{http://ftp.davidashen.net/vsc.tar.gz}.
 

@@ -89,7 +89,7 @@ The pseudo-code for  \lazyastar~is depicted as Algorithm \ref{LAZYA}.
         \EndIf
         \If{$h_2$ was not applied to $n$} \label{alg:rla-if-not-h2-beg}
             \State Apply $h_2$ to $n$
-            State Insert $n$ into \OPEN
+            \chg{\State Insert $n$ into \OPEN}
 			\State {\bf continue} \Comment next node in OPEN
         \EndIf                           \label{alg:rla-if-not-h2-end}
         \ForAll{child $c$ of $n$}        \label{alg:rla-open-beg}

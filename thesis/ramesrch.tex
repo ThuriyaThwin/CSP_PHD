@@ -127,18 +127,16 @@ search, both the solution quality and the pending base-level and
 computational actions contribute to the utility of a base-level
 action. Solution quality can often be assumed independent of the
 search cost. Under this assumption, the utility of an action is the solution quality
-less the amortized cost of the search:
+less the \chg{cost of the search:
 \begin{equation}
 \label{eq:ramesrch-optimization-utility}
-U_{action}=Q_{solution}-\alpha C_{search}
-\end{equation} where $\alpha$ is the amortization factor signifying the
-importance of obtaining a solution fast: if the solution is used only
-once, such as in the case of an online path search, $\alpha=1$; for
-reusable solutions, $\alpha$ goes down. In satisfaction problems, when
+U_{action}=Q_{solution}- C_{search}
+\end{equation} 
+In satisfaction problems, when
 any solution of the problem has the same quality, $Q_{solution}$
-can be omitted from (\ref{eq:ramesrch-optimization-utility}), along
-with the amortization factor $\alpha$, and the action utility is
-simply the search cost taken with the negative sign:
+can be omitted} from (\ref{eq:ramesrch-optimization-utility}) 
+and the action utility is simply the search cost taken with
+the negative sign:
 \begin{equation}
 \label{eq:ramesrch-satisfaction-utility} U_{action}=-C_{search}
 \end{equation} $C_{search}$ is composed of the cost of both

@@ -480,24 +480,31 @@ the computation cost axis is scaled logarithmically.
 \subsection{The Ackley Function}
 
 \begin{figure}[t]
-\centering
-\includegraphics[scale=0.63]{raticomp-ackley.pdf}
-\caption{The Ackley function.}
-\label{fig:ackley}
+\begin{center}
+\includegraphics[scale=0.8,trim=100pt 75pt 100pt 50pt]{ackley.pdf}
+\end{center}
+\caption{\chg{The Ackley function}}
+\label{fig:ackley-shape}
 \end{figure}
 The Ackley function \cite{Ackley.function} is a popular optimization
-benchmark. The two-argument form of the Ackley function is used in the
+benchmark. The two-argument form of the Ackley function \chg{(Figure~\ref{fig:ackley-shape})} is used in the
 experiment; the function is defined by the expression (\ref{eq:emp-ackley}):
 \begin{equation}
 \label{eq:emp-ackley}
 A(x,y)=20\cdot \exp\left(-0.2\sqrt { \frac {x^2+y^2} 2}\right)+\exp\left(\frac{cos(2\pi x)+cos(2\pi y)} 2\right)
 \end{equation}
+\begin{figure}[t]
+\centering
+\includegraphics[scale=0.63]{raticomp-ackley.pdf}
+\caption{Ackley function maximization}
+\label{fig:ackley-maximization}
+\end{figure}
 In the optimization problem, the utility function is
 $u(z)=\tanh(2z)$, the measurements are normally distributed around the
 true values with variance $\sigma_m^2=0.5$, and the measurement cost is
 $0.01$. There are uniform dependencies with $\sigma_w^2=0.5$ in both
 directions of the coordinate grid with a step of $0.2$ along each axis.
-The results are presented in Figure~\ref{fig:ackley}.
+The results are presented in Figure~\ref{fig:ackley-maximization}.
 
 \subsection{SVM Parameter Search}
 \label{sec:raticomp-svm}
@@ -505,7 +512,7 @@ The results are presented in Figure~\ref{fig:ackley}.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.63]{raticomp-svmguide2.pdf}
-\caption{SVM parameter search.}
+\caption{SVM parameter search}
 \label{fig:svmguide2}
 \end{figure}
 An SVM (Support Vector Machine) classifier based on the radial basis

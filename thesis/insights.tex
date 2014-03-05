@@ -19,12 +19,14 @@ optimizing heuristic evaluation in algorithms where:
   time.
 \item The heuristic computation time constitutes \emph{a significant part} of
   the total search time. 
+\item \chg{No simple \emph{heuristic rule for selective evaluation} (such as only
+  in the proximity of the initial state) is known to bring a
+  significant improvement.}
 \end{enumerate}
 
 Conversely, there are two important cases where rational metareasoning
 is unlikely to result in an improvement, according to our current state
 of knowledge about the method: 
-
 \begin{itemize}
 \item On the one hand, if \textbf{the heuristic relies on pre-computed
   data}~\cite{pattern,Felner.apdb}, and online evaluation is cheap at the expense of intensive
@@ -38,13 +40,13 @@ of knowledge about the method:
   requires  just a small number of table lookups, so it does not makes sense to try and
   compute the heuristic selectively.
 \item On the other hand, in the case of an \textbf{informative but
-  very expensive heuristic} evaluating the heuristic is likely 
-  to make the search algorithm slower in most cases, and the
-  algorithm must rely on domain-specific knowledge to
-  identify the states in which computing the heuristic is beneficial. 
-  Such fine domain-specific knowledge is usually hard to derive from
-  a general notion of value of information. One example is
-  high-accuracy solution counting algorithms, mentioned in
+  very expensive heuristic} evaluating the heuristic is likely to make
+  the search algorithm slower in most cases, and the algorithm must
+  rely on domain-specific knowledge to identify the states in which
+  computing the heuristic is beneficial.  Such fine domain-specific
+  knowledge is usually hard to derive from \chg{a model that results
+  in an efficiently computable value of information estimate.} One
+  example is high-accuracy solution counting algorithms, mentioned in
   Chapter~\ref{ch:cs-csp}, which are too time-consuming to be used
   in a value-ordering heuristic, unless a fine-tuned domain-specific
   decision rule is used.

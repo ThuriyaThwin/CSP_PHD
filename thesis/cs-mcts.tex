@@ -272,7 +272,8 @@ selection problem instances. Figure~\ref{fig:random-instances} shows results for
 randomly-generated selection problems with 25 Bernoulli arms, where
 the mean rewards of the arms are distributed uniformly in~$[0,1]$, 
 for a range of sample budgets~$200..2000$, with multiplicative
-step of~$2$, averaging over 10000 trials.  We compare UCB1 with the 
+step of~$2$, averaging over 10000 trials\chg{\footnote{\chg{95\% confidence
+intervals are too small to be shown.}}}.  We compare UCB1 with the 
 policies based on the bounds in
 Equation~(\ref{eqn:mcts-bound-blnk-hoeffding}) (VOI) and
 Equation~(\ref{eqn:mcts-erf-blinkered}) (VOI+).

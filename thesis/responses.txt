@@ -8,7 +8,6 @@ Chapters 1 & 2 -
 
 Chapter 3
 
-  * mention Pattern Databases as example of ammortized cost
   * explain that particular applications are the subject of
     following chapters 
   * add notes to distinguish between contribution and existing 

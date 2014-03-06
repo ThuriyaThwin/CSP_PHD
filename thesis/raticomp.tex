@@ -415,11 +415,13 @@ original algorithm for the same number of measurements: $\eta=\frac
 According to the assumption, $\tau$ changes slowly. Given $\tau$,
 $\varsigma_j^2$ of measurement $q_i$ in the measurement sequence $Q$
 (Equation~\ref{eq:measurement-sequence}) is proportional to
-the {\em VOI age}---the total cost of measurements performed since the
+the {\em VOI age} \chg{$a$}---the total cost of measurements performed since the
 last recomputation of the VOI of the measurement. Assuming that the
 measurement cost $c$ is the same for all measurements, the expected
 VOI age over all measurements and all steps of the algorithm is
-$c/\eta$. 
+\chg{inverse-proportional to the intensity of VOI estimations:}
+$a=c/\eta$ \chg{--- the lower is the intensity of VOI recomputations, the
+greater is the expected of a recomputation}.
 
 VOI variance $\varsigma^2$ (Equation~\ref{eq:varsigma}) is proportional to
 the VOI age given $\tau$, i.e. inversely-proportional to $\eta$:
@@ -453,7 +455,7 @@ scheme, caused an increase in the computation time that, while still
 polynomial in the size of the problem, can be prohibitive. According
 to blinkered scheme, the value of information of a measurement is
 estimated by considering batches of multiple measurements of a single
-item. 
+item. \chg{The source code is available from url{http://bitbucket.org/dtolpin/uncertima}.}
 
 For each of the optimization problems plots of the number of VOI
 recomputations and of the reward vs. the computation cost of VOI

@@ -194,8 +194,14 @@ search time $T_i$. In such cases, the backtracking probability $p_i$
 can be bounded by the Markov inequality as the probability for the
 given assignment that the time $t$ to find a solution or to verify that
 no solution exists is at least the time $T_i^{all}$ to find all
-solutions: $p_i=P\left(t\ge T_i^{all}\right)\le \frac{T_i} {T_i^{all}}$, 
-and the bound can be used to estimate the probability:
+solutions: $p_i=P\left(t\ge T_i^{all}\right)\le \frac{T_i} {T_i^{all}}$.
+\chg{In the absence of a better estimate}, the bound can be used to
+estimate the \chg{backtracking} probability\chg{\footnote{\chg{This estimate was
+evaluated empirically on random instances
+(Section~\ref{sec:csp-random-instances}), and appeared to be not too
+far off the mark: actual probabilities were, quite expectedly, lower,
+but the order relations between the probabilities for different value
+assignments to a given variable were mostly preserved.}}}
 \begin{equation}
 \label{eq:backtracking-probability-estimate}
 p_i\approx\frac{T_i} {T_i^{all}}
@@ -226,6 +232,12 @@ Finally, since (\ref{eq:backtracking-probability-estimate}), (\ref{eq:p-approx-o
 \label{eq:benefit-superestimate}
 \Lambda_i\approx\IE\left[(T_1-T_i)|D_k|\,\Big|\; T_i<T_1 \right]
 \end{eqnarray}
+\chg{In agreement with the intuition, the intrinsic VOI of estimating $T_i$
+grows with the expected difference $T_1 - T_i$ \textit{and} with the
+domain size $|D_k|$. A similar dependence of
+the VOI on the degree of the current state was also observed in the
+study of selective evaluation of heuristics
+in \astar~(Section~\ref{ch:cs-rla}).}
 
 \section{VOI of Solution Count Estimates}
 \label{sec:csp-rational}
@@ -365,7 +377,7 @@ overconstrained problem instances \chg{through compilation and
 efficient handling of aggregate constraints}. As a result,
 Equation~(\ref{eq:csp-gamma}) is a reasonable approximation for this 
 implementation. The source code is available from
-\url{http://ftp.davidashen.net/vsc.tar.gz}.
+\url{http://github.com/dtolpin/phd-source-code/chapter-5}.
 
 \subsection{Benchmarks}
 
@@ -438,6 +450,7 @@ occasions} selected using rational metareasoning.
 \end{figure}
 
 \subsection{Random instances}
+\label{sec:csp-random-instances}
 
 Based on the results on benchmarks, we chose $\gamma=10^{-3}$, and
 applied it to two sets of 100 problem instances. 

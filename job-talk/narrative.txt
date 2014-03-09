@@ -1,0 +1,10 @@
+= Selecting computations in sequential decision problems =
+
+We look at problems in which a sequence of computational actions
+must be performed to achieve a goal, and outcomes of earlier
+actions affect selection of later actions. Examples of such
+problems are parameter optimization, multi-armed bandits, and
+combinatorial games. We introduce an approach to selecting
+computations based on the notions of *value of information* and
+*time cost* of a computation and demonstrate application of the
+approach to different domains. 

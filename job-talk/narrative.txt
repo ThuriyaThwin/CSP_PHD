@@ -84,6 +84,29 @@ The choice of a route according to the current belief must be performed accordin
 
 EU=\int_{0}^{\infty} U(t)p(t)dt
 
+  ...\sum_{i=1}^n
+
+
+Assume now that the agent can act to obtain additional data that will update the beliefs. What is the possible influence of the data? Denote by
+EU_{r1} and EU_{r2} the expected utility of choosing either route r1 or r2,
+correspondingly, and assume that initially EU_r1 < EU_r2, and the agent would
+choose r2. According to updated beliefs, selecting either route has a different,
+updated expected utility, EU_r1^+, EU_r2^+, and either still EU_r1^+ < EU_r2^+,
+or EU_r1^+ > EU_r2^+ (with ties broken arbirtrarily).
+
+In the former case, the agent should still choose the second route, and the value of the data gathering action is 0 -- since it didn't affect the decision.
+In the latter case, the agent's choice changes, and the value of action is, apparently, the difference between the updated expected utility  of r1 and r2.
+
+V(a)=EU_r1^+-EU_r2^+.
+
+It is important to note that the value of belief updating is measured by the effect of updating the belief on the decision. If the decision is not affected,
+the action has no value.
+
+If the agent has several belief updating actions (C_1, C_2, C_3 ...), it should
+choose one that would have the highest value. Since before an action is performed, its exact value cannot be generally known,  an action with the highest expected value should be chosen, given the current belief state and possible outcomes of the action. The expected value of the belief updating action is called *value of information* of the action. 
+
+
+
 
 
 

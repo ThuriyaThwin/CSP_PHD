@@ -9,3 +9,53 @@ computations based on value of information and time cost of a
 computation, and demonstrate application of the approach to
 different domains. The work is based on the theory of rational
 metareasoning.
+
+== Introduction ==
+
+In this talk, we will look at sequential decision problems. 
+In a broad sense, a sequential decision problem is a problem
+for which a solution is a contingency plan - a potentially
+indefinite sequence of actions, such that later actions
+depend on the outcomes of earlier actions. Some squential decision
+problems can be modelled using Markov decision proceses (or,
+in a more general setting, partially observable markov decision
+processes).
+
+Let us look at a few examples:
+
+  - the sailing domain: (Here comes a description of the sailing
+    domain, with wind directions and outcomes of the actions).
+
+  - Multi-armed bandits, in various settings (Here comes the definition
+    of the multi-armed bandits, and kinds of questions that can be asked
+    about multi-armed bantis).
+
+  - Algorithm parameter tuning - an algorithm must be tuned
+    on a training set for best results. Stochastic search, kernel-based
+    classifier, parameterized heuristics in routing algorithms.
+
+A class of problems that requires particular attention is two-player combinatorial games. In adversarial search, the next state in which
+the agent has to make a decision depends on the action performed by 
+the adversary. This class of problems is special because state transition
+probabilities depend on the policy.
+
+In many such problems, finding the optimal (or even good enough)
+contingency policy in advance is infeasible, and the algorithm performs
+computations in every state before committing to a base-level action.
+The time spent on deliberation, and the kind of computations affect
+the quality of the policy:
+
+  - on the one hand, with more deliberation a `better' (informally for now)
+  base-level action can be chosen.
+  - on the other hand, the time spent deliberting may have negative effect
+  on the quality of the final solution.
+
+As a simple case, let us look at a path-finding algorith, such as heuristic best-first search (A*, IDA* and similar algorithms). The search is driven
+by heuristics which predict the distance to the goal. An advantage of using
+a more informative heuristic is in decreasing the search time by pruning more
+nodes that do not belong to a more optimal solution. But computing the heuristic takes time, and it may happen so that a more informative heuristic
+results in a slower algorithm.
+
+In more complicated settings the deliberation time is significant because the
+state is dynamic, it changes with time even if the agent does not perform an action. Consider a situation in which 
+

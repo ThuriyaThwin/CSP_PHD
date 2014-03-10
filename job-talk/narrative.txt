@@ -45,9 +45,9 @@ computations in every state before committing to a base-level action.
 The time spent on deliberation, and the kind of computations affect
 the quality of the policy:
 
-  - on the one hand, with more deliberation a `better' (informally for now)
+  - on the one hand, with more deliberation, a `better' (informally for now)
   base-level action can be chosen.
-  - on the other hand, the time spent deliberting may have negative effect
+  - on the other hand, the time spent deliberating may have negative effect
   on the quality of the final solution.
 
 As a simple case, let us look at a path-finding algorith, such as heuristic best-first search (A*, IDA* and similar algorithms). The search is driven
@@ -57,5 +57,34 @@ nodes that do not belong to a more optimal solution. But computing the heuristic
 results in a slower algorithm.
 
 In more complicated settings the deliberation time is significant because the
-state is dynamic, it changes with time even if the agent does not perform an action. Consider a situation in which 
+state is dynamic, changing with time even if the agent does not perform an action. Consider a situation in which a public transport must be chosen,
+either the bus or the train. The agent knows the frequences of both means of transportation, and the time of departure of the next train. Should the agent check the schedule of buses in hope that the bus departs and arrives earlier, at the risk of missing the nearest train, or should it commit to going by train, and probably miss the opportunity to arrive earlier by bus?
+
+To answer such questions, we should suggest a way of measuring the quality of a solution, and, as a consequence, the benefit of committing to a particular action. 
+
+== Expected utility and Value of Information ==
+
+Consider, again, a commuting problem. The agent must drive from city A to city B, and there are two roads connecting the cities. In Israel, for example, ther are two main routes between Tel Aviv and Jerusalem. The current belief of the
+agent about the commute time through each of the routes looks like on the figure (think of two normal distributions with different means and variances).
+
+Which route should the agent use? The answer depends on the utility of the travel time. For example,
+
+   1) the agent wants to minimize the time on the road,
+   2) the agent has to arrive by a particular time T,
+   3) the agent wants to minimize the time on the road, but has
+     to arrive by a particular time.
+
+Each of the objectives can be formalized as a utility function from time to a utility measure, in some units.
+
+   U_1(t) = -t
+   U_2(t) = 1 if t<T, -1 
+   U_3(t) = 1-t/T if t<T, -1 otherwise
+
+The choice of a route according to the current belief must be performed according to the expected utility which is defined as the integral of the product of the utility function and the probability of the outcome for the continuous case, or as the corresponding sum in the discrete case.
+
+EU=\int_{0}^{\infty} U(t)p(t)dt
+
+
+
+
 

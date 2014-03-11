@@ -15,11 +15,12 @@ metareasoning.
 In this talk, we will look at sequential decision problems. 
 In a broad sense, a sequential decision problem is a problem
 for which a solution is a contingency plan - a potentially
-indefinite sequence of actions, such that later actions
-depend on the outcomes of earlier actions. Some squential decision
+infinite sequence of actions, such that later actions
+depend on the outcomes of earlier actions. Some sequential decision
 problems can be modelled using Markov decision proceses (or,
 in a more general setting, partially observable markov decision
-processes).
+processes). However, we will not restrict discussion to MDP/POMDP,
+for reasons that will become clear later.
 
 Let us look at a few examples:
 
@@ -50,7 +51,7 @@ the quality of the policy:
   - on the other hand, the time spent deliberating may have negative effect
   on the quality of the final solution.
 
-As a simple case, let us look at a path-finding algorith, such as heuristic best-first search (A*, IDA* and similar algorithms). The search is driven
+As a simple case, let us look at a path-finding algorithm, such as heuristic best-first search (A*, IDA* and similar algorithms). The search is driven
 by heuristics which predict the distance to the goal. An advantage of using
 a more informative heuristic is in decreasing the search time by pruning more
 nodes that do not belong to a more optimal solution. But computing the heuristic takes time, and it may happen so that a more informative heuristic
@@ -63,6 +64,8 @@ either the bus or the train. The agent knows the frequences of both means of tra
 To answer such questions, we should suggest a way of measuring the quality of a solution, and, as a consequence, the benefit of committing to a particular action. 
 
 == Expected utility and Value of Information ==
+
+=== Utility ===
 
 Consider, again, a commuting problem. The agent must drive from city A to city B, and there are two roads connecting the cities. In Israel, for example, ther are two main routes between Tel Aviv and Jerusalem. The current belief of the
 agent about the commute time through each of the routes looks like on the figure (think of two normal distributions with different means and variances).
@@ -87,6 +90,8 @@ EU=\int_{0}^{\infty} U(t)p(t)dt
   ...\sum_{i=1}^n
 
 
+=== Value of Information ===
+
 Assume now that the agent can act to obtain additional data that will update the beliefs. What is the possible influence of the data? Denote by
 EU_{r1} and EU_{r2} the expected utility of choosing either route r1 or r2,
 correspondingly, and assume that initially EU_r1 < EU_r2, and the agent would
@@ -105,9 +110,8 @@ the action has no value.
 If the agent has several belief updating actions (C_1, C_2, C_3 ...), it should
 choose one that would have the highest value. Since before an action is performed, its exact value cannot be generally known,  an action with the highest expected value should be chosen, given the current belief state and possible outcomes of the action. The expected value of the belief updating action is called *value of information* of the action. 
 
+=== Subtree independence ===
 
+Information gathering actions often update the belief about one particular base-level action. In the two-route example, the agent can call the information service of one or the other road. What can be the influence of updating the belief about just one of the routes? Either the belief about r2 is updated, and then the value of the update is positive if EU_r2^+ < EU_r1, or r1 is update, and EU_r1^+ > EU_r2. 
 
-
-
-
-
+Belief updating that affects beliefs about only one base-level action is a common pattern, known as subtree independence. There is often a one-to-one correspondence between base-level and belief-updating actions. 
